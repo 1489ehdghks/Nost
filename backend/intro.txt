@@ -1,0 +1,4 @@
+기술 스택
+Backend: Flask (Python)
+Database: SQLite (Flask_SQLAlchemy)
+API: OpenAI API
