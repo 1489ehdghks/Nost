@@ -40,6 +40,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third Party
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth.registration",
     # Custom
     "accounts",
     "books",
@@ -86,7 +93,17 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "accounts.USer"
+AUTH_USER_MODEL = "accounts.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTCookieAuthentication",)
+}
+
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "book-auth",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
