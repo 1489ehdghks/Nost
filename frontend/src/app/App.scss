@@ -1,0 +1,77 @@
+//폰트
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+$primary-gradient-start: #8e2de2;
+$primary-gradient-end: #4a00e0;
+$hover-color: #5a6268;
+$white: #fff;
+$black: #000;
+$gray: #ccc;
+$salmon: #e8716d;
+$smoky-black: rgba(#222222, 0.85);
+$primary-color: #ff8177;
+
+$bdrds: 3px;
+$ff-body: 12px;
+$ff-light: 300;
+$ff-regular: 400;
+$ff-medium: 500;
+
+:root {
+  --primary-gradient-start: #{$primary-gradient-start};
+  --primary-gradient-end: #{$primary-gradient-end};
+  --hover-color: #{$hover-color};
+}
+
+.App {
+  text-align: center;
+}
+
+// 믹스인
+@mixin button {
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
+
+@mixin input {
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  outline: 0;
+
+  &[type="submit"] {
+    cursor: pointer;
+  }
+
+  &::placeholder {
+    font-size: 0.85rem;
+    font-family: $ff;
+    font-weight: $ff-light;
+    letter-spacing: 0.1rem;
+    color: $gray;
+  }
+}
+
+//회원가입 모달창 폰트
+// .montserrat-<uniquifier> {
+//     font-family: "Montserrat", sans-serif;
+//     font-optical-sizing: auto;
+//     font-weight: 400;
+//     font-style: normal;
+//   }
+
+//homePage 소재목폰트
+// .edu-nsw act foundation-<uniquifier> {
+//     font-family: "Edu NSW ACT Foundation", cursive;
+//     font-optical-sizing: auto;
+//     font-weight: 500;
+//     font-style: normal;
+//   }
+
+//homePage 재목폰트
+// font-family: "Merriweather", serif;

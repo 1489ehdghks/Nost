@@ -1,0 +1,54 @@
+@import "../app/App.scss";
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.homePage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://images.unsplash.com/photo-1491466424936-e304919aada7?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.content {
+    position: absolute;
+    text-align: center;
+    width: 550px;
+    transform: translateY(-40%);
+
+    h1 {
+        font-family: "Merriweather", serif;
+        color: azure;
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 8px rgba(202, 202, 202, 0.7);
+    }
+
+    .subtitle {
+        margin-top: 10%;
+        color: azure;
+        font-family: "Edu NSW ACT Foundation", cursive;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+        text-shadow: 2px 2px 4px rgba(40, 26, 195, 0.5);
+    }
+    button {
+        margin-top: 15%;
+        padding: 10px 20px;
+        width: 160px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}
