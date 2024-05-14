@@ -1,48 +1,62 @@
 import React, { useState } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
 import LoginModal from '../../widgets/layout/Modal/LoginModal';
-import Button from '../../widgets/button/Buttons';
+import ThemedButton from '../../widgets/button/ThemedButton';
 
-
-import FallenLeaves from '../../widgets/events/FallenLeaves';
-import Rain from '../../widgets/events/Rain';
-import Snow from '../../widgets/events/snow';
 import Blossom from '../../widgets/events/Blossom';
+import Rain from '../../widgets/events/Rain';
+import FallenLeaves from '../../widgets/events/FallenLeaves';
+import Snow from '../../widgets/events/FallenSnow';
 
 import './HomePage.scss';
 
 
 
 const HomePage = () => {
-    const { season } = useThemeStore();
+    const { themes, isThemeMode, isDarkMode } = useThemeStore();
     const [isModalOpen, setModalOpen] = useState(false);
 
     const handleOpenModal = () => setModalOpen(true);
     const handleCloseModal = () => setModalOpen(false);
 
+    const getCurrentTheme = () => {
+        if (isDarkMode && isThemeMode) {
+            return themes.winter;
+        } else if (isDarkMode && !isThemeMode) {
+            return themes.summer;
+        } else if (!isDarkMode && isThemeMode) {
+            return themes.autumn;
+        } else {
+            return themes.spring;
+        }
+    };
+
+    const currentTheme = getCurrentTheme();
+    const backgroundImage = currentTheme.backgroundImage;
+
     const getSeasonEffect = () => {
-        switch (season) {
-            case 'spring':
+        switch (currentTheme) {
+            case themes.spring:
                 return <Blossom />;
-            case 'summer':
+            case themes.summer:
                 return <Rain />;
-            case 'autumn':
+            case themes.autumn:
                 return <FallenLeaves />;
-            case 'winter':
+            case themes.winter:
             default:
                 return <Snow />;
         }
     };
 
     return (
-        <div className="homePage">
+        <div className="homePage" style={{ backgroundImage }}>
             <div className='content'>
                 <h1>Novel Stella</h1>
-                <p className="subtitle">
+                <p className="subtitle" style={{ color: currentTheme.textColor }}>
                     empowered by innovative AI to bring your storytelling to life.
                     "Step into a realm where your words shape worlds"
                 </p>
-                <Button className="shake" onClick={handleOpenModal}>Join</Button>
+                <ThemedButton className="shake" onClick={handleOpenModal}>Join</ThemedButton>
             </div>
 
             {isModalOpen && <LoginModal onClose={handleCloseModal} />}
@@ -50,5 +64,4 @@ const HomePage = () => {
         </div>
     );
 };
-
 export default HomePage;

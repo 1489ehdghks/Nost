@@ -45,7 +45,7 @@ class Snowflake {
     }
 }
 
-const Snow = ({ count = 300 }) => {
+const Snow = ({ count = 200 }) => {
     const canvasRef = useRef(null);
     let snowflakes = [];
 

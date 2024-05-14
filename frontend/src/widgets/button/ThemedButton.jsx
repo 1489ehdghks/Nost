@@ -1,33 +1,32 @@
+// /src/widgets/button/ThemedButton.jsx
 import React from 'react';
-import useThemeStore from '../store/themeStore';
+import useThemeStore from '../../shared/store/Themestore';
+import './ThemedButton.scss';
 
-const ThemedButton = () => {
-    const { isDarkMode, isThemeMode, themes } = useThemeStore();
-    let themeKey = 'spring';
+const ThemedButton = ({ children, onClick, className }) => {
+    const { themes, isThemeMode, isDarkMode } = useThemeStore();
 
-    if (!isDarkMode && !isThemeMode) {
-        themeKey = 'spring';
-    } else if (isDarkMode && !isThemeMode) {
-        themeKey = 'summer';
-    } else if (!isDarkMode && isThemeMode) {
-        themeKey = 'autumn';
-    } else if (isDarkMode && isThemeMode) {
-        themeKey = 'winter';
-    }
+    const getCurrentTheme = () => {
+        if (isDarkMode && isThemeMode) {
+            return themes.winter;
+        } else if (isDarkMode && !isThemeMode) {
+            return themes.summer;
+        } else if (!isDarkMode && isThemeMode) {
+            return themes.autumn;
+        } else {
+            return themes.spring;
+        }
+    };
 
-    const theme = themes[themeKey];
+    const currentTheme = getCurrentTheme();
 
     return (
-        <button style={{
-            backgroundColor: theme.buttonColor,
-            color: theme.textColor,
-            fontFamily: theme.fontFamily,
-            padding: '10px 20px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-        }}>
-            Click me!
+        <button
+            className={`themed-button ${className}`}
+            onClick={onClick}
+            style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
+        >
+            {children}
         </button>
     );
 };

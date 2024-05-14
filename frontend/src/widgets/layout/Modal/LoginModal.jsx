@@ -30,10 +30,6 @@ const LoginModal = ({ onClose }) => {
         console.log('Sign Up with:', signupInputs);
     };
 
-    const toggleForms = () => {
-        setLoginFormActive(!isLoginFormActive);
-    };
-
 
     return (
         <div className="modalOverlay">
@@ -43,13 +39,13 @@ const LoginModal = ({ onClose }) => {
                     {/* 로그인 회원가입 스위칭*/}
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
 
-                        {/* Unregistered user's view */}
+                        {/* 로그인 왼쪽 */}
                         <div className="user_options-unregistered">
                             <h2 className="user_unregistered-title">Don't have an account?</h2>
                             <p className="user_unregistered-text">Sign up to join our community!</p>
                             <button className="user_unregistered-signup" onClick={() => setLoginFormActive(false)}>SIGN UP</button>
                         </div>
-                        {/* Registered user's view */}
+                        {/* 회원가입 오른쪽   */}
                         <div className="user_options-registered">
                             <h2 className="user_registered-title">Have an account?</h2>
                             <p className="user_registered-text">Log in to continue.</p>
@@ -60,9 +56,9 @@ const LoginModal = ({ onClose }) => {
 
 
 
-                {/* Forms container */}
+                {/* Forms */}
                 <div className={`forms-container ${isLoginFormActive ? 'show-login' : 'show-signup'}`}>
-                    {/* Login form */}
+                    {/* 로그인 폼 */}
                     <div className={`user_forms-login ${isLoginFormActive ? 'active' : 'inactive'}`}>
                         <button className="closeButton" onClick={onClose}>&times;</button>
                         <h2 className="forms_title">Login</h2>
