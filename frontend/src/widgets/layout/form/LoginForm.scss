@@ -1,0 +1,238 @@
+@import "../app/App.scss";
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    &:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+    .modalContent {
+        background-color: rgba(#2b443c, 0.85);
+        width: 60vw;
+        height: 15vw;
+        border-radius: $bdrds;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
+        display: flex;
+        align-items: center;
+        z-index: 11;
+        transition: all 0.3s ease-in-out;
+
+        .user_options-container {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            top: 0%;
+            left: 55%;
+            transform: translateX(-50%);
+            width: calc(100% - 4rem);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+            .user_options-text {
+                color: azure;
+                display: flex;
+
+                justify-content: space-between;
+                .user_options-unregistered,
+                .user_options-registered {
+                    font-family: "Montserrat", sans-serif;
+                    font-optical-sizing: auto;
+                    font-weight: 300;
+                    font-style: normal;
+                    padding: 1rem;
+                    justify-content: left;
+
+                    button {
+                        margin-top: 5%;
+                        background-color: transparent;
+                        padding: 10px 40px;
+                        border-radius: $bdrds;
+                        color: $white;
+                        font-size: 14px;
+                        font-family: "Montserrat", sans-serif;
+                        font-optical-sizing: auto;
+                        font-weight: 400;
+                        font-style: normal;
+                        border-color: white;
+                        border-width: 1px;
+                        &:hover {
+                            background-color: $smoky-black;
+                        }
+                    }
+                }
+
+                .user_options-unregistered,
+                .user_options-registered {
+                    font-family: "Montserrat", sans-serif;
+                    font-optical-sizing: auto;
+                    font-weight: 300;
+                    font-style: normal;
+                    position: absolute;
+                    width: 40%;
+                    transition: transform 0.5s ease-in-out;
+                }
+                .user_options-unregistered {
+                    left: 0;
+                    transform: translateY(30%);
+                }
+                .user_options-registered {
+                    right: 0;
+                    transform: translateY(30%);
+                }
+            }
+        }
+        .forms-container {
+            position: absolute;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+            .user_forms-login,
+            .user_forms-signup {
+                width: 100%;
+                padding: 3rem;
+                box-sizing: border-box;
+                transition: opacity 0.5s ease-in-out;
+                .closeButton {
+                    position: absolute;
+                    color: black;
+                    margin-top: -10%;
+                    margin-left: 75%;
+                    border: none;
+                    background: none;
+                    font-size: 2rem;
+                    cursor: pointer;
+                    &:hover {
+                        color: darken($white, 10%);
+                    }
+                }
+                &.active {
+                    opacity: 1;
+                    visibility: visible;
+                    background-color: transparent;
+                }
+                &.inactive {
+                    opacity: 0;
+                    visibility: hidden;
+                    background-color: transparent;
+                    position: absolute;
+                }
+                .forms_title {
+                    font-family: "Montserrat", sans-serif;
+                    font-optical-sizing: auto;
+                    font-weight: 400;
+                    font-style: normal;
+                    margin-bottom: 2rem;
+                    font-size: 1.5rem;
+                    color: $primary-color;
+                    text-align: center;
+                }
+                .forms_form {
+                    width: 100%;
+                    .forms_fieldset {
+                        border: none;
+                        margin: 0;
+                        padding: 0;
+
+                        .forms_field {
+                            margin-bottom: 1rem;
+                            background-color: transparent;
+                            .forms_field-input {
+                                width: 100%;
+                                padding: 10px;
+                                border: 1px solid $gray;
+                                border-radius: $bdrds;
+                                font-size: 1rem;
+                                color: $black;
+                                transition: border-color 0.3s ease;
+
+                                &:focus {
+                                    border-color: lighten($primary-color, 10%);
+                                    outline: none;
+                                }
+                            }
+                        }
+                    }
+
+                    .forms_buttons {
+                        margin-top: 2rem;
+                        display: flex;
+                        justify-content: space-between;
+
+                        .forms_buttons-forgot {
+                            background: none;
+                            border: none;
+                            color: $primary-color;
+                            cursor: pointer;
+                            text-decoration: underline;
+                        }
+
+                        .forms_buttons-action {
+                            padding: 10px 20px;
+                            border-radius: $bdrds;
+                            background-color: $primary-color;
+                            color: $white;
+                            font-family: "Montserrat", sans-serif;
+                            font-optical-sizing: auto;
+                            font-weight: 400;
+                            font-style: normal;
+
+                            border: none;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease;
+
+                            &:hover {
+                                background-color: darken($primary-color, 10%);
+                            }
+                        }
+                    }
+                }
+            }
+            &.show-login {
+                width: 40%;
+                height: 30vw;
+                background-color: white;
+                z-index: 20;
+                transform: translateX(130%);
+            }
+
+            &.show-signup {
+                width: 40%;
+                height: 30vw;
+                background-color: white;
+                z-index: 20;
+                transform: translateX(5%);
+            }
+        }
+    }
+}
+
+//애니메이션
+@media (max-width: 900px) {
+    .modalContent {
+        width: 80%;
+    }
+
+    .forms-container.show-login,
+    .forms-container.show-signup {
+        transform: none;
+        flex-direction: column;
+    }
+
+    .user_forms-login,
+    .user_forms-signup {
+        width: 100%;
+    }
+}

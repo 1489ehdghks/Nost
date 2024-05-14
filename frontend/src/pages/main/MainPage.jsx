@@ -1,9 +1,10 @@
 import React from 'react';
-import GenerateStory from './mainSections/GenerateStory';
-import GenerateBNP from './mainSections/GenerateBNP';
-import '/MainPage.scss'
+import GenerateStory from '../../process/GenerateStory';
+import './MainPage.scss'
 
 const MainPage = () => {
+
+
 
     return (
         <div className="main-page">
@@ -27,7 +28,7 @@ const MainPage = () => {
                 <GenerateStory />
             </div>
             <div className="section">
-                <GenerateBNP />
+                {/* <GenerateBNP /> */}
             </div>
         </div>
     );
