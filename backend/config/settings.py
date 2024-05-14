@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third Party
     "rest_framework",
+    "django_seed",
     # Custom
     "accounts",
     "books",
@@ -86,7 +87,13 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "accounts.USer"
+#목록 조회 페이지네이션 구현
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 8
+}
+
+AUTH_USER_MODEL = "accounts.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
