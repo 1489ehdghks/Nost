@@ -47,10 +47,15 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "dj_rest_auth.registration",
+    "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
     # Custom
     "accounts",
     "books",
 ]
+
+# 사이트 ID
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -60,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -93,17 +99,54 @@ DATABASES = {
     }
 }
 
+# Custom User Model
 AUTH_USER_MODEL = "accounts.User"
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTCookieAuthentication",)
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# jwt
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
+# allauth
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_ADAPTER = "accounts.adapters.CustomUserAccountAdapter"
+
+
+# rest framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTAuthentication",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# spectacular
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My Django API",
+    "DESCRIPTION": "Django DRF API Doc",
+    "VERSION": "1.0.0",
+}
+
+# dj rest auth
 REST_AUTH = {
     "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "book-auth",
-    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
 }
+
+# 이메일 백엔드 설정 (개발용)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
