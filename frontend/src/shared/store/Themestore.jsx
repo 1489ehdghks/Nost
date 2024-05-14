@@ -50,7 +50,7 @@ const useThemeStore = create(set => ({
             additionalColors: ['#bcf8ec', '#a9def9', '#e4bad4', '#f1e3f3', '#ceb5b7'],
             backgroundImage: 'url("https://images.unsplash.com/photo-1491466424936-e304919aada7?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
             buttonBackgroundColor: '#80d0c7',
-            buttonTextColor: '#91d1e3'
+            buttonTextColor: '#f5f5f5'
         }
     }
 }));
