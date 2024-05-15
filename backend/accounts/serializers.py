@@ -17,6 +17,8 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class CustomUserDetailSerializer(UserDetailsSerializer):
+    email = serializers.EmailField(read_only=True)
+
     class Meta:
         model = User
         fields = (
