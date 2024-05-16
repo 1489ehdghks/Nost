@@ -12,11 +12,11 @@ class Book(models.Model) :
         on_delete=models.CASCADE, 
         related_name="books"
         )
-    # is_liked = models.ManyToManyField(
-    #     settings.AUTH_USER_MODEL, 
-    #     related_name="book_likes", 
-    #     null = True
-    #     )
+    is_liked = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, 
+        related_name="book_likes", 
+        null = True
+        )
     
 class Comment(models.Model) :
     book = models.ForeignKey(

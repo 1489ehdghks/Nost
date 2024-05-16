@@ -39,6 +39,11 @@ class BookDetailAPIView(APIView) :
         book.delete()
         return Response("No Content", status=204)
 
+class BookLikeAPIView(APIView) :
+    def post(self, request) :
+        pass
+        
+
 class CommentListAPIView(APIView) :
     def get(self, request, book_id) :
         book = get_object_or_404(Book, id = book_id)
