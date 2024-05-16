@@ -1,8 +1,8 @@
 // /src/app/AppRouter.tsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from '../../pages/home/HomePage';
-import MainPage from '../../pages/main/MainPage';
+import HomePage from '../pages/home/HomePage';
+import MainPage from '../pages/main/MainPage';
 
 const AppRouter = () => (
     <Routes>

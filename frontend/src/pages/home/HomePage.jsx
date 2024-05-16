@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useThemeStore from '../../shared/store/Themestore';
+import useThemeStore from '../../features/theme/store/Themestore';
 import LoginModal from '../../widgets/layout/Modal/LoginModal';
 import ThemedButton from '../../widgets/button/ThemedButton';
 

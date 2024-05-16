@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Sun, Cloud } from 'react-feather';
-import useThemeStore from '../../shared/store/Themestore';
-import './ThemeModeToggle.scss';
+import useThemeStore from '../../features/theme/store/Themestore';
+import './styles/ThemeModeToggle.scss';
 
 const ThemeModeToggle = () => {
     const { isThemeMode, toggleThemeMode } = useThemeStore();

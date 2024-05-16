@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 
 class Snowflake {
     static defaultOptions = {
-        color: '#FFFFFF',  // White color for snowflakes
-        size: [2, 5],      // Snowflakes vary in size for a realistic look
-        speed: [1, 3],     // Varied speeds for a gentle snowfall effect
-        wind: [-0.5, 0.5]  // Light wind effect
+        color: '#FFFFFF',
+        size: [2, 5],
+        speed: [1, 2],
+        wind: [-0.5, 0.5]
     };
 
     constructor(canvas, options = {}) {
@@ -45,7 +45,7 @@ class Snowflake {
     }
 }
 
-const Snow = ({ count = 200 }) => {
+const Snow = ({ count = 30 }) => {
     const canvasRef = useRef(null);
     let snowflakes = [];
 

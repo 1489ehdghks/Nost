@@ -49,7 +49,7 @@ class RainDrop {
     }
 }
 
-const Rain = ({ count = 150 }) => {
+const Rain = ({ count = 50 }) => {
     const canvasRef = useRef(null);
     let rainDrops = [];
 

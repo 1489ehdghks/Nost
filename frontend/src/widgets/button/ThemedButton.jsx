@@ -1,7 +1,6 @@
-// /src/widgets/button/ThemedButton.jsx
 import React from 'react';
-import useThemeStore from '../../shared/store/Themestore';
-import './ThemedButton.scss';
+import useThemeStore from '../../features/theme/store/Themestore';
+import './styles/ThemedButton.scss';
 
 const ThemedButton = ({ children, onClick, className }) => {
     const { themes, isThemeMode, isDarkMode } = useThemeStore();

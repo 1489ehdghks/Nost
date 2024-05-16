@@ -1,8 +1,8 @@
 // /src/widgets/button/DarkModeToggle.jsx
 import React from 'react';
 import { Sun, Moon } from 'react-feather';
-import useThemeStore from '../../shared/store/Themestore';
-import './DarkModeToggle.scss';
+import useThemeStore from '../../features/theme/store/Themestore';
+import './styles/DarkModeToggle.scss';
 
 const DarkModeToggle = () => {
     const { isDarkMode, toggleDarkMode } = useThemeStore();

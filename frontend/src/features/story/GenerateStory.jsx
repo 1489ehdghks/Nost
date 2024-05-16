@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import useStore from '../shared/store/StateStore';
-import { initialStoryInfo, initialStoryState, initialContestState } from '../shared/store/InitialState';
+import useStore from './store/StateStore';
+import { initialStoryInfo, initialStoryState, initialContestState } from './store/InitialState';
 
 const GenerateStory = () => {
     const [prompt, setPrompt] = useState('');
