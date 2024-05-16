@@ -3,8 +3,8 @@ import create from 'zustand';
 const useThemeStore = create(set => ({
     isDarkMode: false,
     isThemeMode: false,
-    toggleDarkMode: () => set(state => ({ isDarkMode: !state.isDarkMode })),
-    toggleThemeMode: () => set(state => ({ isThemeMode: !state.isThemeMode })),
+    setDarkMode: (isDark) => set({ isDarkMode: isDark }),
+    setThemeMode: (isTheme) => set({ isThemeMode: isTheme }),
 
     themes: {
         spring: {
