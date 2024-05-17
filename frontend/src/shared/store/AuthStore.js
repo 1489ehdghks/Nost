@@ -4,14 +4,18 @@ import { persist } from 'zustand/middleware';
 const useAuthStore = create(persist((set) => ({
     token: null,
     refreshToken: null,
-    user: null,
+    userId: null,
+    nickname: null,
+    email: null,
     isLoggedIn: false,
     setToken: (token) => set({ token }),
     setRefreshToken: (refreshToken) => set({ refreshToken }),
-    setUser: (user) => set({ user }),
+    setUserId: (userId) => set({ userId }),
+    setNickname: (nickname) => set({ nickname }),
+    setEmail: (email) => set({ email }),
     setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
 }), {
-    name: 'auth-storage',
+    name: 'auth_store',
 }));
 
 export default useAuthStore;

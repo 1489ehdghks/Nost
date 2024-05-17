@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
 import LoginModal from '../../widgets/modal/LoginModal';
 import ThemedButton from '../../widgets/button/ThemedButton';
-
 import Blossom from '../../widgets/events/Blossom';
 import Rain from '../../widgets/events/Rain';
 import FallenLeaves from '../../widgets/events/FallenLeaves';
 import Snow from '../../widgets/events/FallenSnow';
-
 import './HomePage.scss';
 
 

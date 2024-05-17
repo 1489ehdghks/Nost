@@ -18,7 +18,6 @@ const useThemeStore = create(set => ({
             fontFamily: 'Georgia',
             sidebarBg: '#f8b7d0',
             additionalColors: ['#ffcad4', '#f4acb7', '#9d8189', '#d8e2dc', '#8d99ae'],
-            backgroundImage: `url(${spring})`,
             buttonBackgroundColor: '#ff7f7f',
             buttonTextColor: '#ffeef8'
 
@@ -30,7 +29,6 @@ const useThemeStore = create(set => ({
             fontFamily: 'Verdana',
             sidebarBg: '#7ec8e3',
             additionalColors: ['#3bceac', '#5cdb95', '#379683', '#8ee4af', '#05386b'],
-            backgroundImage: `url(${summer})`,
             buttonBackgroundColor: '#0af',
             buttonTextColor: '#a1c4fd'
 
@@ -42,7 +40,6 @@ const useThemeStore = create(set => ({
             fontFamily: 'Times New Roman',
             sidebarBg: '#d49a6a',
             additionalColors: ['#ed6663', '#ffa372', '#b27749', '#f7b32b', '#eae8e1'],
-            backgroundImage: `url(${autumn})`,
             buttonBackgroundColor: '#fa8231',
             buttonTextColor: '#f7c978'
         },
@@ -53,7 +50,6 @@ const useThemeStore = create(set => ({
             fontFamily: 'Courier New',
             sidebarBg: '#5eaaa8',
             additionalColors: ['#bcf8ec', '#a9def9', '#e4bad4', '#f1e3f3', '#ceb5b7'],
-            backgroundImage: `url(${winter})`,
             buttonBackgroundColor: '#80d0c7',
             buttonTextColor: '#f5f5f5'
         }
