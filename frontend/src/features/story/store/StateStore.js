@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { initialAppState, initialUserState, initialStoryInfo, initialStoryState, initialContestState } from './InitialState';
 
 const useStore = create((set) => ({

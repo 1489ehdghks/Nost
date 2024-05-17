@@ -20,7 +20,7 @@ function App() {
   const { themes, setDarkMode, setThemeMode } = useThemeStore();
   const [currentSeason, setCurrentSeason] = useState('spring');
   const [imageStack, setImageStack] = useState([]);
-  const MAX_IMAGES = 30;
+
 
   const currentTheme = themes[currentSeason];
 
