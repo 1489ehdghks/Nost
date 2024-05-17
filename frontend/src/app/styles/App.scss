@@ -1,8 +1,3 @@
-//폰트
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-
 .App {
   text-align: center;
   height: 100vh;
@@ -16,18 +11,6 @@
   position: absolute;
   top: 2%;
   right: 15%;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-  .toggle-button {
-    cursor: pointer;
-  }
-}
-
-.theme-toggles2 {
-  position: absolute;
-  top: 2%;
-  right: 23%;
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -62,4 +45,43 @@
     letter-spacing: 0.1rem;
     color: $gray;
   }
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.image-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.low-quality,
+.high-quality {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out;
+}
+
+.low-quality {
+  opacity: 1;
+}
+
+.high-quality {
+  opacity: 0;
+}
+
+.high-quality.loaded {
+  opacity: 1;
 }
