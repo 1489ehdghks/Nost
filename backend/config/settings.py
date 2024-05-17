@@ -130,6 +130,8 @@ ACCOUNT_ADAPTER = "accounts.adapters.CustomUserAccountAdapter"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTAuthentication",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 8,
 }
 
 # spectacular
@@ -142,18 +144,13 @@ SPECTACULAR_SETTINGS = {
 # dj rest auth
 REST_AUTH = {
     "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
     "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
     "USER_DETAILS_SERIALIZER": "accounts.serializers.CustomUserDetailSerializer",
 }
 
 # 이메일 백엔드 설정 (개발용)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-# 목록 조회 페이지네이션 구현
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 8,
-}
 
 
 # Password validation
