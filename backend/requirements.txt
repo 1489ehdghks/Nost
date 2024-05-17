@@ -2,7 +2,7 @@ asgiref==3.8.1
 attrs==23.2.0
 certifi==2024.2.2
 charset-normalizer==3.3.2
-dj-rest-auth==6.0.0
+git+https://github.com/Juunsik/dj-rest-auth.git
 Django==4.2
 django-allauth==0.62.1
 django-dotenv==1.4.2
