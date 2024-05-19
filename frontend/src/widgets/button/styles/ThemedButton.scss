@@ -1,15 +1,15 @@
 .themed-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-    transition:
-        background-color 250ms,
-        transform 250ms;
+    padding: 10px 20px;
+    font-size: 4rem;
+    border-radius: 5px;
+    background: transparent;
+    border: none;
+    font-family: "Poetsen One", sans-serif;
+    margin-top: -5%;
 
     &:hover {
-        transform: scale(1.05);
+        transform: scale(1.3);
     }
 
     &:focus {

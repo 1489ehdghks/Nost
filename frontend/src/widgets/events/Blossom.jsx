@@ -48,7 +48,7 @@ class BlossomItem {
         ctx.closePath();
     }
 }
-const Blossom = ({ count = 150 }) => {
+const Blossom = ({ count = 50 }) => {
     const canvasRef = useRef(null);
     let blossoms = [];
 

@@ -23,7 +23,7 @@ const ThemedButton = ({ children, onClick, className }) => {
         <button
             className={`themed-button ${className}`}
             onClick={onClick}
-            style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
+            style={{ color: currentTheme.neonEffect.color, textShadow: currentTheme.neonEffect.buttonTextShadow }}
         >
             {children}
         </button>

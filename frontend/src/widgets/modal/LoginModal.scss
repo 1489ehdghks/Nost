@@ -51,7 +51,6 @@
           font-optical-sizing: auto;
           font-weight: 300;
           font-style: normal;
-          padding: 1rem;
           justify-content: left;
 
           button {
@@ -88,7 +87,7 @@
           transform: translateY(30%);
         }
         .user_options-registered {
-          right: 0;
+          right: 5%;
           transform: translateY(30%);
         }
       }
@@ -100,14 +99,15 @@
       .user_forms-login,
       .user_forms-signup {
         width: 100%;
-        padding: 3rem;
+        padding: 2.3rem;
         box-sizing: border-box;
         transition: opacity 0.5s ease-in-out;
+        margin-top: -7%;
         .closeButton {
           position: absolute;
           color: black;
-          margin-top: -10%;
-          margin-left: 75%;
+          margin-top: -3%;
+          margin-left: 80%;
           border: none;
           background: none;
           font-size: 2rem;
@@ -148,7 +148,7 @@
               margin-bottom: 1rem;
               background-color: transparent;
               .forms_field-input {
-                width: 100%;
+                width: 90%;
                 padding: 10px;
                 border: 1px solid #ccc;
                 border-radius: 3px;
@@ -227,10 +227,5 @@
   .forms-container.show-signup {
     transform: none;
     flex-direction: column;
-  }
-
-  .user_forms-login,
-  .user_forms-signup {
-    width: 100%;
   }
 }

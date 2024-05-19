@@ -50,7 +50,7 @@ class Leaf {
     }
 }
 
-const FallenLeaves = ({ count = 100 }) => {
+const FallenLeaves = ({ count = 50 }) => {
     const canvasRef = useRef(null);
     let leaves = [];
 

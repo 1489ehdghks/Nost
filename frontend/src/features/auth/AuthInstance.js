@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
 
             // 리프레시 토큰으로 새 액세스 토큰을 요청
             try {
-                const response = await axios.post('http://localhost:8000/api/token/refresh/', { refresh });
+                const response = await axios.post('http://localhost:8000/api/accounts/token/refresh/', { refresh });
                 const newAccessToken = response.data.access;
                 useAuthStore.getState().setToken(newAccessToken);
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;

@@ -105,6 +105,16 @@ const LoginModal = ({ onClose }) => {
                             </div>
                             {isLoading && <div>Loading...</div>}
                         </form>
+                        <div className="social-login-buttons">
+                            <button className="social-button google-login">
+                                <img src="/path/to/google-icon.png" alt="Google Icon" />
+                                Login with Google
+                            </button>
+                            <button className="social-button naver-login">
+                                <img src="/path/to/naver-icon.png" alt="Naver Icon" />
+                                Login with Naver
+                            </button>
+                        </div>
                     </div>
 
 

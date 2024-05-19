@@ -1,57 +1,117 @@
 import { create } from 'zustand';
-import spring from '../../shared/asset/image/spring.avif'
-import summer from '../../shared/asset/image/summer.jpg'
-import autumn from '../../shared/asset/image/autumn.avif'
-import winter from '../../shared/asset/image/winter.avif'
+import spring from '../asset/image/spring.avif'
+import summer from '../asset/image/summer.jpg'
+import autumn from '../asset/image/autumn.avif'
+import winter from '../asset/image/winter.avif'
+import springLow from '../asset/image/spring_low.jpg'
+import summerLow from '../asset/image/summer_low.jpg'
+import autumnLow from '../asset/image/autumn_low.jpg'
+import winterLow from '../asset/image/winter_low.jpg'
+
 
 const useThemeStore = create(set => ({
     isDarkMode: false,
     isThemeMode: false,
-    setDarkMode: (isDark) => set({ isDarkMode: isDark }),
-    setThemeMode: (isTheme) => set({ isThemeMode: isTheme }),
+    currentSeason: 'spring',
+    setDarkMode: (isDarkMode) => set({ isDarkMode }),
+    setThemeMode: (isThemeMode) => set({ isThemeMode }),
+    setSeason: (season) => set({ currentSeason: season }),
+
+
+    font: {
+        shapeFont: "'Nanum Myeongjo', serif", //중요한 부분.섹시한 폰트
+        nomalFont: "Averia Gruesa Libre, system-ui", //봄
+        nomalFont2: "Indie Flower, cursive", //normalFont보다 장난기 있는 폰트
+        popFont: "Permanent Marker, cursive", //팝송에서 자주 본 폰트
+        rockFont: "Rock Salt, cursive",  //여름, -team NOST
+        rockFont2: "Zeyada, cursive", //rockFont보다 필기체 느낌이 강함. 내용으로 하면 어울릴듯
+        scaryFont: "Creepster, system-ui", //장난스러운 공포 부분
+        thickFont: "Poetsen One, sans-serif", //재밋는 부분. 약간 두꺼움
+        titanFont: "Titan One, sans-serif", //포스터 느낌 매우 두꺼움
+    },
+
 
     themes: {
         spring: {
-            default: '#ff7f7f',
-            secondary: '#ffeef8',
-            textColor: '#305030',
-            fontFamily: 'Georgia',
-            sidebarBg: '#f8b7d0',
-            additionalColors: ['#ffcad4', '#f4acb7', '#9d8189', '#d8e2dc', '#8d99ae'],
-            buttonBackgroundColor: '#ff7f7f',
-            buttonTextColor: '#ffeef8'
+            default: '#FFFAF0',
+            secondary: '#FFEBEE',
+            textColor: '#8B4513',
+            titleColor: '#FF69B4',
+            subtitle: 'Experience the rebirth of nature with Novel Stella.Experience the rebirth of nature.',
+            subtitle2: "Novel Stella",
+            sidebarBg: '#FFD1DC',
+            mainpageBackgroundColor: 'rgba(255, 255, 255)',
+            additionalColors: ['#fff', '#FFB6C1', '#FF69B4', '#C71585', '#DB7093'],
+            lowRes: springLow,
+            highRes: spring,
+            buttonBackgroundColor: '#fff',
+            buttonTextColor: '#DB7093',
+            teamColor: '#000',
+            neonEffect: {
+                color: '#DB7093',
+                titleTextShadow: '0 0 5px #FFD1DC, 0 0 10px #FFD1DC, 0 0 20px #FFB6C1, 0 0 30px #FFB6C1, 0 0 40px #ff0080, 0 0 55px #FFEBEE, 0 0 75px #DB7093',
+                buttonTextShadow: '',
+            }
 
         },
         summer: {
-            default: '#0af',
-            secondary: '#a1c4fd',
-            textColor: '#001f3f',
-            fontFamily: 'Verdana',
-            sidebarBg: '#7ec8e3',
-            additionalColors: ['#3bceac', '#5cdb95', '#379683', '#8ee4af', '#05386b'],
-            buttonBackgroundColor: '#0af',
-            buttonTextColor: '#a1c4fd'
+            default: '#001f3f',
+            secondary: '#011f4b',
+            textColor: '#39FF14',
+            titleColor: '#00FFFF',
+            subtitle: 'Find calmness in the summer rain with Novel Stella.Find calmness in the summer rain.',
+            sidebarBg: '#4B0082',
+            mainpageBackgroundColor: '#001f3f',
+            additionalColors: ['#fff', '#2ECC40', '#3D9970', '#7FDBFF', '#001f3f'],
+            lowRes: summerLow,
+            highRes: summer,
+            buttonBackgroundColor: '#39FF14',
+            buttonTextColor: '#3D9970',
+            teamColor: '#fff',
+            neonEffect: {
+                color: '#fff',
+                titleTextShadow: '0 0 5px #fff, 0 0 10px #fff, 0 0 20px #9400D3, 0 0 30px #9400D3, 0 0 40px #9400D3, 0 0 55px #9400D3, 0 0 75px #9400D3',
+                buttonTextShadow: '0 0 5px #000, 0 0 10px #000, 0 0 20px #001f3f, 0 0 30px #000, 0 0 40px #000, 0 0 55px #000, 0 0 75px #000',
+            }
 
         },
         autumn: {
-            default: '#fa8231',
-            secondary: '#f7c978',
-            textColor: '#561212',
-            fontFamily: 'Times New Roman',
-            sidebarBg: '#d49a6a',
-            additionalColors: ['#ed6663', '#ffa372', '#b27749', '#f7b32b', '#eae8e1'],
-            buttonBackgroundColor: '#fa8231',
-            buttonTextColor: '#f7c978'
+            default: '#F5F5DC',
+            secondary: '#FFD700',
+            textColor: '#8B4513',
+            titleColor: '#FF4500',
+            subtitle: 'Embrace the vibrant autumn leaves with "Novel Stella.Embrace the vibrant autumn.',
+            sidebarBg: '#DEB887',
+            additionalColors: ['#fff', '#CD853F', '#8B4513', '#A0522D', '#FFE4B5'],
+            lowRes: autumnLow,
+            highRes: autumn,
+            mainpageBackgroundColor: '#FFE4B5',
+            buttonBackgroundColor: '#FF4500',
+            buttonTextColor: '#F5F5DC',
+            neonEffect: {
+                color: '#D2691E',
+                titleTextShadow: '0 0 5px #FFD1DC, 0 0 10px #D2691E, 0 0 20px #D2691E, 0 0 30px #D2691E, 0 0 40px #D2691E, 0 0 55px #D2691E, 0 0 75px #D2691E',
+                buttonTextShadow: '',
+            }
         },
         winter: {
-            default: '#80d0c7',
-            secondary: '#91d1e3',
-            textColor: '#f5f5f5',
-            fontFamily: 'Courier New',
-            sidebarBg: '#5eaaa8',
-            additionalColors: ['#bcf8ec', '#a9def9', '#e4bad4', '#f1e3f3', '#ceb5b7'],
-            buttonBackgroundColor: '#80d0c7',
-            buttonTextColor: '#f5f5f5'
+            default: '#1C1C1C',
+            secondary: '#00CED1',
+            textColor: '#FFFFFF',
+            titleColor: '#87CEEB',
+            subtitle: 'Feel the warmth of winter with Novel Stella.Feel the warmth of winter.',
+            sidebarBg: '#4682B4',
+            additionalColors: ['#fff', '#B0C4DE', '#4682B4', '#708090', '#778899'],
+            lowRes: winterLow,
+            highRes: winter,
+            mainpageBackgroundColor: '#1C1C1C',
+            buttonBackgroundColor: '#87CEEB',
+            buttonTextColor: '#1C1C1C',
+            neonEffect: {
+                color: '#5F9EA0',
+                titleTextShadow: '0 0 5px #00CED1, 0 0 10px #00CED1, 0 0 15px #00CED1',
+                buttonTextShadow: '',
+            }
         }
     }
 }));
