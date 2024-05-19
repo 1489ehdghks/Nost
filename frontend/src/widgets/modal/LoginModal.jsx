@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../../features/auth/LoginInstance';
 import { signup } from '../../features/auth/SignupInstance';
 import useGlobalStore from '../../shared/store/GlobalStore';
@@ -12,6 +13,22 @@ const LoginModal = ({ onClose }) => {
     const [loginInputs, setLoginInputs] = useState({ email: '', password: '' });
     const [signupInputs, setSignupInputs] = useState({ nickname: '', email: '', password1: '', password2: '' });
     const isLoading = useGlobalStore(state => state.isLoading);
+    const [signupSuccess, setSignupSuccess] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [onClose]);
 
 
     const handleLoginInputChange = (event) => {
@@ -27,6 +44,7 @@ const LoginModal = ({ onClose }) => {
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
         await login(loginInputs.email, loginInputs.password);
+        navigate('/');
     };
 
 
@@ -36,13 +54,18 @@ const LoginModal = ({ onClose }) => {
             console.error('Passwords do not match');
             return;
         }
-        await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
+        const success = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
+        if (success) {
+            setSignupSuccess(true);
+            setLoginFormActive(true);
+        }
     };
 
 
     return (
         <div className="modalOverlay">
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+                {signupSuccess && <div className="signup-success">회원가입 성공! 로그인해주세요.</div>}
 
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>

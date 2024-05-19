@@ -1,36 +1,57 @@
-import React from 'react';
-import GenerateStory from '../../features/story/GenerateStory';
-import './MainPage.scss'
+import React, { useRef, useState, useEffect } from 'react';
+import SideLayout from '../../widgets/layout/sideLayout/SideLayout';
+import BookList from './component/BookList';
+import NovelGenerator from './component/NovelGenerator';
+import NovelContinuation from './component/NovelContinuation';
+import './MainPage.scss';
 
 const MainPage = () => {
+  const containerRef = useRef(null);
+  const [currentSection, setCurrentSection] = useState(0);
 
+  useEffect(() => {
+    const handleScroll = (event) => {
+      event.preventDefault();
+      const delta = event.deltaY;
+      if (delta > 0) {
+        navigateToNext();
+      } else {
+        navigateToPrev();
+      }
+    };
 
+    const container = containerRef.current;
+    container.addEventListener('wheel', handleScroll, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleScroll);
+    };
+  }, [currentSection]);
+
+  const navigateToNext = () => {
+    if (currentSection < 2) {
+      setCurrentSection(currentSection + 1);
+      const sections = containerRef.current.querySelectorAll('.section');
+      sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const navigateToPrev = () => {
+    if (currentSection > 0) {
+      setCurrentSection(currentSection - 1);
+      const sections = containerRef.current.querySelectorAll('.section');
+      sections[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <div className="main-page">
-      <div className="section">
-        <h2>My Stories</h2>
-        <p>Check your own stories here. (Feature coming soon)</p>
-        {/* <ul>
-                    {allStories.length > 0 ? (
-                        allStories.map((story) => (
-                            <li key={story.id}>
-                                <strong>{story.storyInfo.title}</strong> - {story.storyInfo.genre}
-                            </li>
-                        ))
-                    ) : (
-                        <p>No stories available.</p>
-                    )}
-                </ul> */}
+    <SideLayout>
+      <div className="page-container" ref={containerRef}>
+        <BookList />
+        <NovelGenerator />
+        <NovelContinuation />
       </div>
-
-      <div className="section">
-        <GenerateStory />
-      </div>
-      <div className="section">
-        {/* <GenerateBNP /> */}
-      </div>
-    </div>
+    </SideLayout>
   );
 };
 

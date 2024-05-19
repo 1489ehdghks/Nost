@@ -1,0 +1,74 @@
+.book-list {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: inherit; /* 테마에 맞는 배경색 사용 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: inherit; /* 테마에 맞는 글자색 사용 */
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+
+        h1 {
+            font-size: 1.5rem;
+            color: inherit; /* 테마에 맞는 글자색 사용 */
+        }
+
+        select {
+            padding: 5px 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: inherit; /* 테마에 맞는 배경색 사용 */
+            color: inherit; /* 테마에 맞는 글자색 사용 */
+            cursor: pointer;
+
+            &:focus {
+                outline: none;
+                border-color: #999;
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+            background-color: #f1f1f1;
+
+            th {
+                padding: 10px;
+                font-size: 1rem;
+                color: inherit; /* 테마에 맞는 글자색 사용 */
+                text-align: left;
+                border-bottom: 2px solid #ddd;
+            }
+        }
+
+        tbody {
+            tr {
+                &:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+
+                &:hover {
+                    background-color: #f1f1f1;
+                }
+
+                td {
+                    padding: 10px;
+                    font-size: 1rem;
+                    color: inherit; /* 테마에 맞는 글자색 사용 */
+                    border-bottom: 1px solid #ddd;
+                }
+            }
+        }
+    }
+}

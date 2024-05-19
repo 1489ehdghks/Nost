@@ -18,9 +18,9 @@ export const login = async (email, password) => {
         useAuthStore.getState().setToken(data.access);
         useAuthStore.getState().setRefreshToken(data.refresh);
         useAuthStore.getState().setIsLoggedIn(true);
-        // useAuthStore.getState().setUserId({ data.user.id });
-        // useAuthStore.getState().setNickname({ data.user.nickname });
-        // useAuthStore.getState().setEmail({ data.user.email });
+        useAuthStore.getState().setUserId(data.user.id);
+        useAuthStore.getState().setNickname(data.user.nickname);
+        useAuthStore.getState().setEmail(data.user.email);
 
 
         localStorage.setItem('accessToken', data.access);
