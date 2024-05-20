@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import Book, Comment
 from .serializers import BookSerializer, CommentSerializer
 from django.core import serializers
+from .bots import create_novel
 
 class BookListAPIView(ListAPIView) :
     # 전체 목록 조회
@@ -13,11 +14,24 @@ class BookListAPIView(ListAPIView) :
 
     # 새 글 작성
     def post(self, request) :
-        serializer = BookSerializer(data = request.data)
-        if serializer.is_valid(raise_exception=True) :
-            serializer.save()#user_id = request.user
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+        # user_id = request.user
+        user_message = request.data.get("message")
+        title = request.data.get("title")
+        if not user_message or not title :
+            return Response("Title and message are required",status=404)
+        
+        chatgpt_response = create_novel(user_message)
+        # serializer = BookSerializer(data = request.data)
+        # if serializer.is_valid(raise_exception=True) :
+        #     serializer.save()#user_id = request.user
+        #     return Response(serializer.data, status=201)
+        book = Book.objects.create(
+            # user_id = user_id,
+            title = title,
+            content = chatgpt_response
+        )
+        serializer = self.get_serializer(book)
+        return Response(serializer.data)
     
 class BookDetailAPIView(APIView) :
     # 상세 조회
