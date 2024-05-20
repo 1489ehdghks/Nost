@@ -3,9 +3,9 @@ import useThemeStore from '../../../shared/store/Themestore';
 import './BookList.scss';
 
 const BookList = () => {
-    const { themes, currentSeason } = useThemeStore();
-    const currentTheme = themes[currentSeason];
-    const [sortOption, setSortOption] = useState('newest');
+    const { themes, currentSeason } = useThemeStore(); // 테마 설정 사용
+    const currentTheme = themes[currentSeason]; // 현재 시즌 테마 색상
+    const [sortOption, setSortOption] = useState('newest'); // 초기 정렬기준
     const [novels, setNovels] = useState([
         { id: 1, novel: 'The Great Gatsby', author: 'F. Scott Fitzgerald', likes: 1500, rating: 4.5, created_at: '2022-01-01' },
         { id: 2, novel: 'To Kill a Mockingbird', author: 'Harper Lee', likes: 2000, rating: 4.8, created_at: '2021-05-15' },
@@ -15,12 +15,12 @@ const BookList = () => {
     ]);
 
     useEffect(() => {
-        sortNovels(sortOption);
+        sortNovels(sortOption); // 정렬 기준 변경 시 소설 목록 정렬
     }, [sortOption]);
 
     const handleSortChange = (e) => {
         const { value } = e.target;
-        setSortOption(value);
+        setSortOption(value); // 정렬 기준 변경
     };
 
     const sortNovels = (criteria) => {
@@ -38,7 +38,7 @@ const BookList = () => {
             default:
                 break;
         }
-        setNovels(sortedNovels);
+        setNovels(sortedNovels); // 정렬된 목록 설정
     };
 
     return (
