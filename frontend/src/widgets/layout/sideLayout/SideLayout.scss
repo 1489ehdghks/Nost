@@ -1,6 +1,7 @@
 .side-layout {
     display: flex;
     height: 100vh;
+    background-color: transparent !important; // 최 상위로 올려서 배경 투명하게 만들기
 
     .menu-icon {
         position: fixed;
@@ -29,12 +30,14 @@
             padding: 10px;
             margin: 10px 0;
             cursor: pointer;
-            border: none;
-            background-color: #ccc;
+            border: 1px solid #ffffff;
+            color: inherit;
+            background-color: inherit;
             border-radius: 5px;
 
             &:hover {
-                background-color: #bbb;
+                outline: none; //select 태그가 포커스를 받을 때 아웃라인제거
+                border-color: inherit;
             }
         }
 

@@ -88,6 +88,7 @@ const useThemeStore = create(set => ({
             mainpageBackgroundColor: '#FFE4B5',
             buttonBackgroundColor: '#fdb267',
             buttonTextColor: '#F5F5DC',
+            teamColor: '#8B4513',
             neonEffect: {
                 color: '#D2691E',
                 titleTextShadow: '0 0 5px #FFD1DC, 0 0 10px #D2691E, 0 0 20px #D2691E, 0 0 30px #D2691E, 0 0 40px #D2691E, 0 0 55px #D2691E, 0 0 75px #D2691E',
@@ -107,6 +108,7 @@ const useThemeStore = create(set => ({
             mainpageBackgroundColor: '#1C1C1C',
             buttonBackgroundColor: '#00CED1',
             buttonTextColor: '#310584',
+            teamColor: '#FFFFFF',
             neonEffect: {
                 color: '#5F9EA0',
                 titleTextShadow: '0 0 5px #00CED1, 0 0 10px #00CED1, 0 0 15px #00CED1',
