@@ -34,8 +34,8 @@ const useThemeStore = create(set => ({
     themes: {
         spring: {
             default: '#FFFAF0',
-            secondary: '#FFEBEE',
-            textColor: '#8B4513',
+            secondary: '#ffffff', // main 에 글자기입박스칼라
+            textColor: '#DB7093',
             titleColor: '#FF69B4',
             subtitle: 'Experience the rebirth of nature with Novel Stella.Experience the rebirth of nature.',
             subtitle2: "Novel Stella",
@@ -44,7 +44,7 @@ const useThemeStore = create(set => ({
             additionalColors: ['#fff', '#FFB6C1', '#FF69B4', '#C71585', '#DB7093'],
             lowRes: springLow,
             highRes: spring,
-            buttonBackgroundColor: '#fff',
+            buttonBackgroundColor: '#FFEBEE',
             buttonTextColor: '#DB7093',
             teamColor: '#000',
             neonEffect: {
@@ -56,8 +56,8 @@ const useThemeStore = create(set => ({
         },
         summer: {
             default: '#001f3f',
-            secondary: '#011f4b',
-            textColor: '#39FF14',
+            secondary: '#ffffff', 
+            textColor: '#002d70',
             titleColor: '#00FFFF',
             subtitle: 'Find calmness in the summer rain with Novel Stella.Find calmness in the summer rain.',
             sidebarBg: '#4B0082',
@@ -65,8 +65,8 @@ const useThemeStore = create(set => ({
             additionalColors: ['#fff', '#2ECC40', '#3D9970', '#7FDBFF', '#001f3f'],
             lowRes: summerLow,
             highRes: summer,
-            buttonBackgroundColor: '#39FF14',
-            buttonTextColor: '#3D9970',
+            buttonBackgroundColor: '#b7e1ff',
+            buttonTextColor: '#002d70',
             teamColor: '#fff',
             neonEffect: {
                 color: '#fff',
@@ -77,7 +77,7 @@ const useThemeStore = create(set => ({
         },
         autumn: {
             default: '#F5F5DC',
-            secondary: '#FFD700',
+            secondary: '#ffffff',
             textColor: '#8B4513',
             titleColor: '#FF4500',
             subtitle: 'Embrace the vibrant autumn leaves with "Novel Stella.Embrace the vibrant autumn.',
@@ -86,7 +86,7 @@ const useThemeStore = create(set => ({
             lowRes: autumnLow,
             highRes: autumn,
             mainpageBackgroundColor: '#FFE4B5',
-            buttonBackgroundColor: '#FF4500',
+            buttonBackgroundColor: '#fdb267',
             buttonTextColor: '#F5F5DC',
             neonEffect: {
                 color: '#D2691E',
@@ -96,8 +96,8 @@ const useThemeStore = create(set => ({
         },
         winter: {
             default: '#1C1C1C',
-            secondary: '#00CED1',
-            textColor: '#FFFFFF',
+            secondary: '#FFFFFF',
+            textColor: '#310584',
             titleColor: '#87CEEB',
             subtitle: 'Feel the warmth of winter with Novel Stella.Feel the warmth of winter.',
             sidebarBg: '#4682B4',
@@ -105,8 +105,8 @@ const useThemeStore = create(set => ({
             lowRes: winterLow,
             highRes: winter,
             mainpageBackgroundColor: '#1C1C1C',
-            buttonBackgroundColor: '#87CEEB',
-            buttonTextColor: '#1C1C1C',
+            buttonBackgroundColor: '#00CED1',
+            buttonTextColor: '#310584',
             neonEffect: {
                 color: '#5F9EA0',
                 titleTextShadow: '0 0 5px #00CED1, 0 0 10px #00CED1, 0 0 15px #00CED1',
