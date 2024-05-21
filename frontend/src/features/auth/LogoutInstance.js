@@ -1,5 +1,5 @@
 // /src/features/auth/LogoutInstance.js
-import useAuthStore from './store/AuthStore';
+import useAuthStore from '../../shared/store/AuthStore';
 
 export const logout = () => {
     localStorage.removeItem('accessToken');
@@ -20,4 +20,5 @@ export const logout = () => {
 
 
     useAuthStore.getState().logout();
+    console.log("로그아웃 성공:")
 };
