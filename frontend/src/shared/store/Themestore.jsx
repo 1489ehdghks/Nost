@@ -34,7 +34,7 @@ const useThemeStore = create(set => ({
     themes: {
         spring: {
             default: '#FFFAF0',
-            secondary: '#DB7093', // main 에 글자기입박스칼라
+            secondary: '#ffffff', // main 에 글자기입박스칼라
             textColor: '#DB7093',
             titleColor: '#FF69B4',
             subtitle: 'Experience the rebirth of nature with Novel Stella.Experience the rebirth of nature.',
