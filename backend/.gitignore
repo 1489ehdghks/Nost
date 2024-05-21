@@ -167,3 +167,4 @@ poetry.lock
 pyproject.toml
 **/migrations/*
 !**/migrations/__init__.py
+*.ipynb
