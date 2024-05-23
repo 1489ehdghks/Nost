@@ -20,6 +20,10 @@ const SideLayout = ({ children }) => {
         logout();
         navigate('/'); // HomePage로 리다이렉트
     };
+    
+    const handleProfile = () => {
+        navigate('/profile'); // 프로필 페이지로 이동
+    };
 
     return (
         <div className="side-layout" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
@@ -28,7 +32,7 @@ const SideLayout = ({ children }) => {
             </div>
             <div className={`sidebar ${isOpen ? 'open' : ''}`} style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
                 <button>Main</button>
-                <button>Profile</button>
+                <button onClick={handleProfile}>Profile</button>
                 <button>My Book</button>
                 <button>Setting</button>
                 <button onClick={handleLogout}>logout</button>
