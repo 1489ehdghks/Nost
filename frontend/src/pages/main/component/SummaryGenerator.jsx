@@ -1,8 +1,8 @@
 import React from 'react';
-import './NovelContinuation.scss';
+import './SummaryGenerator.scss';
 import useThemeStore from '../../../shared/store/Themestore';
 
-const NovelContinuation = () => {
+const SummaryGenerator = () => {
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
 
@@ -23,4 +23,4 @@ const NovelContinuation = () => {
     );
 };
 
-export default NovelContinuation;
+export default SummaryGenerator;

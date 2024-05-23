@@ -1,0 +1,112 @@
+/* SynopsysGenerator.scss */
+
+.novel-generator {
+    &.section {
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .user-inputs {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .userSelection {
+            display: flex;
+            flex-direction: column;
+            .button-group {
+                .toggle-switch {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    margin-bottom: 10px;
+
+                    span {
+                        margin-right: 10px;
+                    }
+                }
+
+                .buttons {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    button {
+                        margin-right: 10px;
+                        margin-bottom: 10px;
+                        padding: 10px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+
+                        &.selected {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+
+        .special-settings {
+            h2 {
+                margin-top: 20px;
+            }
+
+            .buttons {
+                display: flex;
+                flex-wrap: wrap;
+
+                button {
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    &.selected {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+        .details-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+
+            textarea {
+                width: 60vw;
+                height: 100px;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            .button-row {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+
+                button {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    }
+
+    .summary-button {
+        margin-left: auto;
+    }
+}

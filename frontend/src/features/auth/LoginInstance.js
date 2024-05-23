@@ -22,18 +22,14 @@ export const login = async (email, password) => {
         useAuthStore.getState().setNickname(data.user.nickname);
         useAuthStore.getState().setEmail(data.user.email);
 
-
-        localStorage.setItem('accessToken', data.access);
-        localStorage.setItem('refreshToken', data.refresh);
-        localStorage.setItem('nickname', data.user.nickname);
-        localStorage.setItem('email', data.user.email);
-        localStorage.setItem('userId', data.user.id);
-
-
+        // localStorage.setItem('accessToken', data.access);
+        // localStorage.setItem('refreshToken', data.refresh);
+        // localStorage.setItem('nickname', data.user.nickname);
+        // localStorage.setItem('email', data.user.email);
+        // localStorage.setItem('userId', data.user.id);
 
 
         console.log("11111로그인 성공:")
-
     } catch (err) {
         useGlobalStore.getState().setError(err.response?.data || 'Login failed');
     } finally {

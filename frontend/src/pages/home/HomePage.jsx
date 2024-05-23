@@ -58,10 +58,6 @@ const HomePage = () => {
         </ThemedButton>
         <h3 className="Team" style={{ color: currentTheme.teamColor, fontFamily: font.rockFont, position: 'absolute', bottom: '10px', right: '20px', letterSpacing: '2px' }}>- Team NOST</h3>
       </div>
-
-
-
-
       {isModalOpen && <LoginModal onClose={handleCloseModal} />}
       <div className="background">
         {imageStack.map((image, index) => (

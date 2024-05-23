@@ -3,10 +3,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: inherit; /* 테마에 맞는 배경색 사용 */
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    color: inherit; /* 테마에 맞는 글자색 사용 */
 
     .novel-result {
         width: 100%;
@@ -21,7 +19,6 @@
 
         p {
             margin: 0;
-            color: inherit; /* 테마에 맞는 글자색 사용 */
         }
     }
 
@@ -34,11 +31,9 @@
         button {
             margin: 0 10px;
             border: none;
-            background-color: #bbb;
             width: 30%;
             height: 10vh;
             border-radius: 5px;
-            color: inherit;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 

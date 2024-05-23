@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import SideLayout from '../../widgets/layout/sideLayout/SideLayout';
 import BookList from './component/BookList';
-import NovelGenerator from './component/NovelGenerator';
-import NovelContinuation from './component/NovelContinuation';
+import SynopsysGenerator from './component/SynopsysGenerator';
+import SummaryGenerator from './component/SummaryGenerator';
 import './MainPage.scss';
 
 const MainPage = () => {
@@ -48,8 +48,8 @@ const MainPage = () => {
     <SideLayout>
       <div className="page-container" ref={containerRef}>
         <BookList />
-        <NovelGenerator />
-        <NovelContinuation />
+        <SynopsysGenerator />
+        <SummaryGenerator />
       </div>
     </SideLayout>
   );
