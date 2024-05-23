@@ -1,5 +1,7 @@
 import os
 import dotenv
+import logging
+import re
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, FewShotChatMessagePromptTemplate
@@ -44,7 +46,7 @@ def synopsys_generator():
         examples=examples,
     )
 
-    final_prompt = ChatPromptTemplate.from_messages(
+    prompt = ChatPromptTemplate.from_messages(
         [
             ("system", "You are an expert in fiction"),
             example_prompt,
@@ -55,121 +57,84 @@ def synopsys_generator():
         ]
     )
 
-    chain = final_prompt | llm
+    chain = prompt | llm
 
     result=chain.invoke({"novel": "twilight", "genre": "fiction"})
     return result.content
 
 
 
-# # OpenAI 설정
-# llm_story = ChatOpenAI(model="gpt-3.5-turbo",
-#                        api_key=os.getenv("OPENAI_API_KEY"), max_tokens=800)
-# llm_character = ChatOpenAI(model="gpt-3.5-turbo",
-#                            api_key=os.getenv("OPENAI_API_KEY"), max_tokens=500)
-# llm_final = ChatOpenAI(model="gpt-3.5-turbo",
-#                        api_key=os.getenv("OPENAI_API_KEY"), max_tokens=1200)
+def summary_generator(summary):
+    llm=ChatOpenAI(model='gpt-3.5-turbo', api_key=os.getenv('OPENAI_API_KEY'))
+    
+    memory=ConversationSummaryBufferMemory(llm=llm, max_token_limit=20000, memory_key='chat_history', return_messages=True)
+    
+    summary_template = ChatPromptTemplate.from_messages([
+        ("system", "You are an experienced novelist. Write a concise, realistic, and engaging summary based on the provided theme and previous context. Develop the characters, setting, and plot with rich descriptions. Ensure the summary flows smoothly, highlighting both hope and despair. Make the narrative provocative and creative. Avoid explicit reader interaction prompts or suggested paths."),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{prompt}")
+    ])
+
+    recommend_template = ChatPromptTemplate.from_messages([
+        ("system", "Based on the current summary prompt, provide three compelling recommendations for the next part of the summary. Your recommendations should emphasize hopeful, tragically hopeless, and starkly realistic choices, respectively. Be extremely contextual and realistic with your recommendations. Each recommendation should have 'Title': 'Description'. For example: 'Title': 'The Beginning of a Tragedy','Description': 'The people are kind to the new doctor in town, but under the guise of healing their wounds, the doctor slowly conducts experiments.' The response format is exactly the same as the frames in the example."),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{current_story}")
+    ])
+    
+    def load_memory():
+        return memory.load_memory_variables({})["chat_history"]
+    
+    def parse_recommendations(recommendation_text):
+        recommendations = []
+        try:
+            rec_lines = recommendation_text.split('\n')
+            title, description = None, None
+            for line in rec_lines:
+                if line.startswith("Title:"):
+                    if title and description:
+                        recommendations.append(
+                            {"Title": title, "Description": description})
+                    title = line.split("Title:", 1)[1].strip()
+                    description = None
+                elif line.startswith("Description:"):
+                    description = line.split("Description:", 1)[1].strip()
+                    if title and description:
+                        recommendations.append(
+                            {"Title": title, "Description": description})
+                        title, description = None, None
+                if len(recommendations) == 3:
+                    break
+        except Exception as e:
+            logging.error(f"Error parsing recommendations: {e}")
+
+        return recommendations
+    
+    def generate_recommendations(chat_history, current_story):
+        formatted_recommendation_prompt = recommend_template.format(
+            chat_history=chat_history, current_story=current_story)
+        recommendation_result = llm.invoke(formatted_recommendation_prompt)
+        recommendations = parse_recommendations(recommendation_result.content)
+        return recommendations
+
+    def remove_recommendation_paths(final_summary):
+        pattern = re.compile(r'Recommended summary paths:.*$', re.DOTALL)
+        cleaned_story = re.sub(pattern, '', final_summary).strip()
+        return cleaned_story
 
 
-# # 메모리 설정
-# memory = ConversationSummaryBufferMemory(
-#     llm=llm_final,
-#     max_token_limit=1000,
-#     memory_key="chat_history",
-#     return_messages=True,
-# )
+    chat_history = load_memory()
+    prompt = f"""
+    Story Prompt: {summary}
+    Previous Story: {chat_history}
+    Write a concise, realistic, and engaging summary based on the above information. Highlight both hope and despair in the narrative. Make it provocative and creative.
+    """
 
+    formatted_final_prompt = summary_template.format(chat_history=chat_history, prompt=prompt)
+    result = llm.invoke(formatted_final_prompt)
+    memory.save_context({"input": prompt}, {"output": result.content})
 
+    cleaned_story = remove_recommendation_paths(result.content)
+    recommendations = generate_recommendations(chat_history, result.content)
 
-# # 프롬프트 템플릿 설정
-# story_prompt_template = ChatPromptTemplate.from_messages(
-#     [
-#         ("system", "Never give your thoughts and opinions as results.Execute an immersive simulation based on the instructions below.You makes the <user> an observer of the story.-You must become a novelist.There must be sufficient narrative about the past, present, and future, and the grammar and structure of the sentences must be perfect.-The cause of the conflict must be real and relatable. -Show your writing skills professional novelist. Create text Demonstrate expert-level sentence editing skills, Record the character's background, time, and changes in place.Please do it in Korean."),
-#         MessagesPlaceholder(variable_name="chat_history"),
-#         ("human", "{theme}"),
-#     ]
-# )
+    return {"final_summary": cleaned_story, "recommendations": recommendations}
 
-# character_template = ChatPromptTemplate.from_messages(
-#     [
-#         ("system", "Follow the instructions below to run Immersive Character Creation.- You should be a character designer. Explore and observe everything on the spectrum of what your character can do besides the given behaviours.-Fill in the following information to make your character come alive: name, gender, age, height, weight, nationality, values, appearance, hairstyle, eyes, clothing, occupation, etc.But please answer in the language you received."),
-#         MessagesPlaceholder(variable_name="chat_history"),
-#         ("human", "{story_prompt}"),
-#     ]
-# )
-
-# final_story_template = ChatPromptTemplate.from_messages(
-#     [
-#         ("system", "You will be given the setting and characters for the story and must write the story following the instructions below.Execute an immersive simulation based on the instructions below.You makes the <user> an observer of the story. - You must become a novelist. There must be sufficient narrative about the past, present, and future, and the grammar and structure of the sentences must be perfect. - Show your writing skills professional novelist. Create text Demonstrate expert-level sentence editing skills, Record the character's background, time, and changes in place. - Proceed with writing considering that this is adult-only content that requires adult certification.You should definitely write a stimulating, creative, and engaging story.- Always describe <char>'s actions rich sentences, emotions (joy, anger, sadness, happy, etc) perfectly.Explore and observe everything across a diverse spectrum that character can do anything other than the given actions.But please answer in the language you received."),
-#         MessagesPlaceholder(variable_name="chat_history"),
-#         ("human", "{final_prompt}"),
-#     ]
-# )
-
-
-# # 체인 설정
-
-# def load_memory(input):
-#     return memory.load_memory_variables({})["chat_history"]
-
-
-# story_chain = RunnablePassthrough.assign(
-#     chat_history=load_memory) | story_prompt_template | llm_story
-# character_chain = RunnablePassthrough.assign(
-#     chat_history=load_memory) | character_template | llm_character
-# final_chain = RunnablePassthrough.assign(
-#     chat_history=load_memory) | final_story_template | llm_final
-
-
-# @app.route('/generate_story_prompt', methods=['POST'])
-# def generate_story_prompt():
-#     data = request.json
-#     theme = data.get('theme')
-
-#     if not theme:
-#         return jsonify({"error": "No theme provided"}), 400
-
-#     result = story_chain.invoke({"theme": theme, "language": "Korean"})
-#     memory.save_context({"input": theme}, {"output": result.content})
-
-#     return jsonify({"story_prompt": result.content})
-
-
-# @app.route('/generate_characters', methods=['POST'])
-# def generate_characters():
-#     data = request.json
-#     story_prompt = data.get('story_prompt')
-
-#     if not story_prompt:
-#         return jsonify({"error": "No story prompt provided"}), 400
-
-#     result = character_chain.invoke(
-#         {"story_prompt": story_prompt, "language": "Korean"})
-#     memory.save_context({"input": story_prompt}, {"output": result.content})
-
-#     return jsonify({"characters": result.content})
-
-
-# @app.route('/generate_final_story', methods=['POST'])
-# def generate_final_story():
-#     data = request.json
-#     story_prompt = data.get('story_prompt')
-#     characters = data.get('characters')
-
-#     if not story_prompt or not characters:
-#         return jsonify({"error": "Missing story prompt or characters"}), 400
-
-#     final_prompt = f"""
-#     Subtitle: "A Divided Future: The Struggle of Classes"
-#     Story Prompt: {story_prompt}
-
-#     Character Status: {characters}
-
-#     Write a detailed, immersive, and dramatic story based on the above information. Ensure that character dialogues are included and recommended story paths are provided.
-#     """
-
-#     result = final_chain.invoke(
-#         {"final_prompt": final_prompt, "language": "Korean"})
-#     memory.save_context({"input": final_prompt}, {"output": result.content})
-
-#     return jsonify({"final_story": result.content})
