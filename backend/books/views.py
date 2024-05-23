@@ -6,7 +6,7 @@ from rest_framework import status
 from .models import Book, Comment
 from .serializers import BookSerializer, CommentSerializer
 from django.core import serializers
-from .generators import synopsys_generator
+from .generators import synopsys_generator, summary_generator
 
 class BookListAPIView(ListAPIView) :
     # 전체 목록 조회
@@ -81,3 +81,11 @@ class SynopsysAPIView(APIView):
     def post(self, request):
         synopsys=synopsys_generator()
         return Response(data={'content':synopsys, 'user_id':request.user.pk}, status=status.HTTP_201_CREATED)
+    
+class SummaryAPIView(APIView):
+    def post(self, request):
+        summary=request.data.get('summary')
+        if not summary:
+            return Response({'error':'Missing summary prompt'}, status=status.HTTP_400_BAD_REQUEST)
+        result=summary_generator(summary)
+        return Response(data=result, status=status.HTTP_201_CREATED)

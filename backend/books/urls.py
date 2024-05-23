@@ -9,5 +9,5 @@ urlpatterns = [
         "<int:book_id>/comments/<int:comment_id>,", views.CommentDetailAPIView.as_view()
     ),
     path("synopsys/", views.SynopsysAPIView.as_view()),
-    # path("summary/"),
+    path("summary/", views.SummaryAPIView.as_view()),
 ]
