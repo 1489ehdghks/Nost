@@ -86,8 +86,8 @@ const useThemeStore = create(set => ({
             lowRes: autumnLow,
             highRes: autumn,
             mainpageBackgroundColor: '#FFE4B5',
-            buttonBackgroundColor: '#fdb267',
-            buttonTextColor: '#F5F5DC',
+            buttonBackgroundColor: '#fdbe80',
+            buttonTextColor: '#D2691E',
             teamColor: '#8B4513',
             neonEffect: {
                 color: '#D2691E',
