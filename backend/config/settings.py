@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -40,12 +41,25 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third Party
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth.registration",
+    "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
     # Custom
     "accounts",
     "books",
 ]
 
+# 사이트 ID
+SITE_ID = 1
+
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -53,6 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -86,7 +101,58 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "accounts.USer"
+# Custom User Model
+AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+# jwt
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+
+# allauth
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_ADAPTER = "accounts.adapters.CustomUserAccountAdapter"
+
+
+# rest framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("dj_rest_auth.jwt_auth.JWTAuthentication",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 8,
+}
+
+# spectacular
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My Django API",
+    "DESCRIPTION": "Django DRF API Doc",
+    "VERSION": "1.0.0",
+}
+
+# dj rest auth
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
+    "USER_DETAILS_SERIALIZER": "accounts.serializers.CustomUserDetailSerializer",
+}
+
+# 이메일 백엔드 설정 (개발용)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -105,6 +171,14 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+
+# CORS
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:8000/',
+    'http://localhost:3000/',
+]
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Internationalization
