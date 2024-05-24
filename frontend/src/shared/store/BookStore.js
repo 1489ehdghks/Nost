@@ -3,10 +3,10 @@ import { create } from 'zustand';
 const useBookStore = create((set) => ({
     synopsis: null,
     summary: null,
-    Recommendations: [],
+    recommendations: [],
     setSynopsis: (synopsis) => set({ synopsis }),
-    setRecommendations: (synopsis) => set({ synopsis }),
     setSummary: (summary) => set({ summary }),
+    setRecommendations: (recommendations) => set({ recommendations }),
 }));
 
 export default useBookStore;

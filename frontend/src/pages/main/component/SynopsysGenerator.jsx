@@ -35,7 +35,7 @@ const settings = [
 ];
 
 const SynopsysGenerator = () => {
-    const { synopsis, setSynopsis, setSummary } = useBookStore();
+    const { synopsis, setSynopsis, setSummary, setRecommendations } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
@@ -85,6 +85,7 @@ const SynopsysGenerator = () => {
             console.log("requestData:", requestData)
             console.log("prompt:", requestData.prompt)
             const response = await axios.post('http://127.0.0.1:8000/api/books/synopsys/', requestData);
+            console.log("generateSynopsis_response", response.data)
             setSynopsis(response.data.content);
         } catch (err) {
             setError(err.message);
@@ -98,10 +99,14 @@ const SynopsysGenerator = () => {
         setIsLoading(true);
         setError(null);
         try {
+            console.log("additionalDetails222222:", additionalDetails)
             const response = await axios.post('http://127.0.0.1:8000/api/books/summary/', { summary: additionalDetails });
             setSummary(response.data.final_summary);
+            setRecommendations(response.data.recommendations);
+
             console.log("data.content:", response.data.final_summary)
             console.log("response:", response.data)
+            console.log("additionalDetails222222:", additionalDetails)
         } catch (err) {
             setError(err.message);
         } finally {
