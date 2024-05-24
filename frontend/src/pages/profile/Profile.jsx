@@ -7,9 +7,9 @@ const Profile = () => {
   const currentTheme = themes[currentSeason];
 
   const [user, setUser] = useState({
-    name: null,
-    nickname: null,
-    email: null,
+    name: "이름",
+    nickname: "네임",
+    email: "메일",
     profilePicture: null,
     likedPosts: [],
     bookmarkedPosts: [],
@@ -88,18 +88,12 @@ const Profile = () => {
         </div>
 
         <div className="info">
-        <div className="info-item">
-            <label>Username:</label>
-            <span>{user.name}</span>
-          </div>
           <div className="info-item">
-            <label>Nickname:</label>
-            <span>{user.nickname}</span>
+            <label>Username: {user.name}</label>
+            <label>Nickname: {user.nickname}</label>
+            <label>Email: {user.email}</label>
           </div>
-          <div className="info-item">
-            <label>Email:</label>
-            <span>{user.email}</span>
-          </div>
+
           <button className="edit-account" onClick={handleDeleteAccount}>
           회원 정보 수정
           </button>
