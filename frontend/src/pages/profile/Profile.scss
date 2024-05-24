@@ -48,9 +48,6 @@
         }
       }
 
-      
-        
-
         button {
           margin-right: 10px;
           padding: 5px 10px;
@@ -79,8 +76,8 @@
 
       .info-item{
         display: flex;
-      flex-direction: column;
-      padding: 10px;
+        flex-direction: column;
+        padding: 10px;
       }
 
       label {
@@ -133,20 +130,14 @@
     }
   }
 
-  .lists {
+  .list {
     display: flex;
     flex-direction: column; /* 수직으로 요소를 배치합니다. */
     justify-content: space-between;
-  
-    .list {
-      flex: 1;
-      margin-bottom: 20px;
-      margin-right: 20px; /* 요소 사이의 간격을 조절합니다. */
-  
-      &:last-child {
-        margin-right: 0; /* 마지막 요소의 간격을 제거합니다. */
-      }
-  
+    flex: 1;
+    margin-bottom: 20px;
+    margin-right: 20px; /* 요소 사이의 간격을 조절합니다. */
+
       h2 {
         font-size: 1.5rem;
         color: inherit;
@@ -155,6 +146,7 @@
   
       ul {
         list-style-type: none;
+        margin-bottom: 50px;
         padding: 0;
   
         li {
@@ -169,6 +161,5 @@
           }
         }
       }
-    }
   }
 }

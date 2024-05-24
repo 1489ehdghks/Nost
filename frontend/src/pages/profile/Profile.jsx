@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
+import EditProfileModal from './EditProfileModal';
 import './Profile.scss';
 
 const Profile = () => {
@@ -59,6 +60,19 @@ const Profile = () => {
     }
   };
 
+  // 회원수정 모달
+  const [ModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {setModalOpen(true);};
+  const closeModal = () => {setModalOpen(false);};
+
+  const handleSaveUserInfo = (editUser) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...editUser,
+    }));
+  };
+
   return (
     <div className="profile" style={{ color: currentTheme.textColor }}>
       <div className="header">
@@ -94,33 +108,21 @@ const Profile = () => {
             <label>Email: {user.email}</label>
           </div>
 
-          <button className="edit-account" onClick={handleDeleteAccount}>
-          회원 정보 수정
-          </button>
+          <button className="edit-account" onClick={openModal}>
+          회원 정보 수정 </button>
           <button className="delete-account" onClick={handleDeleteAccount}>
-          회원 탈퇴
-          </button>
+          회원 탈퇴 </button>
         </div>
-
       </div>
-      <div className="lists">
+
         <div className="list">
           <h2>찜한 게시글</h2>
-          <ul>
-            {user.bookmarkedPosts.map((post, index) => (
-              <li key={index}>{post.title}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="list">
+          <ul> {user.bookmarkedPosts.map((post, index) => ( <li key={index}>{post.title}</li>))}</ul>
           <h2>좋아요 표시한 게시글</h2>
-          <ul>
-            {user.likedPosts.map((post, index) => (
-              <li key={index}>{post.title}</li>
-            ))}
-          </ul>
+          <ul> {user.likedPosts.map((post, index) => ( <li key={index}>{post.title}</li>))}</ul>
         </div>
-      </div>
+
+      <EditProfileModal user={user} isOpen={ModalOpen} onClose={closeModal} onSave={handleSaveUserInfo}/> 
     </div>
   );
 };
