@@ -6,9 +6,9 @@ import useThemeStore from '../../../shared/store/Themestore';
 import './SideLayout.scss';
 
 const SideLayout = ({ children }) => {
-    const { themes, currentSeason } = useThemeStore(); // 테마 설정 사용
-    const currentTheme = themes[currentSeason]; // 현재 시즌 테마 색상
-    
+    const { themes, currentSeason } = useThemeStore();
+    const currentTheme = themes[currentSeason];
+
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -16,13 +16,16 @@ const SideLayout = ({ children }) => {
         setIsOpen(!isOpen);
     };
 
+    const handleMain = () => {
+        navigate('/');
+    };
     const handleLogout = () => {
         logout();
-        navigate('/'); // HomePage로 리다이렉트
+        navigate('/');
     };
-    
+
     const handleProfile = () => {
-        navigate('/profile'); // 프로필 페이지로 이동
+        navigate('/profile');
     };
 
     return (
@@ -31,7 +34,7 @@ const SideLayout = ({ children }) => {
                 <FaBars />
             </div>
             <div className={`sidebar ${isOpen ? 'open' : ''}`} style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
-                <button>Main</button>
+                <button onClick={handleMain}>Main</button>
                 <button onClick={handleProfile}>Profile</button>
                 <button>My Book</button>
                 <button>Setting</button>

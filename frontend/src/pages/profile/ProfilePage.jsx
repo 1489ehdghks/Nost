@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
-import './Profile.scss';
+import './ProfilePage.scss';
 
-const Profile = () => {
+const ProfilePage = () => {
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
 
@@ -88,7 +88,7 @@ const Profile = () => {
         </div>
 
         <div className="info">
-        <div className="info-item">
+          <div className="info-item">
             <label>Username:</label>
             <span>{user.name}</span>
           </div>
@@ -101,10 +101,10 @@ const Profile = () => {
             <span>{user.email}</span>
           </div>
           <button className="edit-account" onClick={handleDeleteAccount}>
-          회원 정보 수정
+            회원 정보 수정
           </button>
           <button className="delete-account" onClick={handleDeleteAccount}>
-          회원 탈퇴
+            회원 탈퇴
           </button>
         </div>
 
@@ -131,4 +131,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;
