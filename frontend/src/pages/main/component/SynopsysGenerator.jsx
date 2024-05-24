@@ -35,7 +35,7 @@ const settings = [
 ];
 
 const SynopsysGenerator = () => {
-    const { synopsis, setSynopsis } = useBookStore();
+    const { synopsis, setSynopsis, setSummary } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
@@ -98,7 +98,10 @@ const SynopsysGenerator = () => {
         setIsLoading(true);
         setError(null);
         try {
-            await axios.post('http://127.0.0.1:8000/api/books/summary/', { synopsis: additionalDetails });
+            const response = await axios.post('http://127.0.0.1:8000/api/books/summary/', { summary: additionalDetails });
+            setSummary(response.data.final_summary);
+            console.log("data.content:", response.data.final_summary)
+            console.log("response:", response.data)
         } catch (err) {
             setError(err.message);
         } finally {
@@ -111,7 +114,7 @@ const SynopsysGenerator = () => {
     return (
         <div className="novel-generator section" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
             <h1>New Novel</h1>
-            <form onSubmit={generateSynopsis}>
+            <form onSubmit={generateSynopsis} style={{ paddingBottom: '3%' }}>
                 <div className="user-inputs">
                     <div className="userSelection">
                         <div className="button-group">
