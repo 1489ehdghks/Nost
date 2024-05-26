@@ -8,6 +8,6 @@ urlpatterns = [
     path(
         "<int:book_id>/comments/<int:comment_id>,", views.CommentDetailAPIView.as_view()
     ),
-    path("synopsys/", views.SynopsysAPIView.as_view()),
+    # path("synopsis/", views.SynopsisAPIView.as_view()),
     path("summary/", views.SummaryAPIView.as_view()),
 ]
