@@ -3,6 +3,8 @@ from django.db import models
 
 
 class Book(models.Model):
+    """소설 책의 제목만 저장"""
+
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -11,7 +13,9 @@ class Book(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="books"
     )
     is_liked = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="book_likes", null=True
+        settings.AUTH_USER_MODEL,
+        related_name="book_likes",
+        blank=True,
     )
 
 
@@ -24,16 +28,21 @@ class Comment(models.Model):
 
 
 class Chapter(models.Model):
+    """각 소설의 내용(Chapter)을 저장"""
+
     chapter_num = models.PositiveIntegerField(editable=False)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     book_id = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="chapters")
 
+    # 각 소설책마다 챕터는 1,2,3의 순서대로 저장하기 위해 save를 override
     def save(self, *args, **kwargs):
         if not self.id:
             last_index = (
-                Chapter.objects.filter(book_id=self.book_id).order_by("index").last()
+                Chapter.objects.filter(book_id=self.book_id)
+                .order_by("chapter_num")
+                .last()
             )
             if last_index:
                 self.chapter_num = last_index.chapter_num + 1
