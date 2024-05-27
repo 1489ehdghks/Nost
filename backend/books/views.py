@@ -14,7 +14,7 @@ class BookListAPIView(ListAPIView):
     queryset = Book.objects.all().order_by("-created_at")
     serializer_class = BookSerializer
 
-    # 새 글 작성
+    # 새 소설 책 생성
     def post(self, request):
         user_prompt = request.data.get("prompt")
         if not user_prompt:
@@ -31,7 +31,7 @@ class BookListAPIView(ListAPIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(
-                data={"content": synopsis},  # FE에 content 응답
+                data={'book_id':serializer.data['id'],"content": synopsis},  # FE에 content 응답
                 status=status.HTTP_201_CREATED,
             )
 
@@ -42,6 +42,23 @@ class BookDetailAPIView(APIView):
         book = get_object_or_404(Book, id=book_id)
         serializer = BookSerializer(book)
         return Response(serializer, status=200)
+    
+    # chapter(summary) 생성
+    def post(self, request, book_id):
+        summary = request.data.get("summary")
+        if not summary:
+            return Response(
+                {"error": "Missing summary prompt"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        result = summary_generator(summary)
+        book=get_object_or_404(Book, id=book_id)
+        serializer = ChapterSerializer(
+            data={"content": result["final_summary"], "book_id": book.pk}
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            result['book_id']=book.pk
+            return Response(data=result, status=status.HTTP_201_CREATED)
 
     # 글 수정
     def put(self, request, book_id):
@@ -91,35 +108,3 @@ class CommentDetailAPIView(APIView):
         comment = get_object_or_404(Comment, id=comment_id)
         comment.delete()
         return Response("NO comment", status=204)
-
-
-# class SynopsisAPIView(APIView):
-
-#     def post(self, request):
-#         user_prompt = request.POST.get("prompt")
-#         content = synopsys_generator(user_prompt)
-#         title = content["title"]
-#         synopsis = content["synopsis"]
-#         return Response(
-#             data={"title": title, "content": synopsis, "user_id": request.user.pk},
-#             status=status.HTTP_201_CREATED,
-#         )
-
-
-class SummaryAPIView(APIView):
-    def post(self, request):
-        summary = request.data.get("summary")
-        if not summary:
-            return Response(
-                {"error": "Missing summary prompt"}, status=status.HTTP_400_BAD_REQUEST
-            )
-        result = summary_generator(summary)
-        book = (
-            Book.objects.filter(user_id=request.user.pk).order_by("created_at").last()
-        )
-        serializer = ChapterSerializer(
-            data={"content": result["final_summary"], "book_id": book.pk}
-        )
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(data=result, status=status.HTTP_201_CREATED)
