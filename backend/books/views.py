@@ -6,7 +6,7 @@ from rest_framework import status
 from .models import Book, Comment
 from .serializers import BookSerializer, CommentSerializer, ChapterSerializer
 from django.core import serializers
-from .generators import synopsys_generator, summary_generator
+from .generators import synopsis_generator, summary_generator
 
 
 class BookListAPIView(ListAPIView):
@@ -16,13 +16,13 @@ class BookListAPIView(ListAPIView):
 
     # 새 글 작성
     def post(self, request):
-        user_prompt = request.POST.get("prompt")
+        user_prompt = request.data.get("prompt")
         if not user_prompt:
             return Response(
                 {"error": "Missing prompt"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        content = synopsys_generator(user_prompt)  # ai로 title, synopsis 생성
+        content = synopsis_generator(user_prompt)  # ai로 title, synopsis 생성
         title = content["title"]
         synopsis = content["synopsis"]
         serializer = BookSerializer(

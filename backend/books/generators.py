@@ -10,7 +10,7 @@ from langchain.schema.runnable import RunnablePassthrough
 
 
 
-def synopsys_generator(user_prompt):
+def synopsis_generator(user_prompt):
     llm = ChatOpenAI(
     model="gpt-3.5-turbo", api_key=os.getenv("OPENAI_API_KEY"), max_tokens=800
     )
