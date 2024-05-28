@@ -2,7 +2,7 @@
     display: flex;
     height: 100vh;
     background-color: transparent !important; // 최 상위로 올려서 배경 투명하게 만들기
-
+    z-index: 100;
     .menu-icon {
         position: fixed;
         top: 20px;

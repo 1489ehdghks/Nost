@@ -229,3 +229,12 @@
     flex-direction: column;
   }
 }
+
+.error-message {
+  position: absolute;
+  left: 15%;
+  bottom: 40%;
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

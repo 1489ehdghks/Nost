@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SummaryGenerator.scss';
 import useThemeStore from '../../../shared/store/Themestore';
 import useBookStore from '../../../shared/store/BookStore';
-import axios from 'axios';
+import axiosInstance from '../../../features/auth/AuthInstance';
 
 const SummaryGenerator = () => {
     const { themes, currentSeason } = useThemeStore();
@@ -14,7 +14,7 @@ const SummaryGenerator = () => {
     const handleRecommendationClick = async (description) => {
         setIsLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/books/summary/', { summary: description });
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/summary/', { summary: description });
             setSummary(response.data.final_summary);
         } catch (err) {
             console.error('Error submitting summary:', err);
@@ -26,7 +26,7 @@ const SummaryGenerator = () => {
     const handleUserTextSubmit = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/books/summary/', { summary: userText });
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/summary/', { summary: userText });
             setSummary(response.data.final_summary);
         } catch (err) {
             console.error('Error submitting user text:', err);
