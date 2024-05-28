@@ -15,6 +15,18 @@ const CardDetail = () => {
       header: 'Canyons',
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.',
       comments: [
+        { user: 'User1', text: 'This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.', date: 'March 5th, 2014' },
+        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
+        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
+        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
+        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
+        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
+        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
+        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
+        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
+        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
+        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
+        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
         { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
         { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' }
       ]
@@ -54,21 +66,21 @@ const CardDetail = () => {
     <div className="card-detail" style={{ color: currentTheme.textColor }}>
       <div className="summary">
         <h1>{card.header}</h1>
-        <img src={card.image}/>
+        {/* <img src={card.image}/> */}
         <p>{card.content}</p>
       </div>
-      <div className="comment-box">
+      <div className="comment-box" >
         <h2>Comment Box</h2>
         <div className="comments">
           {card.comments.map((comment, index) => (
             <div className="comment" key={index}>
               <img src="https://via.placeholder.com/50" alt="User" />
-              <p>{comment.text} <br /><small>on {comment.date}</small></p>
+              <p>{comment.text} <br />{comment.user} <small>on {comment.date}</small></p>
             </div>
           ))}
         </div>
         <textarea placeholder="Your comments"></textarea>
-        <button>Add</button>
+        <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>Add</button>
       </div>
     </div>
   );
