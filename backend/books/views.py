@@ -91,12 +91,12 @@ class CommentListAPIView(APIView):
         book = get_object_or_404(Book, id=book_id)
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()  # user_id = request.user, book = book
+            serializer.save(user_id = request.user, book = book)
             return Response(serializer.data, status=201)
 
 
 class CommentDetailAPIView(APIView):
-    def put(self, request, comment_id):
+    def put(self, request, book_id, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         serializer = CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -109,7 +109,7 @@ class CommentDetailAPIView(APIView):
         return Response("NO comment", status=204)
 
 
-# class SynopsisAPIView(APIView):
+# class SynopsisAPIView(APIView):g
 
 #     def post(self, request):
 #         user_prompt = request.POST.get("prompt")
