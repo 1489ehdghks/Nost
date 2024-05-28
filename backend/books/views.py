@@ -2,10 +2,9 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Book, Comment
-from .serializers import BookSerializer, BookLikeSerializer, CommentSerializer, ChapterSerializer
+from .serializers import BookSerializer, CommentSerializer, ChapterSerializer
 from django.core import serializers
 from .generators import synopsis_generator, summary_generator
 
@@ -55,29 +54,14 @@ class BookDetailAPIView(APIView):
 
     # 글 삭제
     def delete(self, request, book_id):
-        book = get_object_or_404(Book, id=book_id)
+        book = get_object_or_404(book, id=book_id)
         book.delete()
         return Response("No Content", status=204)
 
 
 class BookLikeAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    def post(self, request, book_id):
-        book = get_object_or_404(Book, id=book_id)
-        # 좋아요 삭제
-        if request.user in book.is_liked.all() :
-            book.is_liked.remove(request.user)
-            like_bool = False
-        # 좋아요 추가
-        else :
-            book.is_liked.add(request.user)
-            like_bool = True
-        serializer = BookLikeSerializer(book)
-        return Response({
-                'like_bool' : like_bool,
-                'total_likes' : book.total_likes(),
-                'book' : serializer.data,
-            },status=200)
+    def post(self, request):
+        pass
 
 
 class CommentListAPIView(APIView):
@@ -91,12 +75,12 @@ class CommentListAPIView(APIView):
         book = get_object_or_404(Book, id=book_id)
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user_id = request.user, book = book)
+            serializer.save()  # user_id = request.user, book = book
             return Response(serializer.data, status=201)
 
 
 class CommentDetailAPIView(APIView):
-    def put(self, request, book_id, comment_id):
+    def put(self, request, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         serializer = CommentSerializer(comment, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -109,7 +93,7 @@ class CommentDetailAPIView(APIView):
         return Response("NO comment", status=204)
 
 
-# class SynopsisAPIView(APIView):g
+# class SynopsisAPIView(APIView):
 
 #     def post(self, request):
 #         user_prompt = request.POST.get("prompt")
