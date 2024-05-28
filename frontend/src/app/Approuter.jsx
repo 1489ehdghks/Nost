@@ -5,6 +5,7 @@ import MainPage from '../pages/main/MainPage';
 import useAuthStore from '../shared/store/AuthStore';
 import Profile from '../pages/profile/Profile';
 import Mybooklist from '../pages/mybooks/Mybooklist';
+import CardDetail from '../widgets/card/CardDetail';
 import SideLayout from '../widgets/layout/sideLayout/SideLayout';
 
 const AppRouter = () => {
@@ -22,12 +23,19 @@ const AppRouter = () => {
         </SideLayout>
     );
 
+    const MybooklistWithCardDetai = () => (
+        <SideLayout>
+            <CardDetail/>
+        </SideLayout>
+    );
+
     return (
         <Routes>
             <Route path="/" element={isLoggedIn ? <MainPage /> : <HomePage />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/profile" element={<ProfileWithLayout />} />
             <Route path="/Mybooklist" element={<MybooklistWithLayout />} />
+            <Route path="/card/:id" element={<MybooklistWithCardDetai />} />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     );

@@ -1,9 +1,10 @@
 .container {
   text-align: center;
   padding: 2rem;
+  padding-bottom: 10vh;
   height: 100%; // 화면 전체 높이 설정
-  overflow-y: auto; // 세로 스크롤 활성화
-
+  overflow: auto; //스크롤 활성화
+  scrollbar-width: none; /* 스크롤바 안보임 */
 }
 
 .title {
@@ -12,10 +13,12 @@
 }
 
 .cardlist {
-  display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   flex-wrap: wrap;
+  display: grid; // 카드 열 4개로 고정
+    grid-template-columns: repeat(4, 12.5rem);
+
 }
 
 .card {
@@ -99,26 +102,24 @@
   align-items: center;
   gap: 10px;
   margin-top: 20px;
+  margin-bottom: 50px;
 
-}
+  button {
+    border: none;
+    background: none;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    color: inherit;
 
-.pagination button {
-  border: none;
-  background: none;
-  font-size: 16px;
-  padding: 10px;
-  cursor: pointer;
-  color: inherit;
-  transition: background 0.3s;
-}
+    &:hover:not(.active) {
+      background-color: transparent; // 배경색을 투명으로 설정
+    }
+  }
 
-.pagination button.active {
-  background-color: #d4d4d4;
-  color: white;
-  border-radius: 5px;
-}
-
-.pagination button:hover:not(.active):not(:disabled) {
-  background-color: #f0f0f0;
-  border-radius: 5px;
+  .active {
+    background-color: #d4d4d4;
+    color: white;
+    border-radius: 5px;
+  }
 }
