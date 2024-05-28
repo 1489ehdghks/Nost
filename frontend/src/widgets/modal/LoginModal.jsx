@@ -11,8 +11,11 @@ import './LoginModal.scss';
 const LoginModal = ({ onClose }) => {
     const [isLoginFormActive, setLoginFormActive] = useState(true);
     const [loginInputs, setLoginInputs] = useState({ email: '', password: '' });
+    const [loginErrors, setLoginErrors] = useState({});
     const [signupInputs, setSignupInputs] = useState({ nickname: '', email: '', password1: '', password2: '' });
+    const [signupErrors, setSignupErrors] = useState({});
     const isLoading = useGlobalStore(state => state.isLoading);
+    const globalError = useGlobalStore(state => state.error);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const navigate = useNavigate();
 
@@ -43,24 +46,39 @@ const LoginModal = ({ onClose }) => {
 
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
+        setLoginErrors({});
         await login(loginInputs.email, loginInputs.password);
-        navigate('/');
+        if (globalError) {
+            const errors = {};
+            if (globalError.includes('email')) {
+                errors.email = globalError;
+            } else if (globalError.includes('password')) {
+                errors.password = globalError;
+            } else {
+                errors.non_field_errors = globalError;
+            }
+            setLoginErrors(errors);
+        } else {
+            navigate('/');
+        }
     };
 
 
     const handleSignupSubmit = async (event) => {
         event.preventDefault();
+        setSignupErrors({});
         if (signupInputs.password1 !== signupInputs.password2) {
-            console.error('Passwords do not match');
+            setSignupErrors({ password2: ['Passwords do not match'] });
             return;
         }
-        const success = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-        if (success) {
+        const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
+        if (response.success) {
             setSignupSuccess(true);
             setLoginFormActive(true);
+        } else {
+            setSignupErrors(response.errors);
         }
     };
-
 
     return (
         <div className="modalOverlay">
@@ -108,6 +126,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleLoginInputChange}
                                         disabled={isLoading}
                                     />
+                                    {loginErrors.email && <div className="error-message">{loginErrors.email}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -120,13 +139,14 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleLoginInputChange}
                                         disabled={isLoading}
                                     />
+                                    {loginErrors.password && <div className="error-message">{loginErrors.password}</div>}
                                 </div>
                             </fieldset>
                             <div className="forms_buttons">
                                 <button type="button" className="forms_buttons-forgot" disabled={isLoading}>Forgot password?</button>
                                 <input type="submit" value="Log In" className="forms_buttons-action" disabled={isLoading} />
                             </div>
-                            {isLoading && <div>Loading...</div>}
+                            {loginErrors.non_field_errors && <div className="error-message">{loginErrors.non_field_errors}</div>}
                         </form>
                         <div className="social-login-buttons">
                             <button className="social-button google-login">
@@ -158,6 +178,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.nickname && <div className="error-message">{signupErrors.nickname}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -170,6 +191,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.email && <div className="error-message">{signupErrors.email}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -182,6 +204,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.password1 && <div className="error-message">{signupErrors.password1}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -194,12 +217,13 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.password2 && <div className="error-message">{signupErrors.password2}</div>}
                                 </div>
                             </fieldset>
                             <div className="forms_buttons">
                                 <input type="submit" value="Sign Up" className="forms_buttons-action" disabled={isLoading} />
                             </div>
-                            {isLoading && <div>Loading...</div>}
+                            {signupErrors.non_field_errors && <div className="error-message">{signupErrors.non_field_errors}</div>}
                         </form>
                     </div>
                 </div>
