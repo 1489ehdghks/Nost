@@ -2,6 +2,7 @@ import os
 import dotenv
 import logging
 import re
+import json
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, FewShotChatMessagePromptTemplate
@@ -9,58 +10,26 @@ from langchain.schema.runnable import RunnablePassthrough
 
 
 
-def synopsys_generator():
+def synopsis_generator(user_prompt):
     llm = ChatOpenAI(
     model="gpt-3.5-turbo", api_key=os.getenv("OPENAI_API_KEY"), max_tokens=800
     )
 
-    examples = [
-        {
-            "novel": "Harry Potter",
-            "genre": "fantasy",
-            "answer": """
-                Harry, who was spending a terrible vacation at his uncle's house in Dusley, is warned not to go back to school by a house fairy named Dobie. Disregarding the words, Harry returns to Hogwarts and is involved in a mysterious attack on children from Muggle. Rumors are circulating that the "Slytherin's successor" opened the secret room and freed the monster, and Harry is framed as the culprit of the attack for knowing how to speak the snake. When Hermione is also a victim of the attack and Ron's brother Ginni is kidnapped and disappeared, Harry and Ron decide to visit the secret room and rescue Ginni.
-            """,
-        },
-        {
-            "novel": "Miracles of the Namiya General Store",
-            "genre": "mystery",
-            "answer": """
-                Nagoya Namiya General Store, located outside the city, is an old store that has been empty for more than 30 years. One day, a trio of petty thieves hide here. They were friends who had grown up together in a children's welfare facility since they were young, and they had just robbed a few hours earlier and ran away from the eyes of the police. I thought it was a deserted house, but out of the blue, a mysterious letter arrives to the "owner of the Namiya General Store," and the three of them open the letter unexpectedly. It turns out that letters of counseling from people in the past transcended time and space and entered the mailbox of the current general store. At first, they thought someone was playing a joke on them, but they were led by a strange letter that seemed to fall from the sky and started to reply. The letters that they thought would stop as one continue to arrive, and the three of them are seriously worried about how the future of those who wrote down their concerns will be solved, as if it were their work.
-            """,
-        },
-    ]
-
-    example_prompt = ChatPromptTemplate.from_messages(
-        [
-            (
-                "human",
-                "I'm going to make a new novel by referring to the novel {novel}. I'm going to make the genre {genre}. Please make a synopsis.",
-            ),
-            ("ai", "{answer}"),
-        ]
-    )
-
-    example_prompt = FewShotChatMessagePromptTemplate(
-        example_prompt=example_prompt,
-        examples=examples,
-    )
-
     prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", "You are an expert in fiction"),
-            example_prompt,
+            ("system", 'You are an expert in fiction. You must respond to the question in the following json format: {{"title":"", "synopsis":""}}'),
             (
                 "human",
-                "I'm going to make a new novel by referring to the novel {novel}. I'm going to make the genre {genre}. Please make a synopsis.",
+                "{user_prompt}. Please make a synopsis and the title of the fiction.",
             ),
         ]
     )
 
     chain = prompt | llm
 
-    result=chain.invoke({"novel": "twilight", "genre": "fiction"})
-    return result.content
+    result=chain.invoke({"user_prompt":user_prompt})
+    json_data=json.loads(result.content)
+    return json_data
 
 
 
