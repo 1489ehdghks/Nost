@@ -17,12 +17,14 @@ class Book(models.Model):
         related_name="book_likes",
         blank=True,
     )
-
+    # 좋아요 수
+    def total_likes(self) :
+        return self.is_liked.count()
 
 class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
