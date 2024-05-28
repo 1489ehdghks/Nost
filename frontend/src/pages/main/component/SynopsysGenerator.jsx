@@ -4,6 +4,7 @@ import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import useBookStore from '../../../shared/store/BookStore';
 import useGlobalStore from '../../../shared/store/GlobalStore';
 import useThemeStore from '../../../shared/store/Themestore';
+import axiosInstance from '../../../features/auth/AuthInstance';
 import axios from 'axios';
 
 
@@ -84,7 +85,7 @@ const SynopsysGenerator = () => {
         try {
             console.log("requestData:", requestData)
             console.log("prompt:", requestData.prompt)
-            const response = await axios.post('http://127.0.0.1:8000/api/books/synopsys/', requestData);
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
             console.log("generateSynopsis_response", response.data)
             setSynopsis(response.data.content);
         } catch (err) {
@@ -100,7 +101,7 @@ const SynopsysGenerator = () => {
         setError(null);
         try {
             console.log("additionalDetails222222:", additionalDetails)
-            const response = await axios.post('http://127.0.0.1:8000/api/books/summary/', { summary: additionalDetails });
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/summary/', { summary: additionalDetails });
             setSummary(response.data.final_summary);
             setRecommendations(response.data.recommendations);
 

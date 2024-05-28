@@ -8,11 +8,13 @@ import Blossom from '../widgets/events/Blossom';
 import Rain from '../widgets/events/Rain';
 import FallenLeaves from '../widgets/events/FallenLeaves';
 import Snow from '../widgets/events/FallenSnow';
-
+import useGlobalStore from '../shared/store/GlobalStore';
+import Loading from '../widgets/events/Loading';
 
 
 function App() {
   const { themes, currentSeason, setDarkMode, setThemeMode, setSeason } = useThemeStore();
+  const { isLoading } = useGlobalStore();
   const currentTheme = themes[currentSeason];
 
   const getSeasonEffect = () => {
@@ -45,19 +47,22 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ backgroundColor: currentTheme.primary, color: currentTheme.textColor }}>
-      <div className="theme-toggles">
-        <ThemeMode currentSeason={currentSeason} setSeason={handleSeasonChange} />
-      </div>
-      <div className="background">
-        <BrowserRouter>
-          <AppRouter />
-        </BrowserRouter>
-        <div className="season-effect">
-          {getSeasonEffect()}
+    <>
+      {isLoading && <Loading />}
+      <div className="App" style={{ backgroundColor: currentTheme.primary, color: currentTheme.textColor }}>
+        <div className="theme-toggles">
+          <ThemeMode currentSeason={currentSeason} setSeason={handleSeasonChange} />
+        </div>
+        <div className="background">
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
+          <div className="season-effect">
+            {getSeasonEffect()}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
