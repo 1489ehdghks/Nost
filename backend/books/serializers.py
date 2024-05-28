@@ -7,6 +7,8 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = "__all__"
 
+class BookLikeSerializer(BookSerializer) :
+    total_likes = serializers.IntegerField(read_only = True)
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

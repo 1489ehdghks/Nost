@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Book, Comment
-from .serializers import BookSerializer, CommentSerializer, ChapterSerializer
+from .serializers import BookSerializer, BookLikeSerializer, CommentSerializer, ChapterSerializer
 from django.core import serializers
 from .generators import synopsis_generator, summary_generator
 
@@ -54,14 +55,29 @@ class BookDetailAPIView(APIView):
 
     # 글 삭제
     def delete(self, request, book_id):
-        book = get_object_or_404(book, id=book_id)
+        book = get_object_or_404(Book, id=book_id)
         book.delete()
         return Response("No Content", status=204)
 
 
 class BookLikeAPIView(APIView):
-    def post(self, request):
-        pass
+    permission_classes = [IsAuthenticated]
+    def post(self, request, book_id):
+        book = get_object_or_404(Book, id=book_id)
+        # 좋아요 삭제
+        if request.user in book.is_liked.all() :
+            book.is_liked.remove(request.user)
+            like_bool = False
+        # 좋아요 추가
+        else :
+            book.is_liked.add(request.user)
+            like_bool = True
+        serializer = BookLikeSerializer(book)
+        return Response({
+                'like_bool' : like_bool,
+                'total_likes' : book.total_likes(),
+                'book' : serializer.data,
+            },status=200)
 
 
 class CommentListAPIView(APIView):
