@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -101,32 +102,32 @@ DATABASES = {
     }
 }
 
-#CORS
+# CORS
 CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:8000',
-    'http://localhost:3000',
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = (
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 )
 
 CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 )
 
 APPEND_SLASH = False
@@ -140,7 +141,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # jwt
-from datetime import timedelta
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
@@ -150,7 +150,7 @@ SIMPLE_JWT = {
 }
 
 # allauth
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+# ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -202,6 +202,14 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+
+# CORS
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Internationalization
