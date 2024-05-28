@@ -14,7 +14,7 @@ const Loading = () => {
     };
 
     return (
-        <div className="wrapper">
+        <div className="loading-wrapper">
             <div
                 className="loader"
                 style={{
