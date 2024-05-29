@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 
 const useBookStore = create((set) => ({
+    bookId: null,
     synopsis: null,
     summary: null,
     recommendations: [],
+    setBookId: (bookId) => set({ bookId }),
     setSynopsis: (synopsis) => set({ synopsis }),
     setSummary: (summary) => set({ summary }),
     setRecommendations: (recommendations) => set({ recommendations }),
@@ -11,6 +13,3 @@ const useBookStore = create((set) => ({
 
 export default useBookStore;
 
-
-// setNovel(response.data.content)
-//setSummary
