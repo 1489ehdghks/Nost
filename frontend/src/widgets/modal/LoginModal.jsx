@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../features/auth/LoginInstance';
 import { signup } from '../../features/auth/SignupInstance';
 import useGlobalStore from '../../shared/store/GlobalStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './LoginModal.scss';
 
@@ -32,6 +34,12 @@ const LoginModal = ({ onClose }) => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [onClose]);
+
+    useEffect(() => {
+        if (signupSuccess) {
+            toast.success("회원가입 성공! 로그인해주세요.");
+        }
+    }, [signupSuccess]);
 
 
     const handleLoginInputChange = (event) => {
@@ -72,22 +80,16 @@ const LoginModal = ({ onClose }) => {
             return;
         }
         const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-        if (response.success) {
-            setSignupSuccess(true);
-            setLoginFormActive(true);
-        } else {
-            setSignupErrors(response.errors);
-        }
+        setSignupSuccess(true);
+        setLoginFormActive(true);
     };
 
     return (
         <div className="modalOverlay">
+            <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-                {signupSuccess && <div className="signup-success">회원가입 성공! 로그인해주세요.</div>}
-
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
-
                         {/* 로그인 왼쪽 */}
                         <div className="user_options-unregistered">
                             <h2 className="user_unregistered-title">Don't have an account?</h2>

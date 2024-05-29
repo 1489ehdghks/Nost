@@ -5,7 +5,6 @@ import useBookStore from '../../../shared/store/BookStore';
 import useGlobalStore from '../../../shared/store/GlobalStore';
 import useThemeStore from '../../../shared/store/Themestore';
 import axiosInstance from '../../../features/auth/AuthInstance';
-import axios from 'axios';
 
 
 //프롬프트 끝에 "." 작성하지 마세요.
@@ -36,7 +35,7 @@ const settings = [
 ];
 
 const SynopsysGenerator = () => {
-    const { synopsis, setSynopsis, setSummary, setRecommendations } = useBookStore();
+    const { synopsis, bookId, setSynopsis, setSummary, setRecommendations, setBookId } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
@@ -87,6 +86,8 @@ const SynopsysGenerator = () => {
             console.log("prompt:", requestData.prompt)
             const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
             console.log("generateSynopsis_response", response.data)
+            console.log("response.data.book_id", response.data.book_id)
+            useBookStore.getState().setBookId(response.data.book_id)
             setSynopsis(response.data.content);
         } catch (err) {
             setError(err.message);
@@ -101,7 +102,7 @@ const SynopsysGenerator = () => {
         setError(null);
         try {
             console.log("additionalDetails222222:", additionalDetails)
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/summary/', { summary: additionalDetails });
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: additionalDetails });
             setSummary(response.data.final_summary);
             setRecommendations(response.data.recommendations);
 
