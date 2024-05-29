@@ -5,7 +5,6 @@ import { signup } from '../../features/auth/SignupInstance';
 import useGlobalStore from '../../shared/store/GlobalStore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import './LoginModal.scss';
 
 

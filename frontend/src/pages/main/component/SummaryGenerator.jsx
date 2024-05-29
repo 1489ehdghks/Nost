@@ -7,14 +7,14 @@ import axiosInstance from '../../../features/auth/AuthInstance';
 const SummaryGenerator = () => {
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
-    const { summary, recommendations, setSummary } = useBookStore();
+    const { summary, bookId, recommendations, setSummary } = useBookStore();
     const [userText, setUserText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const handleRecommendationClick = async (description) => {
         setIsLoading(true);
         try {
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/summary/', { summary: description });
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: description });
             setSummary(response.data.final_summary);
         } catch (err) {
             console.error('Error submitting summary:', err);
@@ -26,7 +26,7 @@ const SummaryGenerator = () => {
     const handleUserTextSubmit = async () => {
         setIsLoading(true);
         try {
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/summary/', { summary: userText });
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: userText });
             setSummary(response.data.final_summary);
         } catch (err) {
             console.error('Error submitting user text:', err);
