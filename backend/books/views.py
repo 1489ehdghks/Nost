@@ -31,14 +31,13 @@ class BookListAPIView(ListAPIView):
 
         content = synopsis_generator(user_prompt)  # ai로 title, synopsis 생성
         title = content["title"]
-        synopsis = content["synopsis"]
         serializer = BookSerializer(
             data={"title": title, "user_id": request.user.pk}
         )  # db에 title, user_id 저장
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(
-                data={'book_id':serializer.data['id'],"content": synopsis},  # FE에 content 응답
+                data={'book_id':serializer.data['id'],"content": content},  # FE에 content 응답
                 status=status.HTTP_201_CREATED,
             )
 
