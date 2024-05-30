@@ -49,7 +49,7 @@ const BookList = () => {
                 sortedNovels.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 break;
             case 'popular':
-                sortedNovels.sort((a, b) => b.is_liked - a.is_liked);
+                sortedNovels.sort((a, b) => b.is_liked.length - a.is_liked.length);
                 break;
             case 'rating':
                 sortedNovels.sort((a, b) => b.average_rating - a.average_rating);
@@ -90,7 +90,7 @@ const BookList = () => {
                         <tr key={book.id}>
                         <td>{book.title}</td>
                         <td>{book.user_id}</td>
-                        <td>{book.is_liked}</td>
+                        <td>{book.is_liked.length}</td>  {/* 배열의 길이로 좋아요 수 출력 */}
                         <td>{book.average_rating}</td>
                         <td>{new Date(book.created_at).toLocaleDateString()}</td>
                     </tr>
