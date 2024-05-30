@@ -22,6 +22,25 @@ class Book(models.Model):
     def total_likes(self) :
         return self.is_liked.count()
 
+class Rating(models.Model) :
+    RATING_CHOICES = [
+        (1,"1"),
+        (2,"2"),
+        (3,"3"),
+        (4,"4"),
+        (5,"5"),
+    ]
+    book = models.ForeignKey(Book, related_name='ratings', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="rating_user", on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=RATING_CHOICES, blank=True)
+
+    class Meta :
+        constraints = [
+            models.UniqueConstraint(fields=['book', 'user_id'], name = 'unique_book_user_rating')
+        ]    
+
+    def __str__(self) :
+        return f'{self.book.title} - {self.rating}'
 
 class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="comments")
@@ -29,7 +48,6 @@ class Comment(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 class Chapter(models.Model):
     """각 소설의 내용(Chapter)을 저장"""

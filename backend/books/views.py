@@ -4,10 +4,11 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from .models import Book, Comment
+from .models import Book, Comment, Rating
 from .serializers import (
     BookSerializer,
     BookLikeSerializer,
+    RatingSerializer,
     CommentSerializer,
     ChapterSerializer,
 )
@@ -46,8 +47,9 @@ class BookDetailAPIView(APIView):
     # 상세 조회
     def get(self, request, book_id):
         book = get_object_or_404(Book, id=book_id)
+        ratings = Rating.objects.filter(book=book)
         serializer = BookSerializer(book)
-        return Response(serializer, status=200)
+        return Response(serializer.data, status=200)
     
     # chapter(summary) 생성
     def post(self, request, book_id):
@@ -70,6 +72,7 @@ class BookDetailAPIView(APIView):
     def put(self, request, book_id):
         book = get_object_or_404(Book, id=book_id)
         serializer = BookSerializer(book, data=request.data, partial=True)
+        
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=201)
@@ -104,6 +107,28 @@ class BookLikeAPIView(APIView):
             },
             status=200,
         )
+
+class RatingAPIView(APIView) :
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request,book_id) :
+        book = get_object_or_404(Book, id = book_id)
+        rating = request.data.get("rating")
+
+        if rating not in [1,2,3,4,5] :
+            return Response("Rating must be between 1 and 5", status=400)
+
+        existing_rating = Rating.objects.filter(book=book,user_id=request.user).first()
+        if existing_rating :
+            return Response("You have already rated this book.", status=400)
+        # if request.user in rating.user_id :
+        #     return Response("Already Exist", status=400)
+        serializer = RatingSerializer(data = {"rating" : rating})
+        if serializer.is_valid(raise_exception=True) :
+            serializer.save(user_id = request.user, book=book)
+            return Response(serializer.data, status=200)
+        return Response(status=400)
+
 
 
 class CommentListAPIView(APIView):
