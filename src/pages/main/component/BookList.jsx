@@ -62,7 +62,7 @@ const BookList = () => {
 
 
     if (loading) {
-        return <div>Loading...</div>; // 로딩 중일 때 표시할 컴포넌트
+        return <div>Loading...</div>; // 로딩 중일 때 컴포넌트
     }
 
     return (
