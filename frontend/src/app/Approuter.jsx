@@ -11,31 +11,13 @@ import SideLayout from '../widgets/layout/sideLayout/SideLayout';
 const AppRouter = () => {
     const { isLoggedIn } = useAuthStore();
 
-    const ProfileWithLayout = () => (
-        <SideLayout>
-            <Profile />
-        </SideLayout>
-    );
-
-    const MybooklistWithLayout = () => (
-        <SideLayout>
-            <Mybooklist />
-        </SideLayout>
-    );
-
-    const MybooklistWithCardDetail = () => (
-        <SideLayout>
-            <CardDetail />
-        </SideLayout>
-    );
-
     return (
         <Routes>
             <Route path="/" element={isLoggedIn ? <MainPage /> : <HomePage />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/profile" element={<ProfileWithLayout />} />
-            <Route path="/Mybooklist" element={<MybooklistWithLayout />} />
-            <Route path="/card/:id" element={<MybooklistWithCardDetail />} />
+            <Route path="/profile" element={<SideLayout><Profile /></SideLayout>} />
+            <Route path="/Mybooklist" element={<SideLayout><Mybooklist /></SideLayout>} />
+            <Route path="/card/:id" element={<SideLayout><CardDetail /></SideLayout>} />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     );

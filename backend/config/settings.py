@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
+    "corsheaders",
     # Custom
     "accounts",
     "books",
@@ -101,6 +102,36 @@ DATABASES = {
     }
 }
 
+# CORS
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+]
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
+
+APPEND_SLASH = False
+
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"
 
@@ -119,7 +150,7 @@ SIMPLE_JWT = {
 }
 
 # allauth
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+# ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -147,6 +178,7 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,
     "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
+    "LOGIN_SERIALIZER": "accounts.serializers.CustomLoginSerializer",
     "USER_DETAILS_SERIALIZER": "accounts.serializers.CustomUserDetailSerializer",
 }
 
@@ -175,8 +207,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # CORS
 CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:8000/',
-    'http://localhost:3000/',
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 

@@ -7,7 +7,7 @@ import axiosInstance from '../../../features/auth/AuthInstance';
 const SummaryGenerator = () => {
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
-    const { summary, bookId, recommendations, setSummary, setBookId } = useBookStore();
+    const { summary, bookId, recommendations, setSummary } = useBookStore();
     const [userText, setUserText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
