@@ -63,7 +63,6 @@
     color: #fff;
     padding: 1rem;
     text-align: left;
-    z-index: 2;
     transition: transform 0.3s ease;
 
     h1 {
@@ -83,12 +82,16 @@
     left: 0;
     right: 0;
     z-index: 2;
-    max-height: 4.5rem; // 2줄 높이
+    max-height: 6rem; // 2줄 높이
     overflow: hidden;
+
+    p {
+      margin: 0;
+    }
   }
 
   &:hover .card-header {
-    transform: translateY(-50%);
+    transform: translateY(-100%);
   }
 
   &:hover .card-content {
