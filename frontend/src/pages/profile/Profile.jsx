@@ -1,45 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
+import useAuthStore from '../../shared/store/AuthStore';
+import axiosInstance from '../../features/auth/AuthInstance'
 import EditProfileModal from './EditProfileModal';
+import LikeBookList from './LikeBookList';
 import './Profile.scss';
 
 const Profile = () => {
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
-
-  const [user, setUser] = useState({
-    name: "이름",
-    nickname: "네임",
-    email: "메일",
-    profilePicture: null,
-    likedPosts: [],
-    bookmarkedPosts: [],
-  });
+  const { userId, nickname, email, setNickname } = useAuthStore((state) => ({
+    userId: state.userId,
+    nickname: state.nickname,
+    email: state.email,
+    setNickname: state.setNickname,
+  }));
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('/api/accounts/login/', {
-          method: 'GET',
-          // 필요한 경우 헤더에 인증 토큰 등을 추가하세요
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser({
-            name: userData.name,
-            nickname: userData.nickname,
-            email: userData.email,
-          });
-        } else {
-          throw new Error('Failed to fetch user data');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
+    if (userId) {
+      setUser((prevUser) => ({
+        ...prevUser,
+        nickname: nickname,
+        email: email,
+      }));
+    }
+  }, [nickname, email, userId]);
 
-    fetchUserData();
-  }, []);
+  const [user, setUser] = useState({
+    nickname: nickname || "네임",
+    email: email || "메일",
+    profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s',
+    likedPosts: [],
+  });
 
   const handleDeleteAccount = () => {
     // 회원 탈퇴 로직
@@ -66,11 +58,26 @@ const Profile = () => {
   const openModal = () => { setModalOpen(true); };
   const closeModal = () => { setModalOpen(false); };
 
-  const handleSaveUserInfo = (editUser) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      ...editUser,
-    }));
+  const handleSaveUserInfo = async (editUser) => {
+    try {
+      const response = await axiosInstance.put('/api/accounts/profile/', {
+        nickname: editUser.nickname,
+      });
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        ...editUser,
+      }));
+
+      setNickname(editUser.nickname);
+
+      // 성공 시, 알림이나 추가 처리를 여기서 수행할 수 있습니다.
+      console.log("회원정보가 성공적으로 업데이트되었습니다.");
+    } catch (error) {
+      console.error('회원정보 업데이트 실패:', error);
+      // 실패 시, 사용자에게 알림을 제공할 수 있습니다.
+      alert('회원정보 업데이트에 실패했습니다.');
+    }
   };
 
   return (
@@ -94,7 +101,7 @@ const Profile = () => {
               onChange={handleProfilePictureChange}
             />
           </div>
-          <div style={{ color: currentTheme.buttonTextColor }}>
+          <div>
             <button onClick={() => document.getElementById('profilePictureInput').click()}>
               사진 업로드
             </button>
@@ -103,26 +110,24 @@ const Profile = () => {
 
         <div className="info">
           <div className="info-item">
-            <label>Username: {user.name}</label>
             <label>Nickname: {user.nickname}</label>
             <label>Email: {user.email}</label>
           </div>
 
           <button className="edit-account" onClick={openModal}>
             회원 정보 수정 </button>
+          <EditProfileModal user={user} isOpen={ModalOpen} onClose={closeModal} onSave={handleSaveUserInfo} />
           <button className="delete-account" onClick={handleDeleteAccount}>
             회원 탈퇴 </button>
         </div>
       </div>
 
       <div className="list">
-        <h2>찜한 게시글</h2>
-        <ul> {user.bookmarkedPosts.map((post, index) => (<li key={index}>{post.title}</li>))}</ul>
-        <h2>좋아요 표시한 게시글</h2>
-        <ul> {user.likedPosts.map((post, index) => (<li key={index}>{post.title}</li>))}</ul>
+        <h2>Liked Book List</h2>
+        <ul> <LikeBookList /> </ul>
       </div>
 
-      <EditProfileModal user={user} isOpen={ModalOpen} onClose={closeModal} onSave={handleSaveUserInfo} />
+      
     </div>
   );
 };
