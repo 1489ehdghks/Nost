@@ -6,19 +6,16 @@ const EditProfileModal = ({ user, isOpen, onClose, onSave }) => {
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
   
-  const [editedName, setEditedName] = useState('');
   const [editedNickname, setEditedNickname] = useState('');
 
   useEffect(() => {
     if (isOpen) {
-      setEditedName(user.name);
       setEditedNickname(user.nickname);
     }
   }, [isOpen, user]);
 
   const handleSave = () => {
     onSave({
-      name: editedName,
       nickname: editedNickname,
     });
     onClose();
@@ -32,8 +29,6 @@ const EditProfileModal = ({ user, isOpen, onClose, onSave }) => {
         <span className="close" onClick={onClose}> &times; </span>
         <h2>Edit Profile</h2>
         <div className="input-group">
-          <label htmlFor="name">Username</label>
-          <input type="text" id="name" value={editedName} onChange={(e) => setEditedName(e.target.value)}/>
           <label htmlFor="nickname">Nickname</label>
           <input type="text" id="nickname" value={editedNickname} onChange={(e) => setEditedNickname(e.target.value)}/>
         </div>

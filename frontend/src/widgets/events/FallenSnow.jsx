@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 class Snowflake {
     static defaultOptions = {
-        color: '#FFFFFF',
+        color: '#eceaeaf8',
         size: [2, 5],
         speed: [1, 2],
         wind: [-0.5, 0.5]

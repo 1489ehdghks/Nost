@@ -21,6 +21,13 @@ export const login = async (email, password) => {
         useAuthStore.getState().setUserId(data.user.id);
         useAuthStore.getState().setNickname(data.user.nickname);
         useAuthStore.getState().setEmail(data.user.email);
+        useAuthStore.getState().setUser({
+            id: data.user.id,
+            name: data.user.name,
+            nickname: data.user.nickname,
+            email: data.user.email,
+            profilePicture: data.user.profile_picture,
+        });
 
         console.log("11111로그인 성공:")
     } catch (err) {
