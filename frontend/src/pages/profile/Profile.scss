@@ -1,7 +1,10 @@
 .profile {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
+  height: 100vh; /* 높이를 뷰포트 높이에 맞추어 설정 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  scrollbar-width: none; /* 스크롤바 숨김 */
 
   .header {
     text-align: center;
@@ -15,6 +18,7 @@
 
   .content {
     display: flex;
+    max-width: 800px;
     justify-content: space-between;
     margin-bottom: 30px;
 
@@ -23,6 +27,7 @@
       flex-direction: column;
       align-items: center;
       margin-right: 20px;
+      margin-left: 130px;
 
       .profile-picture-box {
         width: 200px;
