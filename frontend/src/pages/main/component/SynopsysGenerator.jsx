@@ -4,7 +4,7 @@ import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import useBookStore from '../../../shared/store/BookStore';
 import useGlobalStore from '../../../shared/store/GlobalStore';
 import useThemeStore from '../../../shared/store/Themestore';
-import axios from 'axios';
+import axiosInstance from '../../../features/auth/AuthInstance';
 
 
 //프롬프트 끝에 "." 작성하지 마세요.
@@ -35,7 +35,7 @@ const settings = [
 ];
 
 const SynopsysGenerator = () => {
-    const { synopsis, setSynopsis } = useBookStore();
+    const { synopsis, bookId, setSynopsis, setSummary, setRecommendations, setBookId } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
@@ -84,7 +84,10 @@ const SynopsysGenerator = () => {
         try {
             console.log("requestData:", requestData)
             console.log("prompt:", requestData.prompt)
-            const response = await axios.post('http://127.0.0.1:8000/api/books/synopsys/', requestData);
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
+            console.log("generateSynopsis_response", response.data)
+            console.log("response.data.book_id", response.data.book_id)
+            useBookStore.getState().setBookId(response.data.book_id)
             setSynopsis(response.data.content);
         } catch (err) {
             setError(err.message);
@@ -98,7 +101,14 @@ const SynopsysGenerator = () => {
         setIsLoading(true);
         setError(null);
         try {
-            await axios.post('http://127.0.0.1:8000/api/books/summary/', { synopsis: additionalDetails });
+            console.log("additionalDetails222222:", additionalDetails)
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: additionalDetails });
+            setSummary(response.data.final_summary);
+            setRecommendations(response.data.recommendations);
+
+            console.log("data.content:", response.data.final_summary)
+            console.log("response:", response.data)
+            console.log("additionalDetails222222:", additionalDetails)
         } catch (err) {
             setError(err.message);
         } finally {
@@ -111,7 +121,7 @@ const SynopsysGenerator = () => {
     return (
         <div className="novel-generator section" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
             <h1>New Novel</h1>
-            <form onSubmit={generateSynopsis}>
+            <form onSubmit={generateSynopsis} style={{ paddingBottom: '3%' }}>
                 <div className="user-inputs">
                     <div className="userSelection">
                         <div className="button-group">

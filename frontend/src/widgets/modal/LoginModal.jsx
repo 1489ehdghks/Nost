@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../features/auth/LoginInstance';
 import { signup } from '../../features/auth/SignupInstance';
 import useGlobalStore from '../../shared/store/GlobalStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './LoginModal.scss';
 
@@ -11,8 +13,11 @@ import './LoginModal.scss';
 const LoginModal = ({ onClose }) => {
     const [isLoginFormActive, setLoginFormActive] = useState(true);
     const [loginInputs, setLoginInputs] = useState({ email: '', password: '' });
+    const [loginErrors, setLoginErrors] = useState({});
     const [signupInputs, setSignupInputs] = useState({ nickname: '', email: '', password1: '', password2: '' });
+    const [signupErrors, setSignupErrors] = useState({});
     const isLoading = useGlobalStore(state => state.isLoading);
+    const globalError = useGlobalStore(state => state.error);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const navigate = useNavigate();
 
@@ -30,6 +35,12 @@ const LoginModal = ({ onClose }) => {
         };
     }, [onClose]);
 
+    useEffect(() => {
+        if (signupSuccess) {
+            toast.success("회원가입 성공! 로그인해주세요.");
+        }
+    }, [signupSuccess]);
+
 
     const handleLoginInputChange = (event) => {
         const { name, value } = event.target;
@@ -43,33 +54,42 @@ const LoginModal = ({ onClose }) => {
 
     const handleLoginSubmit = async (event) => {
         event.preventDefault();
+        setLoginErrors({});
         await login(loginInputs.email, loginInputs.password);
-        navigate('/');
+        if (globalError) {
+            const errors = {};
+            if (globalError.includes('email')) {
+                errors.email = globalError;
+            } else if (globalError.includes('password')) {
+                errors.password = globalError;
+            } else {
+                errors.non_field_errors = globalError;
+            }
+            setLoginErrors(errors);
+        } else {
+            navigate('/');
+        }
     };
 
 
     const handleSignupSubmit = async (event) => {
         event.preventDefault();
+        setSignupErrors({});
         if (signupInputs.password1 !== signupInputs.password2) {
-            console.error('Passwords do not match');
+            setSignupErrors({ password2: ['Passwords do not match'] });
             return;
         }
-        const success = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-        if (success) {
-            setSignupSuccess(true);
-            setLoginFormActive(true);
-        }
+        const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
+        setSignupSuccess(true);
+        setLoginFormActive(true);
     };
-
 
     return (
         <div className="modalOverlay">
+            <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-                {signupSuccess && <div className="signup-success">회원가입 성공! 로그인해주세요.</div>}
-
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
-
                         {/* 로그인 왼쪽 */}
                         <div className="user_options-unregistered">
                             <h2 className="user_unregistered-title">Don't have an account?</h2>
@@ -108,6 +128,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleLoginInputChange}
                                         disabled={isLoading}
                                     />
+                                    {loginErrors.email && <div className="error-message">{loginErrors.email}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -120,13 +141,14 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleLoginInputChange}
                                         disabled={isLoading}
                                     />
+                                    {loginErrors.password && <div className="error-message">{loginErrors.password}</div>}
                                 </div>
                             </fieldset>
                             <div className="forms_buttons">
                                 <button type="button" className="forms_buttons-forgot" disabled={isLoading}>Forgot password?</button>
                                 <input type="submit" value="Log In" className="forms_buttons-action" disabled={isLoading} />
                             </div>
-                            {isLoading && <div>Loading...</div>}
+                            {loginErrors.non_field_errors && <div className="error-message">{loginErrors.non_field_errors}</div>}
                         </form>
                         <div className="social-login-buttons">
                             <button className="social-button google-login">
@@ -158,6 +180,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.nickname && <div className="error-message">{signupErrors.nickname}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -170,6 +193,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.email && <div className="error-message">{signupErrors.email}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -182,6 +206,7 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.password1 && <div className="error-message">{signupErrors.password1}</div>}
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -194,12 +219,13 @@ const LoginModal = ({ onClose }) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
+                                    {signupErrors.password2 && <div className="error-message">{signupErrors.password2}</div>}
                                 </div>
                             </fieldset>
                             <div className="forms_buttons">
                                 <input type="submit" value="Sign Up" className="forms_buttons-action" disabled={isLoading} />
                             </div>
-                            {isLoading && <div>Loading...</div>}
+                            {signupErrors.non_field_errors && <div className="error-message">{signupErrors.non_field_errors}</div>}
                         </form>
                     </div>
                 </div>

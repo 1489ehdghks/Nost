@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
-import './ProfilePage.scss';
+import EditProfileModal from './EditProfileModal';
+import './Profile.scss';
 
-const ProfilePage = () => {
+const Profile = () => {
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
 
   const [user, setUser] = useState({
-    name: null,
-    nickname: null,
-    email: null,
+    name: "이름",
+    nickname: "네임",
+    email: "메일",
     profilePicture: null,
     likedPosts: [],
     bookmarkedPosts: [],
@@ -59,6 +60,19 @@ const ProfilePage = () => {
     }
   };
 
+  // 회원수정 모달
+  const [ModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => { setModalOpen(true); };
+  const closeModal = () => { setModalOpen(false); };
+
+  const handleSaveUserInfo = (editUser) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...editUser,
+    }));
+  };
+
   return (
     <div className="profile" style={{ color: currentTheme.textColor }}>
       <div className="header">
@@ -89,46 +103,28 @@ const ProfilePage = () => {
 
         <div className="info">
           <div className="info-item">
-            <label>Username:</label>
-            <span>{user.name}</span>
+            <label>Username: {user.name}</label>
+            <label>Nickname: {user.nickname}</label>
+            <label>Email: {user.email}</label>
           </div>
-          <div className="info-item">
-            <label>Nickname:</label>
-            <span>{user.nickname}</span>
-          </div>
-          <div className="info-item">
-            <label>Email:</label>
-            <span>{user.email}</span>
-          </div>
-          <button className="edit-account" onClick={handleDeleteAccount}>
-            회원 정보 수정
-          </button>
-          <button className="delete-account" onClick={handleDeleteAccount}>
-            회원 탈퇴
-          </button>
-        </div>
 
-      </div>
-      <div className="lists">
-        <div className="list">
-          <h2>찜한 게시글</h2>
-          <ul>
-            {user.bookmarkedPosts.map((post, index) => (
-              <li key={index}>{post.title}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="list">
-          <h2>좋아요 표시한 게시글</h2>
-          <ul>
-            {user.likedPosts.map((post, index) => (
-              <li key={index}>{post.title}</li>
-            ))}
-          </ul>
+          <button className="edit-account" onClick={openModal}>
+            회원 정보 수정 </button>
+          <button className="delete-account" onClick={handleDeleteAccount}>
+            회원 탈퇴 </button>
         </div>
       </div>
+
+      <div className="list">
+        <h2>찜한 게시글</h2>
+        <ul> {user.bookmarkedPosts.map((post, index) => (<li key={index}>{post.title}</li>))}</ul>
+        <h2>좋아요 표시한 게시글</h2>
+        <ul> {user.likedPosts.map((post, index) => (<li key={index}>{post.title}</li>))}</ul>
+      </div>
+
+      <EditProfileModal user={user} isOpen={ModalOpen} onClose={closeModal} onSave={handleSaveUserInfo} />
     </div>
   );
 };
 
-export default ProfilePage;
+export default Profile;

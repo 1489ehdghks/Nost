@@ -7,6 +7,7 @@ import './MainPage.scss';
 
 const MainPage = () => {
   const containerRef = useRef(null);
+
   const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const MainPage = () => {
 
   return (
     <SideLayout>
-      <div className="page-container" ref={containerRef}>
+      <div className="page-container" ref={containerRef} style={{}}>
         <BookList />
         <SynopsysGenerator />
         <SummaryGenerator />
