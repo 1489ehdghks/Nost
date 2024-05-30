@@ -1,7 +1,7 @@
 .page-container {
     display: flex; //플렉스 컨테이너로 설정
     flex-direction: column; // 플렉스를 세로방향으로 배치
-    height: 300vh; //컨테이너 높이 300%로 설정
+    height: 400vh; //컨테이너 높이 300%로 설정
     overflow-y: auto; //수직 오버플로우 자동으로 처리
     scroll-snap-type: y mandatory; //수직 스냅 강제함
 }

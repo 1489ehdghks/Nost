@@ -1,0 +1,50 @@
+// body {
+//     background: linear-gradient(#ccc, #fff);
+//     font: 14px sans-serif;
+//     padding: 20px;
+// }
+
+.SynopsysResult-letter {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 26px auto 0;
+    max-width: 550px;
+    min-height: 300px;
+    padding: 24px;
+    position: relative;
+    width: 80%;
+}
+
+.SynopsysResult-letter:before,
+.SynopsysResult-letter:after {
+    content: "";
+    height: 98%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+}
+
+.SynopsysResult-letter:before {
+    background: #fafafa;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    left: -5px;
+    top: 4px;
+    transform: rotate(-2.5deg);
+}
+
+.SynopsysResult-letter:after {
+    background: #f6f6f6;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    right: -3px;
+    top: 1px;
+    transform: rotate(1.4deg);
+}
+
+.SynopsysResult-letter p {
+    margin: 1em 0;
+}
+
+.SynopsysResult-letter strong {
+    display: block;
+    margin-top: 1em;
+}

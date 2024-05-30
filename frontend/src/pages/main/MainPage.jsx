@@ -3,6 +3,7 @@ import SideLayout from '../../widgets/layout/sideLayout/SideLayout';
 import BookList from './component/BookList';
 import SynopsysGenerator from './component/SynopsysGenerator';
 import SummaryGenerator from './component/SummaryGenerator';
+import SynopsysResult from './component/SynopsysResult';
 import './MainPage.scss';
 
 const MainPage = () => {
@@ -50,6 +51,7 @@ const MainPage = () => {
       <div className="page-container" ref={containerRef} style={{}}>
         <BookList />
         <SynopsysGenerator />
+        <SynopsysResult />
         <SummaryGenerator />
       </div>
     </SideLayout>

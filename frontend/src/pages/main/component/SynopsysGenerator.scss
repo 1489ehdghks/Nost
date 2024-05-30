@@ -12,6 +12,7 @@
         .userSelection {
             display: flex;
             flex-direction: column;
+
             .button-group {
                 .toggle-switch {
                     display: flex;
@@ -66,39 +67,6 @@
                 }
             }
         }
-        .details-container {
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-
-            .styled-textarea {
-                border: 2px solid #ccc;
-                padding: 10px;
-                font-family: "Arial", sans-serif;
-                font-size: 14px;
-                width: 60vw;
-                height: 140px;
-                border-radius: 4px;
-                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-                resize: vertical;
-            }
-
-            .button-row {
-                display: flex;
-                margin-top: 10px;
-                justify-content: space-between;
-                width: 100%;
-
-                button {
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-            }
-        }
 
         .error {
             color: red;
@@ -106,7 +74,11 @@
         }
     }
 
-    .summary-button {
-        margin-left: auto;
+    .generate-button {
+        position: absolute;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
 }

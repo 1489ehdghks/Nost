@@ -15,6 +15,32 @@ const genres = [
     { label: '미스터리', prompt: 'Mystery novels revolve around solving a crime or uncovering secrets.' },
     { label: '공상과학', prompt: 'Science fiction novels explore futuristic concepts, advanced technology, and space exploration' },
     { label: '역사', prompt: 'Historical novels are set in the past and often include real historical events and figures' },
+    { label: '드라마', prompt: 'Drama novels explore realistic characters and emotional themes' },
+    { label: '액션', prompt: 'Action novels are characterized by fast-paced sequences and physical feats' },
+    { label: '모험', prompt: 'Adventure novels often involve a quest or journey with exciting experiences' },
+    { label: '코미디', prompt: 'Comedy novels focus on humor and entertaining situations' },
+    { label: '미션', prompt: 'Mission novels involve characters undertaking specific tasks or goals' },
+    { label: '게임', prompt: 'Game novels are centered around video games or game-like scenarios' },
+    { label: '헌터', prompt: 'Hunter novels involve characters who hunt monsters or criminals' },
+    { label: '성좌', prompt: 'Constellation novels feature characters related to stars or celestial themes' },
+    { label: '무협', prompt: 'Martial arts novels focus on martial arts, usually in an Eastern setting' },
+    { label: '아포칼립스', prompt: 'Apocalypse novels deal with end-of-the-world scenarios' },
+    { label: '회귀', prompt: 'Regression novels involve characters who go back in time to relive events' },
+    { label: '공포', prompt: 'Horror novels are designed to scare and unsettle the reader' },
+    { label: '일상', prompt: 'Slice of life novels depict ordinary life events and relationships' },
+];
+
+const genresDetail = [
+    { label: '좀비', prompt: 'Zombie novels feature the undead, usually as antagonists' },
+    { label: '인터넷방송', prompt: 'Internet broadcasting novels involve characters who stream or create online content' },
+    { label: '기업', prompt: 'Corporate novels focus on business and corporate environments' },
+    { label: '직업', prompt: 'Career novels explore the professional lives and careers of characters' },
+    { label: '연예계', prompt: 'Entertainment industry novels center around celebrities and showbiz' },
+    { label: '악녀', prompt: 'Villainess novels feature female antagonists or morally grey characters' },
+    { label: '피폐', prompt: 'Dark novels focus on themes of despair and suffering' },
+    { label: '육아', prompt: 'Parenting novels explore the challenges and joys of raising children' },
+    { label: '성인', prompt: 'Adult novels feature mature themes and content' },
+    { label: '사이버펑크', prompt: 'Cyberpunk novels depict futuristic, dystopian worlds dominated by technology' },
 ];
 
 const eras = [
@@ -25,36 +51,19 @@ const eras = [
     { label: '미래', prompt: 'Future era novels speculate about future societies, technologies, and events' },
 ];
 
-const settings = [
-    { label: 'Magic', prompt: 'Magic' },
-    { label: 'Space Travel', prompt: 'Space Travel' },
-    { label: 'Time Travel', prompt: 'Time Travel' },
-    { label: 'Alternate Reality', prompt: 'Alternate Reality' },
-    { label: 'Post-Apocalyptic', prompt: 'Post-Apocalyptic' },
-    { label: 'Supernatural', prompt: 'Supernatural' },
-];
+
 
 const SynopsysGenerator = () => {
-    const { synopsis, bookId, setSynopsis, setSummary, setRecommendations, setBookId } = useBookStore();
+    const { setSynopsis, setBookId, setTitle, setGenre, setTheme, setTone, setSetting, setCharacters } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
-
-    const [additionalDetails, setAdditionalDetails] = useState('');
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedEra, setSelectedEra] = useState('');
     const [showGenres, setShowGenres] = useState(true);
     const [showEras, setShowEras] = useState(true);
     const [showSettings, setShowSettings] = useState(true);
     const [specialSettings, setSpecialSettings] = useState([]);
-
-    useEffect(() => {
-        if (synopsis) {
-            setAdditionalDetails(synopsis);
-        }
-    }, [synopsis]);
-
-    const handleDetailsChange = (e) => setAdditionalDetails(e.target.value);
 
     const handleGenreChange = (prompt) => {
         setSelectedGenres((prev) => prev.includes(prompt) ? prev.filter((g) => g !== prompt) : [...prev, prompt]);
@@ -74,7 +83,7 @@ const SynopsysGenerator = () => {
         setError(null);
 
         const formattedDetails = `
-            ${selectedGenres.join(', ')},${selectedEra},${specialSettings.join(', ')},${additionalDetails}
+            ${selectedGenres.join(', ')},${selectedEra},${specialSettings.join(', ')}
         `;
 
         const requestData = {
@@ -82,40 +91,21 @@ const SynopsysGenerator = () => {
         };
 
         try {
-            console.log("requestData:", requestData)
-            console.log("prompt:", requestData.prompt)
             const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
-            console.log("generateSynopsis_response", response.data)
-            console.log("response.data.book_id", response.data.book_id)
-            useBookStore.getState().setBookId(response.data.book_id)
-            setSynopsis(response.data.content);
+            setBookId(response.data.book_id);
+            setSynopsis(response.data.content.synopsis);
+            setTitle(response.data.content.title);
+            setGenre(response.data.content.genre);
+            setTheme(response.data.content.theme);
+            setTone(response.data.content.tone);
+            setSetting(response.data.content.setting);
+            setCharacters(response.data.content.characters);
         } catch (err) {
             setError(err.message);
         } finally {
             setIsLoading(false);
         }
     };
-
-    const submitSummary = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError(null);
-        try {
-            console.log("additionalDetails222222:", additionalDetails)
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: additionalDetails });
-            setSummary(response.data.final_summary);
-            setRecommendations(response.data.recommendations);
-
-            console.log("data.content:", response.data.final_summary)
-            console.log("response:", response.data)
-            console.log("additionalDetails222222:", additionalDetails)
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     const buttonClass = (selected, current) => selected.includes(current) ? 'selected' : '';
 
     return (
@@ -181,7 +171,7 @@ const SynopsysGenerator = () => {
                             </div>
                             {showSettings && (
                                 <div className="buttons">
-                                    {settings.map(({ label, prompt }) => (
+                                    {genresDetail.map(({ label, prompt }) => (
                                         <button
                                             key={label}
                                             type="button"
@@ -200,27 +190,11 @@ const SynopsysGenerator = () => {
                             )}
                         </div>
                     </div>
-                    <div className="details-container">
-                        <textarea
-                            placeholder="Result (editable)"
-                            value={additionalDetails}
-                            onChange={handleDetailsChange}
-                            className="styled-textarea"
-                            style={{ backgroundColor: currentTheme.secondary, color: currentTheme.textColor }}
-                        ></textarea>
-                        <div className="button-row">
-                            <button type="submit" style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
-                                {isLoading ? 'Generating...' : 'Generate Synopsis'}
-                            </button>
-
-                            {additionalDetails && (
-                                <button onClick={submitSummary} className="summary-button" type="submit" style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
-                                    Submit Summary
-                                </button>
-                            )}
-                        </div>
+                    <div className="button-row">
+                        <button className="generate-button" type="submit" style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
+                            {isLoading ? 'Generating...' : 'Generate Synopsis'}
+                        </button>
                     </div>
-                    {error && <p className="error">{error}</p>}
                 </div>
             </form>
         </div>
