@@ -113,17 +113,20 @@ def synopsis_generator(user_prompt):
             elif line.startswith("Setting:"):
                 data["setting"] = line.split("Setting:", 1)[1].strip()
                 current_key = "setting"
-            elif line.startswith("Summary:"):
-                data["synopsis"] = line.split("Summary:", 1)[1].strip()
-                current_key = "synopsis"
-            elif current_key == "synopsis":
-                data["synopsis"] += " " + line
+
 
             elif line.startswith("Characters:"):
                 data["characters"] = line.split("Characters:", 1)[1].strip()
                 current_key = "characters"
             elif current_key == "characters":
                 data["characters"] += " " + line
+            elif line.startswith("Summary:"):
+                data["synopsis"] = line.split("Summary:", 1)[1].strip()
+                current_key = "synopsis"
+            elif current_key == "synopsis":
+                data["synopsis"] += " " + line
+
+
         return data
     except Exception as e:
         logging.error(f"Error parsing synopsis response: {e}")
