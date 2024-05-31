@@ -1,4 +1,4 @@
-.card-detail {
+.book-detail {
   display: flex;
   justify-content: space-between;
   padding: 20px;
@@ -15,32 +15,25 @@
   background-color: #ffcccc; // example color
   border-radius: 10px;
   margin-bottom: 50px;
+  
+  h1 {
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
 }
-
-.summary h1 {
-  margin-bottom: 10px;
-}
-
-.summary img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.summary p {
-  font-size: 16px;
-  line-height: 1.5;
-}
-
 
 .comment-box {
   flex: 1;
   margin-left: 50px;
   margin-bottom: 50px;
-}
-
-.comment-box h2 {
-  margin-bottom: 10px;
+  
+  h2 {
+    margin-bottom: 10px;
+  }
 }
 
 .comments {
@@ -51,21 +44,21 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: 10px;
+  
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
 }
 
-.comment img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.comment p {
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.card-detail textarea {
+.book-detail textarea {
   width: 95%;
   height: auto;
   padding: 10px;
@@ -76,7 +69,7 @@
   scrollbar-width: none; /* 스크롤바 안보임 */
 }
 
-.card-detail button {
+.book-detail button {
   padding: 10px 20px;
   color: #fff;
   border: none;

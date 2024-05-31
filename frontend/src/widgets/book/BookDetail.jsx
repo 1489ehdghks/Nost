@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import useThemeStore from '../../shared/store/Themestore';
 import './BookDetail.scss';
@@ -7,72 +8,36 @@ const BookDetail = () => {
   const { id } = useParams();
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
-  
-  // 예시 데이터
-  const cardData = {
-    1: {
-      image: 'https://images.unsplash.com/photo-1479660656269-197ebb83b540?dpr=2&auto=compress,format&fit=crop&w=1199&h=798&q=80&cs=tinysrgb&crop=',
-      header: 'Canyons',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.',
-      comments: [
-        { user: 'User1', text: 'This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
-        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
-        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
-        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
-        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
-        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' },
-        { user: 'User1', text: 'This is a comment about Canyons.', date: 'March 5th, 2014' },
-        { user: 'User2', text: 'Amazing view!', date: 'March 6th, 2014' }
-      ]
-    },
-    2: {
-      image: 'https://images.unsplash.com/photo-1479659929431-4342107adfc1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=',
-      header: 'Beaches',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.',
-      comments: [
-        { user: 'User3', text: 'Beaches are my favorite!', date: 'March 7th, 2014' },
-        { user: 'User4', text: 'Beautiful!', date: 'March 8th, 2014' }
-      ]
-    },
-    3: {
-      image: 'https://images.unsplash.com/photo-1479644025832-60dabb8be2a1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=',
-      header: 'Trees',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.',
-      comments: [
-        { user: 'User5', text: 'I love trees!', date: 'March 9th, 2014' },
-        { user: 'User6', text: 'So green!', date: 'March 10th, 2014' }
-      ]
-    },
-    4: {
-      image: 'https://images.unsplash.com/photo-1479621051492-5a6f9bd9e51a?dpr=2&auto=compress,format&fit=crop&w=1199&h=811&q=80&cs=tinysrgb&crop=',
-      header: 'Lakes',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eaque.',
-      comments: [
-        { user: 'User7', text: 'Lakes are so peaceful.', date: 'March 11th, 2014' },
-        { user: 'User8', text: 'I want to visit this lake.', date: 'March 12th, 2014' }
-      ]
-    }
-  };
+  const [bookData, setBookData] = useState(null);
+  const [comments, setComments] = useState([]);
 
-  const card = cardData[id];
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
+      .then(response => {
+        setBookData(response.data);
+        setComments(response.data.comments || []); // 댓글이 없을 경우 빈 배열로 초기화
+      })
+      .catch(error => {
+        console.error('Error fetching book data:', error);
+      });
+  }, [id]);
 
   return (
-    <div className="card-detail" style={{ color: currentTheme.textColor }}>
-      <div className="summary">
-        <h1>{card.header}</h1>
-        {/* <img src={card.image}/> */}
-        <p>{card.content}</p>
-      </div>
-      <div className="comment-box" >
+    <div className="book-detail" style={{ color: currentTheme.textColor }}>
+      {bookData && (
+        <div className="summary">
+          <h1>{bookData.title}</h1>
+          {/* <img src={bookData.image} alt={bookData.header} /> */}
+          {/* <p>{bookData.content}</p> */}
+          <p>{bookData.user_id}</p>
+          <p>{bookData.is_liked.length}</p>  {/* 배열의 길이로 좋아요 수 출력 */}
+          <p>{bookData.average_rating}</p>
+        </div>
+      )}
+      <div className="comment-box">
         <h2>Comment Box</h2>
         <div className="comments">
-          {card.comments.map((comment, index) => (
+          {comments.map((comment, index) => (
             <div className="comment" key={index}>
               <img src="https://via.placeholder.com/50" alt="User" />
               <p>{comment.text} <br />{comment.user} <small>on {comment.date}</small></p>
