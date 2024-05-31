@@ -73,6 +73,14 @@ const BookDetail = () => {
     }
   };
 
+  const buttonStyle = {
+    backgroundColor: 'transparent',
+    border: `1.5px solid ${currentTheme.buttonBackgroundColor}`,
+    color: currentTheme.textColor,
+    marginLeft: '5px'
+};
+
+
   return (
     <div className="bookdetail" style={{ color: currentTheme.buttonTextColor }}>
       {bookData && (
@@ -89,24 +97,30 @@ const BookDetail = () => {
         <div className="comments">
           {comments.map((comment) => (
             <div className="comment" key={comment.id}>
-              <img src="https://via.placeholder.com/50" alt="User" />
-              <p>{comment.content} <br />{comment.user_nickname} <small>on {comment.created_at}</small></p>
-              <button onClick={() => {
-                setEditingCommentId(comment.id);
-                setUpdatedContent(comment.content);
-              }}>Edit</button>
-              <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-              {editingCommentId === comment.id && (
-                <div className="comment-edit">
-                  <textarea
-                    value={updatedContent}
-                    onChange={(e) => setUpdatedContent(e.target.value)}
-                  ></textarea>
-                  <button onClick={() => handleEditComment(comment.id, updatedContent)}>Save</button>
-                  <button onClick={() => setEditingCommentId(null)}>Cancel</button>
-                </div>
-              )}
+            <div className="comment-avatar" style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor}}>
+              {comment.user_nickname.charAt(0).toUpperCase()}
             </div>
+            <div className="comment-content">
+              <p>{comment.content} </p>
+              <p style={{ color: currentTheme.sidebarBg }}>{comment.user_nickname} <n/>
+                <small>on {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</small>
+              </p>
+              <div>
+                <button style={buttonStyle} onClick={() => { setEditingCommentId(comment.id); setUpdatedContent(comment.content);}}>Edit</button>
+                <button style={buttonStyle} onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                {editingCommentId === comment.id && (
+                  <div>
+                    <textarea
+                      value={updatedContent}
+                      onChange={(e) => setUpdatedContent(e.target.value)}
+                    ></textarea>
+                    <button style={buttonStyle} onClick={() => handleEditComment(comment.id, updatedContent)}>Save</button>
+                    <button style={buttonStyle} onClick={() => setEditingCommentId(null)}>Cancel</button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
           ))}
         </div>
         <textarea
