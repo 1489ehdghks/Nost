@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import useThemeStore from '../../shared/store/Themestore';
-import './CardDetail.scss';
+import './BookDetail.scss';
 
-const CardDetail = () => {
+const BookDetail = () => {
   const { id } = useParams();
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
@@ -86,4 +86,4 @@ const CardDetail = () => {
   );
 };
 
-export default CardDetail;
+export default BookDetail;

@@ -127,7 +127,6 @@ const Mybooklist = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 8;
-  const navigate = useNavigate();
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -158,9 +157,9 @@ const Mybooklist = () => {
     return pages;
   };
 
-
+  const navigate = useNavigate();
   const handleCardClick = (id) => {
-    navigate(`/card/${id}`);
+    navigate(`/book/${id}`);
   };
 
   return (
