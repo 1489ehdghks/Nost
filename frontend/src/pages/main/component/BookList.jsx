@@ -104,7 +104,7 @@ const BookList = () => {
                     {currentBooks.map((book) => (
                         <tr key={book.id} onClick={() => handleBookClick(book.id)}>
                             <td>{book.title}</td>
-                            <td>{book.user_id}</td>
+                            <td>{book.user_nickname}</td>
                             <td>{book.is_liked.length}</td>  {/* 배열의 길이로 좋아요 수 출력 */}
                             <td>{book.average_rating}</td>
                             <td>{new Date(book.created_at).toLocaleDateString()}</td>
