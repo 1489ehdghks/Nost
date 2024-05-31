@@ -12,7 +12,7 @@ const BookDetail = () => {
   const [bookData, setBookData] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [editingComment, setEditingComment] = useState(null);
+  const [editingCommentId, setEditingCommentId] = useState(null);
   const [updatedContent, setUpdatedContent] = useState('');
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const BookDetail = () => {
       });
 
       setComments(comments.map(comment => comment.id === commentId ? response.data : comment));
-      setEditingComment(null);
+      setEditingCommentId(null);
       setUpdatedContent('');
     } catch (error) {
       console.error('Error editing comment:', error);
@@ -74,48 +74,47 @@ const BookDetail = () => {
   };
 
   return (
-    <div className="book-detail" style={{ color: currentTheme.textColor }}>
+    <div className="bookdetail" style={{ color: currentTheme.buttonTextColor }}>
       {bookData && (
         <div className="summary" style={{ backgroundColor: currentTheme.buttonBackgroundColor }}>
           <h1>{bookData.title}</h1>
           {/* <img src={bookData.image} alt={bookData.header} /> */}
           {/* <p>{bookData.content}</p> */}
-          <p>{bookData.user_nickname}</p>
-          <p>{bookData.is_liked.length}</p>  {/* 배열의 길이로 좋아요 수 출력 */}
-          <p>{bookData.average_rating}</p>
+          <h3>Author : {bookData.user_nickname}</h3>
+          <p>❤️ {bookData.is_liked.length} ⭐ {bookData.average_rating}/5</p>  {/* 배열의 길이로 좋아요 수 출력 */}
         </div>
       )}
-      <div className="comment-box">
+      <div className="comment-box" style={{ color: currentTheme.textColor }}>
         <h2>Comment Box</h2>
         <div className="comments">
-          {comments.map((comment, index) => (
-            <div className="comment" key={index}>
+          {comments.map((comment) => (
+            <div className="comment" key={comment.id}>
               <img src="https://via.placeholder.com/50" alt="User" />
               <p>{comment.content} <br />{comment.user_nickname} <small>on {comment.created_at}</small></p>
               <button onClick={() => {
-                setEditingComment(comment.id);
+                setEditingCommentId(comment.id);
                 setUpdatedContent(comment.content);
               }}>Edit</button>
               <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+              {editingCommentId === comment.id && (
+                <div className="comment-edit">
+                  <textarea
+                    value={updatedContent}
+                    onChange={(e) => setUpdatedContent(e.target.value)}
+                  ></textarea>
+                  <button onClick={() => handleEditComment(comment.id, updatedContent)}>Save</button>
+                  <button onClick={() => setEditingCommentId(null)}>Cancel</button>
+                </div>
+              )}
             </div>
           ))}
         </div>
-        {editingComment && (
-          <div>
-            <textarea
-              value={updatedContent}
-              onChange={(e) => setUpdatedContent(e.target.value)}
-            ></textarea>
-            <button onClick={() => handleEditComment(editingComment, updatedContent)}>Save</button>
-            <button onClick={() => setEditingComment(null)}>Cancel</button>
-          </div>
-        )}
         <textarea
           placeholder="Your comments"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         ></textarea>
-        <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
+        <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor, marginBottom: '150px' }}
           onClick={handleAddComment}> Add </button>
       </div>
     </div>

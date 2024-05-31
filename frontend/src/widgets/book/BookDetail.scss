@@ -1,9 +1,8 @@
-.book-detail {
+.bookdetail {
   display: flex;
   justify-content: space-between;
   padding: 20px;
   margin-top: 50px;
-
   height: 100%; // 화면 전체 높이 설정
   overflow: auto; //스크롤 활성화
   scrollbar-width: none; /* 스크롤바 안보임 */
@@ -16,9 +15,15 @@
   background-color: inherit;
   border-radius: 10px;
   margin-bottom: 100px;
-  
+
   h1 {
     margin-bottom: 10px;
+  }
+
+  h3, p {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
   }
   
   p {
@@ -34,6 +39,31 @@
   
   h2 {
     margin-bottom: 10px;
+  }
+
+  textarea {
+    width: 95%;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none; /* 사용자가 크기를 조절하지 못하도록 설정합니다. */
+    scrollbar-width: none; /* 스크롤바 안보임 */
+  }
+  
+  button {
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    // margin-left: auto;
+    // display: flex;
+  
+    &:hover {
+      background-color: #eceaea !important;
+    }
   }
 }
 
@@ -59,28 +89,17 @@
   }
 }
 
-.book-detail textarea {
-  width: 95%;
-  height: auto;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  resize: none; /* 사용자가 크기를 조절하지 못하도록 설정합니다. */
-  scrollbar-width: none; /* 스크롤바 안보임 */
-}
+.comment-edit {
 
-.book-detail button {
-  padding: 10px 20px;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 150px;
-  // margin-left: auto;
-  // display: flex;
-
-  &:hover {
-    background-color: #eceaea !important;
+  button {
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: #eceaea !important;
+    }
   }
 }
