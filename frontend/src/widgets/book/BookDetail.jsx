@@ -12,20 +12,30 @@ const BookDetail = () => {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
+    // 책 데이터를 가져오는 API 요청
     axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
-        setComments(response.data.comments || []); // 댓글이 없을 경우 빈 배열로 초기화
       })
       .catch(error => {
         console.error('Error fetching book data:', error);
+      });
+
+    // 댓글 데이터를 가져오는 API 요청
+    axios.get(`http://127.0.0.1:8000/api/books/${id}/comments/`)
+      .then(response => {
+        setComments(response.data || []); // 댓글이 없을 경우 빈 배열로 초기화
+        console.error('comments:', response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching comments:', error);
       });
   }, [id]);
 
   return (
     <div className="book-detail" style={{ color: currentTheme.textColor }}>
       {bookData && (
-        <div className="summary">
+        <div className="summary" style={{ backgroundColor: currentTheme.buttonBackgroundColor }}>
           <h1>{bookData.title}</h1>
           {/* <img src={bookData.image} alt={bookData.header} /> */}
           {/* <p>{bookData.content}</p> */}
@@ -40,7 +50,7 @@ const BookDetail = () => {
           {comments.map((comment, index) => (
             <div className="comment" key={index}>
               <img src="https://via.placeholder.com/50" alt="User" />
-              <p>{comment.text} <br />{comment.user} <small>on {comment.date}</small></p>
+              <p>{comment.content} <br />{comment.id} <small>on {comment.created_at}</small></p>
             </div>
           ))}
         </div>

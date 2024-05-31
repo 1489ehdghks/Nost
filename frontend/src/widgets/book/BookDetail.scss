@@ -3,6 +3,7 @@
   justify-content: space-between;
   padding: 20px;
   margin-top: 50px;
+
   height: 100%; // 화면 전체 높이 설정
   overflow: auto; //스크롤 활성화
   scrollbar-width: none; /* 스크롤바 안보임 */
@@ -12,9 +13,9 @@
   flex: 1.5;
   margin-right: 20px;
   padding: 20px;
-  background-color: #ffcccc; // example color
+  background-color: inherit;
   border-radius: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   
   h1 {
     margin-bottom: 10px;
