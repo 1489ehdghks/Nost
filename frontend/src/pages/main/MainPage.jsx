@@ -8,7 +8,6 @@ import './MainPage.scss';
 
 const MainPage = () => {
   const containerRef = useRef(null);
-
   const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const MainPage = () => {
   }, [currentSection]);
 
   const navigateToNext = () => {
-    if (currentSection < 2) {
+    if (currentSection < 3) {
       setCurrentSection(currentSection + 1);
       const sections = containerRef.current.querySelectorAll('.section');
       sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
@@ -48,10 +47,10 @@ const MainPage = () => {
 
   return (
     <SideLayout>
-      <div className="page-container" ref={containerRef} style={{}}>
+      <div className="page-container" ref={containerRef}>
         <BookList />
-        <SynopsysGenerator />
-        <SynopsysResult />
+        <SynopsysGenerator onComplete={navigateToNext} />
+        <SynopsysResult onComplete={navigateToNext} />
         <SummaryGenerator />
       </div>
     </SideLayout>

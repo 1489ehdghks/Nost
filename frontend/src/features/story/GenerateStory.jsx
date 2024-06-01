@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import useStore from './store/StateStore';
 import { initialStoryInfo, initialStoryState, initialContestState } from './store/InitialState';
+import useGlobalStore from '../../shared/store/GlobalStore';
 
 const GenerateStory = () => {
     const [prompt, setPrompt] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { setCurrentStory, addStory, currentStory } = useStore();
-    const [error, setError] = useState(null);
+
 
     const handleGenerate = async () => {
         if (!prompt) return;
