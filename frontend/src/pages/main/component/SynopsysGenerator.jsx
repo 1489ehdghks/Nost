@@ -47,7 +47,7 @@ const details = [
 ];
 
 const SynopsysGenerator = ({ onComplete }) => {
-    const { setSynopsis, setBookId, setTitle, setGenre, setTheme, setTone, setSetting, setCharacters } = useBookStore();
+    const { setSynopsis, setBookId, setTitle, setGenre, setTheme, setTone, setSetting, setCharacters, setLanguage } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
     const { font, themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
@@ -88,6 +88,10 @@ const SynopsysGenerator = ({ onComplete }) => {
             userRequests: userRequests.trim(),
             language: selectedCountry ? selectedCountry.value : null
         };
+
+        if (selectedCountry) {
+            setLanguage(selectedCountry.value);
+        }
 
         try {
             const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
@@ -207,7 +211,7 @@ const SynopsysGenerator = ({ onComplete }) => {
                                             key={label}
                                             type="button"
                                             className={selectedEra === prompt ? 'selected' : ''}
-                                            onClick={() => handleEraChange(prompt)}
+                                            onClick={() => handleDetailChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
                                                 backgroundColor: currentTheme.buttonBackgroundColor,
