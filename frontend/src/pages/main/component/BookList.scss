@@ -73,3 +73,32 @@
         }
     }
 }
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+
+    button {
+        border: none;
+        background: none;
+        font-size: 16px;
+        padding: 10px;
+        cursor: pointer;
+        color: inherit;
+
+        &:hover:not(.active) {
+        background-color: transparent; // 배경색을 투명으로 설정
+        }
+    }
+
+    .active {
+        background-color: #d4d4d4;
+        color: white;
+        border-radius: 5px;
+    }
+}

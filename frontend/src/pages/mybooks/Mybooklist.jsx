@@ -3,11 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import useThemeStore from '../../shared/store/Themestore';
 import './Mybooklist.scss';
 
-const Card = ({ id, image, header, content, onClick }) => {
+const Card = ({ id, image, header, likes, rating, onClick }) => {
   return (
     <div className="card" style={{ backgroundImage: `url(${image})` }} onClick={() => onClick(id)}>
       <div className="card-header"><h1>{header}</h1></div>
-      <div className="card-content"><p>{content}</p></div>
+      <div className="card-content">
+        <p> ❤️  {likes}</p>
+        <p>
+          {'⭐'.repeat(Math.min(Math.floor(rating), 5))}
+          {rating % 1 !== 0 ? (rating % 1 >= 0.5 ? '⭐' : '☆') : ''}
+          {'☆'.repeat(Math.max(5 - Math.ceil(rating), 0))} {rating} / 5
+        </p>
+      </div>
     </div>
   );
 };
@@ -20,25 +27,29 @@ const Mybooklist = () => {
       id: 1,
       image: 'https://images.unsplash.com/photo-1479660656269-197ebb83b540?dpr=2&auto=compress,format&fit=crop&w=1199&h=798&q=80&cs=tinysrgb&crop=',
       header: 'Canyons',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.'
+      likes: 4,
+      rating: 4.5,
     },
     {
       id: 2,
       image: 'https://images.unsplash.com/photo-1479659929431-4342107adfc1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=',
       header: 'Beaches',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.'
+      likes: 4,
+      rating: 4.2,
     },
     {
       id: 3,
       image: 'https://images.unsplash.com/photo-1479644025832-60dabb8be2a1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=',
       header: 'Trees',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.'
+      likes: 4,
+      rating: 2,
     },
     {
       id: 4,
       image: 'https://images.unsplash.com/photo-1479621051492-5a6f9bd9e51a?dpr=2&auto=compress,format&fit=crop&w=1199&h=811&q=80&cs=tinysrgb&crop=',
       header: 'Lakes',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.'
+      likes: 4,
+      rating: 5,
     },
     {
       id: 5,
@@ -116,7 +127,6 @@ const Mybooklist = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 8;
-  const navigate = useNavigate();
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -147,9 +157,9 @@ const Mybooklist = () => {
     return pages;
   };
 
-
+  const navigate = useNavigate();
   const handleCardClick = (id) => {
-    navigate(`/card/${id}`);
+    navigate(`/book/${id}`);
   };
 
   return (
@@ -162,7 +172,8 @@ const Mybooklist = () => {
             id={card.id}
             image={card.image}
             header={card.header}
-            content={card.content}
+            likes={card.likes}
+            rating={card.rating}
             onClick={handleCardClick}
           />
         ))}
