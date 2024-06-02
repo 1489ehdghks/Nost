@@ -30,4 +30,10 @@
     font-size: 16px;
     line-height: 1.5;
   }
+
+  .like {
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 버튼 라인 투명 */
+    cursor: pointer; /* 마우스 포인터 모양 변경 */
+  }
 }

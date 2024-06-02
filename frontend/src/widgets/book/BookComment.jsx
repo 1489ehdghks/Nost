@@ -10,11 +10,9 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleAddComment = async () => {
     try {
-      console.log('Adding comment:', newComment);
       const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/comments/`, {
         content: newComment,
       });
-      console.log('Comment added successfully:', response.data);
       setComments([...comments, response.data]);
       setNewComment('');
     } catch (error) {
