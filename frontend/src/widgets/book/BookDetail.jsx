@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import useThemeStore from '../../shared/store/Themestore';
 import axiosInstance from '../../features/auth/AuthInstance';
+import BookComment from './BookComment';
 import './BookDetail.scss';
+import { FaStar } from 'react-icons/fa';
+
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -11,14 +14,16 @@ const BookDetail = () => {
   const currentTheme = themes[currentSeason];
   const [bookData, setBookData] = useState(null);
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
-  const [editingCommentId, setEditingCommentId] = useState(null);
-  const [updatedContent, setUpdatedContent] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
+  const [rating, setRating] = useState(0);
+
 
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
+        setIsLiked(response.data.is_liked);  // 사용자가 좋아요를 눌렀는지 여부 설정
+        console.log('data : ', response.data);
       })
       .catch(error => {
         console.error('Error fetching book data:', error);
@@ -27,51 +32,40 @@ const BookDetail = () => {
     axios.get(`http://127.0.0.1:8000/api/books/${id}/comments/`)
       .then(response => {
         setComments(response.data || []);
-        console.log('comment :', response.data);
       })
       .catch(error => {
         console.error('Error fetching comments:', error);
       });
   }, [id]);
 
-  const handleAddComment = async () => {
+  const toggleLike = async () => {
     try {
-      const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${id}/comments/`, {
-        content: newComment,
-      });
-
-      setComments([...comments, response.data]);
-      setNewComment('');
+      const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${id}/like/`);
+      const { like_bool, total_likes, book } = response.data;
+      setIsLiked(like_bool);
+      setBookData(book);
     } catch (error) {
-      console.error('Error adding comment:', error);
-      alert('댓글을 추가하는 중에 오류가 발생했습니다.');
+      console.error('Error toggling like:', error);
     }
   };
 
-  const handleEditComment = async (commentId, updatedContent) => {
+  const rateBook = async (newRating) => {
     try {
-      const response = await axiosInstance.put(`http://127.0.0.1:8000/api/books/${id}/comments/${commentId}/`, {
-        content: updatedContent,
-      });
-
-      setComments(comments.map(comment => comment.id === commentId ? response.data : comment));
-      setEditingCommentId(null);
-      setUpdatedContent('');
+      const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${id}/rating/`, { rating: newRating });
+      const { rating, book } = response.data;
+      console.log('ragingssssss : ', response.data);
+      setBookData(book);
+      setRating(rating); // 서버에서 업데이트된 평균 별점 설정
     } catch (error) {
-      console.error('Error editing comment:', error);
-      alert('댓글을 수정하는 중에 오류가 발생했습니다.');
+      console.error('Error rating book:', error);
     }
   };
 
-  const handleDeleteComment = async (commentId) => {
-    try {
-      await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${id}/comments/${commentId}/`);
-      setComments(comments.filter(comment => comment.id !== commentId));
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-      alert('댓글을 삭제하는 중에 오류가 발생했습니다.');
-    }
-  };
+  const handleStarClick = (index) => {
+    const newRating = index + 1; // 클릭된 별의 인덱스에 1을 더하여 새로운 별점을 설정합니다.
+    rateBook(newRating); // 새로운 별점을 서버로 전송합니다.
+    console.log('raging : ', newRating);
+  };  
 
   return (
     <div className="bookdetail" style={{ color: currentTheme.buttonTextColor }}>
@@ -81,42 +75,33 @@ const BookDetail = () => {
           {/* <img src={bookData.image} alt={bookData.header} /> */}
           {/* <p>{bookData.content}</p> */}
           <h3>Author : {bookData.user_nickname}</h3>
-          <p>❤️ {bookData.is_liked.length} ⭐ {bookData.average_rating}/5</p>  {/* 배열의 길이로 좋아요 수 출력 */}
+          <p>
+            <button className="like" onClick={toggleLike}>
+              {isLiked ? '❤️' : '♡'}
+            </button>
+            {bookData.total_likes} {bookData.is_liked ? 'Liked' : 'Likes'}
+          </p>
+          <div>
+            {[...Array(5)].map((_, index) => (
+              <FaStar
+                key={index}
+                onClick={() => handleStarClick(index)} // 클릭된 별의 인덱스를 handleStarClick 함수에 전달합니다.
+                color={index < rating ? '#ffc107' : '#e4e5e9'}
+                size={24}
+                style={{ cursor: 'pointer' }}
+              />
+            ))}
+            <p>Average Rating: {bookData.average_rating}/5</p>
+          </div>
+
         </div>
       )}
-      <div className="comment-box" style={{ color: currentTheme.textColor }}>
-        <h2>Comment Box</h2>
-        <div className="comments">
-          {comments.map((comment) => (
-            <div className="comment" key={comment.id}>
-              <img src="https://via.placeholder.com/50" alt="User" />
-              <p>{comment.content} <br />{comment.user_nickname} <small>on {comment.created_at}</small></p>
-              <button onClick={() => {
-                setEditingCommentId(comment.id);
-                setUpdatedContent(comment.content);
-              }}>Edit</button>
-              <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-              {editingCommentId === comment.id && (
-                <div className="comment-edit">
-                  <textarea
-                    value={updatedContent}
-                    onChange={(e) => setUpdatedContent(e.target.value)}
-                  ></textarea>
-                  <button onClick={() => handleEditComment(comment.id, updatedContent)}>Save</button>
-                  <button onClick={() => setEditingCommentId(null)}>Cancel</button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <textarea
-          placeholder="Your comments"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        ></textarea>
-        <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor, marginBottom: '150px' }}
-          onClick={handleAddComment}> Add </button>
-      </div>
+      <BookComment
+        bookId={id}
+        comments={comments}
+        setComments={setComments}
+        currentTheme={currentTheme}
+      />
     </div>
   );
 };

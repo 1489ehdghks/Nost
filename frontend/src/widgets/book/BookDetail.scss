@@ -30,76 +30,10 @@
     font-size: 16px;
     line-height: 1.5;
   }
-}
 
-.comment-box {
-  flex: 1;
-  margin-left: 50px;
-  margin-bottom: 50px;
-  
-  h2 {
-    margin-bottom: 10px;
-  }
-
-  textarea {
-    width: 95%;
-    height: auto;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    resize: none; /* 사용자가 크기를 조절하지 못하도록 설정합니다. */
-    scrollbar-width: none; /* 스크롤바 안보임 */
-  }
-  
-  button {
-    padding: 10px 20px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    // margin-left: auto;
-    // display: flex;
-  
-    &:hover {
-      background-color: #eceaea !important;
-    }
-  }
-}
-
-.comments {
-  margin-bottom: 20px;
-}
-
-.comment {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px;
-  
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .p {
-    font-size: 14px;
-    line-height: 1.4;
-  }
-}
-
-.comment-edit {
-
-  button {
-    padding: 10px 20px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  
-    &:hover {
-      background-color: #eceaea !important;
-    }
+  .like {
+    background-color: transparent; /* 배경 투명 */
+    border: none; /* 버튼 라인 투명 */
+    cursor: pointer; /* 마우스 포인터 모양 변경 */
   }
 }
