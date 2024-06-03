@@ -17,6 +17,15 @@ const SynopsysResult = ({ onComplete }) => {
     const [editableSetting, setEditableSetting] = useState(setting);
     const [editableCharacters, setEditableCharacters] = useState(characters);
 
+    useEffect(() => {
+        setEditableTitle(title);
+        setEditableGenre(genre);
+        setEditableTheme(theme);
+        setEditableTone(tone);
+        setEditableSetting(setting);
+        setEditableCharacters(characters);
+    }, [title, genre, theme, tone, setting, characters]);
+
     const handleNextPage = () => setCurrentPage(currentPage + 1);
     const handlePrevPage = () => setCurrentPage(currentPage - 1);
 
@@ -32,13 +41,6 @@ const SynopsysResult = ({ onComplete }) => {
         }
     };
 
-    useEffect(() => {
-        const textareas = document.querySelectorAll('textarea');
-        textareas.forEach(textarea => {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        });
-    }, [editableTitle, editableGenre, editableTheme, editableTone, editableSetting, editableCharacters]);
 
     return (
         <div className="section">
@@ -46,19 +48,19 @@ const SynopsysResult = ({ onComplete }) => {
                 <div className="SynopsysResult-letter animate-fade-in" style={{ width: "50vw" }}>
                     <div className="editable-field">
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Title:</strong>
-                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableTitle} onChange={(e) => setEditableTitle(e.target.value)} />
+                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableTitle || ''} onChange={(e) => setEditableTitle(e.target.value)} />
                     </div>
                     <div className="editable-field">
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Genre:</strong>
-                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableGenre} onChange={(e) => setEditableGenre(e.target.value)} />
+                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableGenre || ''} onChange={(e) => setEditableGenre(e.target.value)} />
                     </div>
                     <div className="editable-field">
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Theme:</strong>
-                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableTheme} onChange={(e) => setEditableTheme(e.target.value)} />
+                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableTheme || ''} onChange={(e) => setEditableTheme(e.target.value)} />
                     </div>
                     <div className="editable-field">
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Tone:</strong>
-                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableTone} onChange={(e) => setEditableTone(e.target.value)} />
+                        <textarea style={{ fontFamily: font.nomalFont, height: "3vh" }} value={editableTone || ''} onChange={(e) => setEditableTone(e.target.value)} />
                     </div>
                     <div className="button-group first-page">
                         <button
@@ -96,7 +98,7 @@ const SynopsysResult = ({ onComplete }) => {
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Setting:</strong>
                         <textarea
                             style={{ fontFamily: font.nomalFont, height: "40vh" }}
-                            value={editableSetting}
+                            value={editableSetting || ''}
                             onChange={(e) => setEditableSetting(e.target.value)}
                         />
                     </div>
@@ -148,7 +150,7 @@ const SynopsysResult = ({ onComplete }) => {
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Characters:</strong>
                         <textarea
                             style={{ fontFamily: font.nomalFont, height: "80vh" }}
-                            value={editableCharacters}
+                            value={editableCharacters || ''}
                             onChange={(e) => setEditableCharacters(e.target.value)}
                             rows="10"
                         />

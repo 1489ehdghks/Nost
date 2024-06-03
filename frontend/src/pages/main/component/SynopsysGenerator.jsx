@@ -8,24 +8,33 @@ import axiosInstance from '../../../features/auth/AuthInstance';
 import Select from 'react-select';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
-import krLocale from 'i18n-iso-countries/langs/ko.json';
 
 
 countries.registerLocale(enLocale);
-countries.registerLocale(krLocale);
+
+const customCountryCodeMapping = {
+    KR: 'KO',
+    EN: 'EN_US',
+    GB: 'EN-GB',
+    JP: 'JA',
+    CN: 'ZH'
+};
 
 const countryOptions = Object.entries(countries.getNames("en", { select: "official" })).map(([code, name]) => ({
     label: name,
-    value: code
+    value: customCountryCodeMapping[code] || code
 }));
 
 
 const genres = [
-    { label: '판타지', prompt: 'Fantasy novels often include magic, mythical creatures, and epic quests' },
-    { label: '로맨스', prompt: 'Romance novels focus on romantic relationships between characters' },
-    { label: '스릴러', prompt: 'Thriller novels are characterized by excitement, suspense, and high stakes' },
-    { label: '미스터리', prompt: 'Mystery novels revolve around solving a crime or uncovering secrets.' },
-    { label: '공상과학', prompt: 'Science fiction novels explore futuristic concepts, advanced technology, and space exploration' },
+    { label: '판타지', prompt: 'Fantasy novels often include various mythical creatures and races, focusing on their interactions and conflicts.' },
+    { label: '로맨스', prompt: 'Romance novels delve into the complexities of romantic relationships, exploring emotional bonds and personal growth.' },
+    { label: '스릴러', prompt: 'Thriller novels are characterized by high-stakes, fast-paced narratives that keep readers on the edge of their seats.' },
+    { label: '미스터리', prompt: 'Mystery novels focus on solving crimes or uncovering secrets, often featuring a detective or amateur sleuth.' },
+    { label: '공상과학', prompt: 'Science fiction novels explore futuristic concepts, advanced technology, and space exploration.' },
+    { label: '공포', prompt: 'Horror novels aim to frighten and unsettle readers with terrifying and supernatural elements.' },
+    { label: '디스토피아', prompt: 'Dystopian novels depict grim, oppressive societies often set in the future.' },
+    { label: '소년만화', prompt: 'Shonen manga focuses on action, adventure, and coming-of-age stories often targeting young male audiences.' },
 ];
 
 const eras = [
@@ -37,13 +46,15 @@ const eras = [
 ];
 
 const details = [
-    { label: '좀비', prompt: 'zombie apocalypse settings' },
-    { label: '인터넷방송', prompt: 'internet broadcasting' },
-    { label: '악녀', prompt: 'villainess' },
-    { label: '피폐', prompt: 'dark and tragic themes' },
-    { label: '성인', prompt: 'adult themes' },
-    { label: '사이버펑크', prompt: 'cyberpunk' },
-    { label: '미션', prompt: 'missions and quests' },
+    { label: '디테일한 세계관', prompt: 'Novels with detailed world-building immerse readers in meticulously crafted settings with historically accurate details and subtle foreshadowing.' },
+    { label: '심리적', prompt: 'Psychological novels explore the inner workings of characters’ minds, focusing on their thoughts, feelings, and mental states.' },
+    { label: '감정적', prompt: 'Emotional novels center on intense personal experiences and the emotional journeys of characters, often highlighting their vulnerabilities and growth.' },
+    { label: '철학적', prompt: 'Philosophical novels delve into deep, abstract themes, questioning the nature of reality, existence, and morality.' },
+    { label: '사회적', prompt: 'Social novels examine societal issues and themes, often focusing on class, race, and cultural dynamics.' },
+    { label: '문화적', prompt: 'Cultural novels highlight specific cultural settings and practices, providing insight into diverse ways of life and traditions.' },
+    { label: '현실적', prompt: 'Realistic novels strive for authenticity and plausibility, depicting everyday life and believable scenarios.' },
+    { label: '어두운', prompt: 'Dark novels explore sinister and gloomy themes, often set in bleak and dystopian environments.' },
+    { label: '성인', prompt: 'Adult novels contain mature themes and explicit content, catering to an audience looking for intense and provocative stories.' },
 ];
 
 const SynopsysGenerator = ({ onComplete }) => {
@@ -76,16 +87,25 @@ const SynopsysGenerator = ({ onComplete }) => {
         setSelectedCountry(selectedOption);
     };
 
+    const formatCharacters = (characters) => {
+        return characters.split('...').join('\n\n');
+    };
+
     const generateSynopsis = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
 
-        const formattedDetails = `${selectedGenres.join(', ')},${selectedEra},${selectedDetails.join(', ')}`;
+        if (!selectedCountry) {
+            alert('Please select language.');
+            setIsLoading(false);
+            return;
+        }
+
+        const formattedDetails = `Recommend the best Suggested SYNOPSIS for me. The time period setting is ${selectedEra}.the genre is ${selectedGenres.join(', ')} with ${selectedDetails.join(', ')}.${userRequests}`;
 
         const requestData = {
             prompt: formattedDetails.trim(),
-            userRequests: userRequests.trim(),
             language: selectedCountry ? selectedCountry.value : null
         };
 
@@ -102,7 +122,7 @@ const SynopsysGenerator = ({ onComplete }) => {
             setTheme(response.data.content.theme);
             setTone(response.data.content.tone);
             setSetting(response.data.content.setting);
-            setCharacters(response.data.content.characters);
+            setCharacters(formatCharacters(response.data.content.characters));
         } catch (err) {
             setError(err.message);
         } finally {
@@ -147,6 +167,7 @@ const SynopsysGenerator = ({ onComplete }) => {
                         />
                     </div>
                     <div className="category">
+
                         <div className="button-group">
                             <div className="toggle-switch" onClick={() => setShowEras(!showEras)}>
                                 <h2 >Era</h2>
@@ -210,7 +231,7 @@ const SynopsysGenerator = ({ onComplete }) => {
                                         <button
                                             key={label}
                                             type="button"
-                                            className={selectedEra === prompt ? 'selected' : ''}
+                                            className={buttonClass(selectedDetails, prompt)}
                                             onClick={() => handleDetailChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
