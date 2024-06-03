@@ -22,7 +22,7 @@ const BookDetail = () => {
     axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
-        setIsLiked(response.data.is_liked);  // 사용자가 좋아요를 눌렀는지 여부 설정
+        setIsLiked(response.data.is_liked);  // 사용자가 좋아요를 눌렀는지 여부 설정 
         console.log('data : ', response.data);
       })
       .catch(error => {
@@ -53,13 +53,16 @@ const BookDetail = () => {
     try {
       const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${id}/rating/`, { rating: newRating });
       const { rating, book } = response.data;
-      console.log('ragingssssss : ', response.data);
-      setBookData(book);
       setRating(rating); // 서버에서 업데이트된 평균 별점 설정
     } catch (error) {
       console.error('Error rating book:', error);
+      if (error.response && error.response.data === 'You have already rated this book.') {
+        alert('이미 처리되었습니다');
+      }
     }
   };
+
+  
 
   const handleStarClick = (index) => {
     const newRating = index + 1; // 클릭된 별의 인덱스에 1을 더하여 새로운 별점을 설정합니다.
@@ -79,7 +82,7 @@ const BookDetail = () => {
             <button className="like" onClick={toggleLike}>
               {isLiked ? '❤️' : '♡'}
             </button>
-            {bookData.total_likes} {bookData.is_liked ? 'Liked' : 'Likes'}
+            {bookData.total_likes} {bookData.is_liked.length ? 'Liked' : 'Likes'}
           </p>
           <div>
             {[...Array(5)].map((_, index) => (
@@ -91,7 +94,9 @@ const BookDetail = () => {
                 style={{ cursor: 'pointer' }}
               />
             ))}
-            <p>Average Rating: {bookData.average_rating}/5</p>
+            <p>
+              {rating ? `Your Rating: ${rating}/5` : `Average Rating: ${bookData.average_rating}/5`}
+            </p>
           </div>
 
         </div>
