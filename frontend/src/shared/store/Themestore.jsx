@@ -83,7 +83,7 @@ const useThemeStore = create(set => ({
             textColor: '#8B4513',
             titleColor: '#FF4500',
             subtitle: 'Embrace the vibrant autumn leaves with "Novel Stella.Embrace the vibrant autumn.',
-            sidebarBg: '#FFE4B5',
+            sidebarBg: '#f4c169f1',
             additionalColors: ['#fff', '#CD853F', '#8B4513', '#A0522D', '#FFE4B5'],
             lowRes: autumnLow,
             highRes: autumn,
