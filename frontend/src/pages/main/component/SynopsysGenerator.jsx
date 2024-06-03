@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './SynopsysGenerator.scss';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import useBookStore from '../../../shared/store/BookStore';
 import useGlobalStore from '../../../shared/store/GlobalStore';
 import useThemeStore from '../../../shared/store/Themestore';
 import axiosInstance from '../../../features/auth/AuthInstance';
+import Select from 'react-select';
+import countries from 'i18n-iso-countries';
+import enLocale from 'i18n-iso-countries/langs/en.json';
+import krLocale from 'i18n-iso-countries/langs/ko.json';
 
 
-//프롬프트 끝에 "." 작성하지 마세요.
+countries.registerLocale(enLocale);
+countries.registerLocale(krLocale);
+
+const countryOptions = Object.entries(countries.getNames("en", { select: "official" })).map(([code, name]) => ({
+    label: name,
+    value: code
+}));
+
+
 const genres = [
     { label: '판타지', prompt: 'Fantasy novels often include magic, mythical creatures, and epic quests' },
     { label: '로맨스', prompt: 'Romance novels focus on romantic relationships between characters' },
     { label: '스릴러', prompt: 'Thriller novels are characterized by excitement, suspense, and high stakes' },
     { label: '미스터리', prompt: 'Mystery novels revolve around solving a crime or uncovering secrets.' },
     { label: '공상과학', prompt: 'Science fiction novels explore futuristic concepts, advanced technology, and space exploration' },
-    { label: '역사', prompt: 'Historical novels are set in the past and often include real historical events and figures' },
 ];
 
 const eras = [
@@ -25,36 +36,29 @@ const eras = [
     { label: '미래', prompt: 'Future era novels speculate about future societies, technologies, and events' },
 ];
 
-const settings = [
-    { label: 'Magic', prompt: 'Magic' },
-    { label: 'Space Travel', prompt: 'Space Travel' },
-    { label: 'Time Travel', prompt: 'Time Travel' },
-    { label: 'Alternate Reality', prompt: 'Alternate Reality' },
-    { label: 'Post-Apocalyptic', prompt: 'Post-Apocalyptic' },
-    { label: 'Supernatural', prompt: 'Supernatural' },
+const details = [
+    { label: '좀비', prompt: 'zombie apocalypse settings' },
+    { label: '인터넷방송', prompt: 'internet broadcasting' },
+    { label: '악녀', prompt: 'villainess' },
+    { label: '피폐', prompt: 'dark and tragic themes' },
+    { label: '성인', prompt: 'adult themes' },
+    { label: '사이버펑크', prompt: 'cyberpunk' },
+    { label: '미션', prompt: 'missions and quests' },
 ];
 
-const SynopsysGenerator = () => {
-    const { synopsis, bookId, setSynopsis, setSummary, setRecommendations, setBookId } = useBookStore();
+const SynopsysGenerator = ({ onComplete }) => {
+    const { setSynopsis, setBookId, setTitle, setGenre, setTheme, setTone, setSetting, setCharacters, setLanguage } = useBookStore();
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
-    const { themes, currentSeason } = useThemeStore();
+    const { font, themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
-
-    const [additionalDetails, setAdditionalDetails] = useState('');
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedEra, setSelectedEra] = useState('');
+    const [selectedDetails, setSelectedDetails] = useState([]);
+    const [userRequests, setUserRequests] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [showGenres, setShowGenres] = useState(true);
     const [showEras, setShowEras] = useState(true);
-    const [showSettings, setShowSettings] = useState(true);
-    const [specialSettings, setSpecialSettings] = useState([]);
-
-    useEffect(() => {
-        if (synopsis) {
-            setAdditionalDetails(synopsis);
-        }
-    }, [synopsis]);
-
-    const handleDetailsChange = (e) => setAdditionalDetails(e.target.value);
+    const [showDetails, setShowDetails] = useState(true);
 
     const handleGenreChange = (prompt) => {
         setSelectedGenres((prev) => prev.includes(prompt) ? prev.filter((g) => g !== prompt) : [...prev, prompt]);
@@ -64,8 +68,12 @@ const SynopsysGenerator = () => {
         setSelectedEra((prev) => (prev === prompt ? '' : prompt));
     };
 
-    const handleSpecialSettingsChange = (prompt) => {
-        setSpecialSettings((prev) => prev.includes(prompt) ? prev.filter((s) => s !== prompt) : [...prev, prompt]);
+    const handleDetailChange = (prompt) => {
+        setSelectedDetails((prev) => prev.includes(prompt) ? prev.filter((s) => s !== prompt) : [...prev, prompt]);
+    };
+
+    const handleCountryChange = (selectedOption) => {
+        setSelectedCountry(selectedOption);
     };
 
     const generateSynopsis = async (e) => {
@@ -73,57 +81,98 @@ const SynopsysGenerator = () => {
         setIsLoading(true);
         setError(null);
 
-        const formattedDetails = `
-            ${selectedGenres.join(', ')},${selectedEra},${specialSettings.join(', ')},${additionalDetails}
-        `;
+        const formattedDetails = `${selectedGenres.join(', ')},${selectedEra},${selectedDetails.join(', ')}`;
 
         const requestData = {
             prompt: formattedDetails.trim(),
+            userRequests: userRequests.trim(),
+            language: selectedCountry ? selectedCountry.value : null
         };
 
-        try {
-            console.log("requestData:", requestData)
-            console.log("prompt:", requestData.prompt)
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
-            console.log("generateSynopsis_response", response.data)
-            console.log("response.data.book_id", response.data.book_id)
-            useBookStore.getState().setBookId(response.data.book_id)
-            setSynopsis(response.data.content);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
+        if (selectedCountry) {
+            setLanguage(selectedCountry.value);
         }
-    };
 
-    const submitSummary = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError(null);
         try {
-            console.log("additionalDetails222222:", additionalDetails)
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: additionalDetails });
-            setSummary(response.data.final_summary);
-            setRecommendations(response.data.recommendations);
-
-            console.log("data.content:", response.data.final_summary)
-            console.log("response:", response.data)
-            console.log("additionalDetails222222:", additionalDetails)
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
+            setBookId(response.data.book_id);
+            setSynopsis(response.data.content.synopsis);
+            setTitle(response.data.content.title);
+            setGenre(response.data.content.genre);
+            setTheme(response.data.content.theme);
+            setTone(response.data.content.tone);
+            setSetting(response.data.content.setting);
+            setCharacters(response.data.content.characters);
         } catch (err) {
             setError(err.message);
         } finally {
             setIsLoading(false);
+            onComplete();
         }
     };
 
     const buttonClass = (selected, current) => selected.includes(current) ? 'selected' : '';
 
+
     return (
-        <div className="novel-generator section" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
+        <div className="novel-generator section" style={{ fontFamily: font.shapeFont, backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
             <h1>New Novel</h1>
-            <form onSubmit={generateSynopsis} style={{ paddingBottom: '3%' }}>
+            <form onSubmit={generateSynopsis}>
                 <div className="user-inputs">
-                    <div className="userSelection">
+                    <div className="button-group">
+                        <h2>Language</h2>
+                        <Select
+                            options={countryOptions}
+                            value={selectedCountry}
+                            onChange={handleCountryChange}
+                            placeholder="Select a language..."
+                            styles={{
+                                control: (provided) => ({
+                                    ...provided,
+                                    backgroundColor: currentTheme.inputBackgroundColor,
+                                    color: currentTheme.textColor,
+                                    fontFamily: font.nomalFont,
+                                    zIndex: 10,
+                                }),
+                                menu: (provided) => ({
+                                    ...provided,
+                                    fontFamily: font.nomalFont,
+                                    zIndex: 10,
+                                }),
+                                singleValue: (provided) => ({
+                                    ...provided,
+                                    color: currentTheme.textColor,
+                                }),
+                            }}
+                        />
+                    </div>
+                    <div className="category">
+                        <div className="button-group">
+                            <div className="toggle-switch" onClick={() => setShowEras(!showEras)}>
+                                <h2 >Era</h2>
+                                <div>{showEras ? <FaChevronDown /> : <FaChevronRight />}</div>
+                            </div>
+                            {showEras && (
+                                <div className="buttons">
+                                    {eras.map(({ label, prompt }) => (
+                                        <button
+                                            key={label}
+                                            type="button"
+                                            className={selectedEra === prompt ? 'selected' : ''}
+                                            onClick={() => handleEraChange(prompt)}
+                                            data-prompt={prompt}
+                                            style={{
+                                                backgroundColor: currentTheme.buttonBackgroundColor,
+                                                color: selectedEra === prompt ? currentTheme.buttonTextColor : currentTheme.buttonTextColor,
+                                            }}
+                                        >
+                                            {label}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
                         <div className="button-group">
                             <div className="toggle-switch" onClick={() => setShowGenres(!showGenres)}>
                                 <h2>Genre</h2>
@@ -139,8 +188,8 @@ const SynopsysGenerator = () => {
                                             onClick={() => handleGenreChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
-                                                backgroundColor: selectedGenres.includes(prompt) ? currentTheme.buttonSelectedBackgroundColor : currentTheme.buttonBackgroundColor,
-                                                color: currentTheme.buttonTextColor,
+                                                backgroundColor: currentTheme.buttonBackgroundColor,
+                                                color: selectedEra === prompt ? currentTheme.buttonTextColor : currentTheme.buttonTextColor,
                                             }}
                                         >
                                             {label}
@@ -149,48 +198,24 @@ const SynopsysGenerator = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="button-group">
-                            <div className="toggle-switch" onClick={() => setShowEras(!showEras)}>
-                                <h2>Era</h2>
-                                <div>{showEras ? <FaChevronDown /> : <FaChevronRight />}</div>
+
+                        <div className="button-group details">
+                            <div className="toggle-switch" onClick={() => setShowDetails(!showDetails)}>
+                                <h2>Details</h2>
+                                <div>{showDetails ? <FaChevronDown /> : <FaChevronRight />}</div>
                             </div>
-                            {showEras && (
+                            {showDetails && (
                                 <div className="buttons">
-                                    {eras.map(({ label, prompt }) => (
+                                    {details.map(({ label, prompt }) => (
                                         <button
                                             key={label}
                                             type="button"
                                             className={selectedEra === prompt ? 'selected' : ''}
-                                            onClick={() => handleEraChange(prompt)}
+                                            onClick={() => handleDetailChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
-                                                backgroundColor: selectedEra === prompt ? currentTheme.buttonSelectedBackgroundColor : currentTheme.buttonBackgroundColor,
-                                                color: currentTheme.buttonTextColor,
-                                            }}
-                                        >
-                                            {label}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                        <div className="button-group">
-                            <div className="toggle-switch" onClick={() => setShowSettings(!showSettings)}>
-                                <h2>Special Settings</h2>
-                                <div>{showSettings ? <FaChevronDown /> : <FaChevronRight />}</div>
-                            </div>
-                            {showSettings && (
-                                <div className="buttons">
-                                    {settings.map(({ label, prompt }) => (
-                                        <button
-                                            key={label}
-                                            type="button"
-                                            className={buttonClass(specialSettings, prompt)}
-                                            onClick={() => handleSpecialSettingsChange(prompt)}
-                                            data-prompt={prompt}
-                                            style={{
-                                                backgroundColor: specialSettings.includes(prompt) ? currentTheme.buttonSelectedBackgroundColor : currentTheme.buttonBackgroundColor,
-                                                color: currentTheme.buttonTextColor,
+                                                backgroundColor: currentTheme.buttonBackgroundColor,
+                                                color: selectedEra === prompt ? currentTheme.buttonTextColor : currentTheme.buttonTextColor,
                                             }}
                                         >
                                             {label}
@@ -200,27 +225,29 @@ const SynopsysGenerator = () => {
                             )}
                         </div>
                     </div>
-                    <div className="details-container">
+                    <div className="user-requests">
+                        <h2>Requests</h2>
                         <textarea
-                            placeholder="Result (editable)"
-                            value={additionalDetails}
-                            onChange={handleDetailsChange}
-                            className="styled-textarea"
-                            style={{ backgroundColor: currentTheme.secondary, color: currentTheme.textColor }}
+                            placeholder="User requests here..."
+                            rows="4"
+                            value={userRequests}
+                            onChange={(e) => setUserRequests(e.target.value)}
+                            style={{
+                                backgroundColor: currentTheme.inputBackgroundColor,
+                                color: currentTheme.textColor
+                            }}
                         ></textarea>
-                        <div className="button-row">
-                            <button type="submit" style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
-                                {isLoading ? 'Generating...' : 'Generate Synopsis'}
-                            </button>
-
-                            {additionalDetails && (
-                                <button onClick={submitSummary} className="summary-button" type="submit" style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
-                                    Submit Summary
-                                </button>
-                            )}
-                        </div>
                     </div>
-                    {error && <p className="error">{error}</p>}
+                    <div className="button-row">
+                        <button
+                            className="generate-button"
+                            type="submit"
+                            style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
+                        >
+                            <span className="tooltip">Generate a synopsis to base your novel on with the selected values and requests</span>
+                            Create Synopsys
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

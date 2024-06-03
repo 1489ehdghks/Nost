@@ -1,19 +1,19 @@
 .page-container {
-    display: flex; //플렉스 컨테이너로 설정
-    flex-direction: column; // 플렉스를 세로방향으로 배치
-    height: 300vh; //컨테이너 높이 300%로 설정
-    overflow-y: auto; //수직 오버플로우 자동으로 처리
-    scroll-snap-type: y mandatory; //수직 스냅 강제함
+    display: flex;
+    flex-direction: column;
+    height: 400vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
 }
 
 .section {
-    height: 100vh;
+    width: 100vw;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center; //수직축에서 자식요소 가운데 정렬
-    align-items: center; // 수평축에서 자식요소 가운데 정렬
-    padding: 20px;
+    justify-content: center;
+    align-items: center;
     box-sizing: border-box;
-    scroll-snap-align: start; //스크롤 스냅 시작부분 정렬
-    background-color: transparent !important; // 최 상위로 올려서 배경 투명하게 만들기
+    scroll-snap-align: start;
+    background-color: transparent !important;
 }
