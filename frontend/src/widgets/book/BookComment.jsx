@@ -64,8 +64,8 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
             </div>
             <div className="comment-content">
               <p>{comment.content} </p>
-              <p style={{ color: currentTheme.sidebarBg }}>{comment.user_nickname} <br />
-                <small>on {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</small>
+              <p style={{ color: currentTheme.sidebarBg }}>{comment.user_nickname}
+                <small> | {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</small>
                 </p>
               <div>
                 <button style={buttonStyle} onClick={() => { setEditingCommentId(comment.id); setUpdatedContent(comment.content); }}>Edit</button>
