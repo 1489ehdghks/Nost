@@ -11,6 +11,7 @@ const BookList = () => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const booksPerPage = 8; // 페이지 당 보여질 책의 개수
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchNovels();
@@ -22,6 +23,7 @@ const BookList = () => {
 
     const fetchNovels = async () => {
         try {
+            setIsLoading(true); // 로딩 상태 설정
             const response = await axios.get('http://127.0.0.1:8000/api/books/'); // 백엔드 API 호출
             console.log('Fetched novels:', response.data); // 응답 데이터 콘솔에 출력
             if (Array.isArray(response.data)) {
@@ -30,9 +32,11 @@ const BookList = () => {
                 console.error('Fetched data is not an array:', response.data);
                 setBooks([]); // 응답 데이터가 배열이 아닌 경우 빈 배열로 설정
             }
+            setIsLoading(false); // 로딩 완료 후 상태 변경
         } catch (error) {
             console.error('Error fetching novels:', error);
             setBooks([]); // 오류 발생 시 빈 배열로 설정
+            setIsLoading(false); // 로딩 완료 후 상태 변경
         }
     };
 
@@ -61,8 +65,8 @@ const BookList = () => {
 
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
-    const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
-    const totalPages = Math.ceil(books.length / booksPerPage);
+    const currentBooks = isLoading ? Array.from({ length: booksPerPage }, (_, index) => index + 1) : books.slice(indexOfFirstBook, indexOfLastBook);
+    const totalPages = isLoading ? 1 : Math.ceil(books.length / booksPerPage);
 
     const handleClick = (page) => {
         setCurrentPage(page);
@@ -101,11 +105,11 @@ const BookList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentBooks.map((book) => (
-                        <tr key={book.id} onClick={() => handleBookClick(book.id)}>
+                    {!isLoading && currentBooks.map((book, index) => (
+                        <tr key={index} onClick={() => handleBookClick(book.id)}>
                             <td>{book.title}</td>
                             <td>{book.user_nickname}</td>
-                            <td>{book.is_liked.length}</td>  {/* 배열의 길이로 좋아요 수 출력 */}
+                            <td>{book.is_liked.length}</td>
                             <td>{book.average_rating}</td>
                             <td>{new Date(book.created_at).toLocaleDateString()}</td>
                         </tr>
