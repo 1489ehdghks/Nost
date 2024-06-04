@@ -86,7 +86,12 @@ const BookDetail = () => {
       const { rating } = response.data;
       setRating(rating); // 사용자의 별점 업데이트
     } catch(error) {
-      console.error('Error fetching user rating:', error);
+      if (error.response && error.response.status === 404) {
+        // 만약 책에 대한 평가가 없는 경우 평점을 0으로 설정
+        setRating(0);
+      } else {
+        console.error('Error fetching user rating:', error);
+      }
     }
   };
 
@@ -107,25 +112,27 @@ const BookDetail = () => {
         <div className="summary" style={{ backgroundColor: currentTheme.buttonBackgroundColor }}>
           <h1>{bookData.title}</h1>
           <h3>Author : {bookData.user_nickname}</h3>
-          <div className="like">
-            <p> like {bookData.total_likes} <FaHeart
-            onClick={toggleLike}
-            color={bookData.is_liked ? '#ff0707' : '#e4e5e9'}
-            size={16}
-            style={{ cursor: 'pointer' }}/>  </p>
-          </div>
           <div>
-            {[...Array(5)].map((_, index) => (
-              <FaStar
-                key={index}
-                onClick={() => handleStarClick(index)}
-                color={index < rating ? '#ffc107' : '#e4e5e9'}
-                size={24}
-                style={{ cursor: 'pointer' }}
-              />
-            ))}
-            <p>
-              {rating ? `Your Rating: ${rating}/5` : `Please Rate This Book`}
+            <p> like {bookData.total_likes} 
+              <span onClick={toggleLike}>
+                <FaHeart
+                  color={bookData.is_liked ? '#ff0707' : '#ffffff'}
+                  size={20}
+                  style={{ marginLeft: '10px', cursor: 'pointer' }}
+                />
+              </span>
+            </p>
+            <p> {rating ? `Your Rating: ${rating}/5` : `Please Rate This Book`}
+              <span style={{ marginLeft: '10px' }}>
+                {[...Array(5)].map((_, index) => (
+                  <FaStar
+                    key={index}
+                    onClick={() => handleStarClick(index)}
+                    color={index < rating ? '#fce146' : '#ffffff'}
+                    size={24}
+                    style={{ cursor: 'pointer' }}
+                  />
+                ))}</span>
             </p>
           </div>
         </div>
