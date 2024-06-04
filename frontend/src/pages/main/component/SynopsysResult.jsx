@@ -17,6 +17,8 @@ const SynopsysResult = ({ onComplete }) => {
     const [editableSetting, setEditableSetting] = useState(setting);
     const [editableCharacters, setEditableCharacters] = useState(characters);
 
+
+
     useEffect(() => {
         setEditableTitle(title);
         setEditableGenre(genre);
@@ -25,6 +27,10 @@ const SynopsysResult = ({ onComplete }) => {
         setEditableSetting(setting);
         setEditableCharacters(characters);
     }, [title, genre, theme, tone, setting, characters]);
+
+
+
+
 
     const handleNextPage = () => setCurrentPage(currentPage + 1);
     const handlePrevPage = () => setCurrentPage(currentPage - 1);
@@ -150,7 +156,7 @@ const SynopsysResult = ({ onComplete }) => {
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Characters:</strong>
                         <textarea
                             style={{ fontFamily: font.nomalFont, height: "80vh" }}
-                            value={editableCharacters || ''}
+                            value={editableCharacters.replace(/\.\.\./g, '\n\n') || ''}
                             onChange={(e) => setEditableCharacters(e.target.value)}
                             rows="10"
                         />

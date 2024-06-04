@@ -14,16 +14,18 @@ countries.registerLocale(enLocale);
 
 const customCountryCodeMapping = {
     KR: 'KO',
-    EN: 'EN_US',
+    US: 'EN-US',
     GB: 'EN-GB',
     JP: 'JA',
     CN: 'ZH'
 };
 
-const countryOptions = Object.entries(countries.getNames("en", { select: "official" })).map(([code, name]) => ({
-    label: name,
-    value: customCountryCodeMapping[code] || code
-}));
+const countryOptions = Object.entries(countries.getNames("en", { select: "official" }))
+    .filter(([code]) => customCountryCodeMapping[code])
+    .map(([code, name]) => ({
+        label: name,
+        value: customCountryCodeMapping[code]
+    }));
 
 
 const genres = [
@@ -87,14 +89,12 @@ const SynopsysGenerator = ({ onComplete }) => {
         setSelectedCountry(selectedOption);
     };
 
-    const formatCharacters = (characters) => {
-        return characters.split('...').join('\n\n');
-    };
-
     const generateSynopsis = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
+        let retries = 0;
+        const maxRetries = 2;
 
         if (!selectedCountry) {
             alert('Please select language.');
@@ -109,27 +109,43 @@ const SynopsysGenerator = ({ onComplete }) => {
             language: selectedCountry ? selectedCountry.value : null
         };
 
+        const fetchSynopsis = async () => {
+            try {
+                const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
+                if (response.data.content.characters && response.data.content.characters !== '문자 없음' && response.data.content.characters !== '' && response.data.content.characters !== '登場人物なし' && response.data.content.characters !== '无字符' && response.data.content.characters !== 'No Characters') {
+                    setBookId(response.data.book_id);
+                    setSynopsis(response.data.content.synopsis);
+                    setTitle(response.data.content.title);
+                    setGenre(response.data.content.genre);
+                    setTheme(response.data.content.theme);
+                    setTone(response.data.content.tone);
+                    setSetting(response.data.content.setting);
+                    setCharacters(response.data.content.characters);
+                    setIsLoading(false);
+                    onComplete();
+                } else {
+                    throw new Error('Invalid characters data');
+                }
+            } catch (err) {
+                if (retries < maxRetries) {
+                    retries += 1;
+                    alert("캐릭터 설정에 문제가 생겨 다시 시도합니다.")
+                    fetchSynopsis();
+
+                } else {
+                    alert('다시 시도해주세요');
+                    setIsLoading(false);
+                }
+            }
+        };
+
         if (selectedCountry) {
             setLanguage(selectedCountry.value);
         }
 
-        try {
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
-            setBookId(response.data.book_id);
-            setSynopsis(response.data.content.synopsis);
-            setTitle(response.data.content.title);
-            setGenre(response.data.content.genre);
-            setTheme(response.data.content.theme);
-            setTone(response.data.content.tone);
-            setSetting(response.data.content.setting);
-            setCharacters(formatCharacters(response.data.content.characters));
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-            onComplete();
-        }
+        fetchSynopsis();
     };
+
 
     const buttonClass = (selected, current) => selected.includes(current) ? 'selected' : '';
 
