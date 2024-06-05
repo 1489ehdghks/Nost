@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useThemeStore from '../../shared/store/Themestore';
 import useAuthStore from '../../shared/store/AuthStore';
 import axiosInstance from '../../features/auth/AuthInstance';
@@ -10,11 +11,13 @@ import './Profile.scss';
 const Profile = () => {
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
-  const { userId, nickname, email, setNickname } = useAuthStore((state) => ({
+  const navigate = useNavigate();
+  const { userId, nickname, email, setNickname, reset } = useAuthStore((state) => ({
     userId: state.userId,
     nickname: state.nickname,
     email: state.email,
     setNickname: state.setNickname,
+    reset: state.reset, // reset 함수 추가 회원탈퇴시
   }));
 
   useEffect(() => {
@@ -34,9 +37,25 @@ const Profile = () => {
     likedPosts: [],
   });
 
-  const handleDeleteAccount = () => {
-    // 회원 탈퇴 로직
-    alert('회원 탈퇴가 완료되었습니다.');
+  const handleDeleteAccount = async () => {
+    const password = prompt("회원 탈퇴를 진행하시려면 비밀번호를 입력하세요:");
+    if (password !== null) {
+      try {
+        const response = await axiosInstance.delete('/api/accounts/profile/', {
+          data: {
+            password: password,
+            refresh_token: useAuthStore.getState().refreshToken, // 추가
+          }
+        });
+        alert('회원 탈퇴가 완료되었습니다.');
+        reset(); // 상태 초기화 호출
+        navigate('/');
+        // 탈퇴 후 추가적인 로직을 여기에 추가할 수 있습니다.
+      } catch (error) {
+        console.error('회원 탈퇴 실패:', error);
+        alert('비밀번호가 일치하지 않습니다.');
+      }
+    }
   };
 
   const handleProfilePictureChange = (e) => {
