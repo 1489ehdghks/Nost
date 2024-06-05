@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useThemeStore from '../../../shared/store/Themestore';
+import useGlobalStore from '../../../shared/store/GlobalStore';
 import './BookList.scss';
 
 const BookList = () => {
@@ -11,7 +12,7 @@ const BookList = () => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const booksPerPage = 8; // 페이지 당 보여질 책의 개수
-    const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, setIsLoading, error, setError } = useGlobalStore();
 
     useEffect(() => {
         fetchNovels();
@@ -30,14 +31,15 @@ const BookList = () => {
                 setBooks(response.data);
             } else {
                 console.error('Fetched data is not an array:', response.data);
-                setBooks([]); // 응답 데이터가 배열이 아닌 경우 빈 배열로 설정
+                setBooks([]); 
             }
-            setIsLoading(false); // 로딩 완료 후 상태 변경
         } catch (error) {
             console.error('Error fetching novels:', error);
-            setBooks([]); // 오류 발생 시 빈 배열로 설정
-            setIsLoading(false); // 로딩 완료 후 상태 변경
+            setBooks([]); 
+        } finally {
+            setIsLoading(false);
         }
+
     };
 
     const handleSortChange = (e) => {

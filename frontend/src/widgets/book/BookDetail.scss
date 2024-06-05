@@ -30,6 +30,20 @@
       font-size: 16px;
       line-height: 1.5;
     }
+    
+    button {
+      margin-top: 5px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      
+      &:hover {
+        opacity: 0.5; // 전체 흐릿해지는 효과
+      }
+    }
+    
+    
   
     .title-box{
       padding: 20px;

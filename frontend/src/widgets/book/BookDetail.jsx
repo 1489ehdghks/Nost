@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useThemeStore from '../../shared/store/Themestore';
 import BookComment from './BookComment';
 import BookLike from './BookLike';
 import BookRating from './BookRating';
+import axiosInstance from '../../features/auth/AuthInstance';
 import './BookDetail.scss';
 
 const BookDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
   const [bookData, setBookData] = useState(null);
@@ -33,6 +35,16 @@ const BookDetail = () => {
         console.error('Error fetching comments:', error);
       });
   }, [id]);
+  
+  const handleDeleteBook = async () => {
+    try {
+      await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${id}/`);
+      // 삭제 성공 시, 메인 페이지로 이동
+      navigate('/main');
+    } catch (error) {
+      console.error('Error deleting book:', error);
+    }
+  };
 
   const handleLikeStatusChange = (newLikeStatus) => {
     setBookData(prevBookData => ({
@@ -54,6 +66,13 @@ const BookDetail = () => {
       user_rating: newRating
     }));
   };
+  
+  const buttonStyle = {
+    backgroundColor: 'transparent',
+    border: `1.5px solid ${currentTheme.secondary}`,
+    color: currentTheme.buttonTextColor,
+    marginLeft: '5px'
+  };
 
   return (
     <div className="bookdetail" style={{ color: currentTheme.buttonTextColor }}>
@@ -73,6 +92,10 @@ const BookDetail = () => {
                 initialRating={bookData.user_rating}
                 onRatingChange={handleRatingChange}
               />
+              <button 
+                style={buttonStyle}>
+                Delete Book
+              </button>
             </div>
           </div>
           {bookData.chapters.map((chapter) => (
