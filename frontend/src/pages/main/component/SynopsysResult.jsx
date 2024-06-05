@@ -5,7 +5,7 @@ import './SynopsysResult.scss';
 import axiosInstance from '../../../features/auth/AuthInstance';
 
 const SynopsysResult = ({ onComplete }) => {
-    const { title, genre, theme, tone, setting, characters, bookId, setSummary, setRecommendations } = useBookStore();
+    const { title, genre, theme, tone, setting, characters, bookId, language, setPrologue, setTranslatedContent } = useBookStore();
     const { font, themes, currentSeason } = useThemeStore();
     const Seasontheme = themes[currentSeason];
 
@@ -38,9 +38,12 @@ const SynopsysResult = ({ onComplete }) => {
     const handleComplete = async () => {
         const prompt = `Title: ${editableTitle}\nGenre: ${editableGenre}\nTheme: ${editableTheme}\nTone: ${editableTone}\nSetting: ${editableSetting}\nCharacters: ${editableCharacters}`;
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt });
-            setSummary(response.data.final_summary);
-            setRecommendations(response.data.recommendations);
+            console.log("prompt", prompt)
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language });
+            console.log("Accept-response:", response)
+            setPrologue(response.data.prologue);
+            setTranslatedContent(response.data.translated_content)
+            const deleteResponse = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`, { summary: prompt, language: language });
             onComplete();
         } catch (error) {
             console.error("Error submitting data:", error);

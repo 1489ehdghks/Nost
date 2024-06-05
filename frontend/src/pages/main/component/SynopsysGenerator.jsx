@@ -20,10 +20,18 @@ const customCountryCodeMapping = {
     CN: 'ZH'
 };
 
+const customCountryNames = {
+    KR: 'Korean',
+    US: 'English-US',
+    GB: 'English-UK',
+    JP: 'Japanese',
+    CN: 'Chinese'
+};
+
 const countryOptions = Object.entries(countries.getNames("en", { select: "official" }))
     .filter(([code]) => customCountryCodeMapping[code])
     .map(([code, name]) => ({
-        label: name,
+        label: customCountryNames[code],
         value: customCountryCodeMapping[code]
     }));
 
@@ -61,7 +69,7 @@ const details = [
 
 const SynopsysGenerator = ({ onComplete }) => {
     const { setSynopsis, setBookId, setTitle, setGenre, setTheme, setTone, setSetting, setCharacters, setLanguage } = useBookStore();
-    const { isLoading, setIsLoading, error, setError } = useGlobalStore();
+    const { setIsLoading, setError } = useGlobalStore();
     const { font, themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
     const [selectedGenres, setSelectedGenres] = useState([]);

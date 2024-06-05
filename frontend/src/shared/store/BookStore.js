@@ -8,9 +8,11 @@ const useBookStore = create((set) => ({
     tone: null,
     setting: null,
     synopsis: null,
+    prologue: null,
     summary: null,
     characters: null,
     language: null,
+    translatedContent: null,
     recommendations: [],
 
 
@@ -21,9 +23,11 @@ const useBookStore = create((set) => ({
     setTone: (tone) => set({ tone }),
     setSetting: (setting) => set({ setting }),
     setSynopsis: (synopsis) => set({ synopsis }),
+    setPrologue: (prologue) => set({ prologue }),
     setSummary: (summary) => set({ summary }),
     setCharacters: (characters) => set({ characters }),
     setLanguage: (language) => set({ language }),
+    setTranslatedContent: (translatedContent) => set({ translatedContent }),
     setRecommendations: (recommendations) => set({ recommendations }),
 
 }));
