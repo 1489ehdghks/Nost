@@ -8,9 +8,9 @@ import './SideLayout.scss';
 const SideLayout = ({ children }) => {
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
-
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -29,7 +29,11 @@ const SideLayout = ({ children }) => {
     };
 
     const handleMybooklist = () => {
-        navigate('/Mybooklist'); // 내 북페이지로 이동
+        navigate('/Mybooklist');
+    };
+
+    const handleSettings = () => {
+        navigate('/settings');
     };
 
     return (
@@ -41,7 +45,7 @@ const SideLayout = ({ children }) => {
                 <button onClick={handleMain}>Main</button>
                 <button onClick={handleProfile}>Profile</button>
                 <button onClick={handleMybooklist}>My Book</button>
-                <button>Setting</button>
+                <button onClick={handleSettings}>Settings</button>
                 <button onClick={handleLogout}>logout</button>
             </div>
             <div className="content">

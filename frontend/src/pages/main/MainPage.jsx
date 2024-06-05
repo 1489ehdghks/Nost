@@ -3,11 +3,11 @@ import SideLayout from '../../widgets/layout/sideLayout/SideLayout';
 import BookList from './component/BookList';
 import SynopsysGenerator from './component/SynopsysGenerator';
 import SummaryGenerator from './component/SummaryGenerator';
+import SynopsysResult from './component/SynopsysResult';
 import './MainPage.scss';
 
 const MainPage = () => {
   const containerRef = useRef(null);
-
   const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const MainPage = () => {
   }, [currentSection]);
 
   const navigateToNext = () => {
-    if (currentSection < 2) {
+    if (currentSection < 3) {
       setCurrentSection(currentSection + 1);
       const sections = containerRef.current.querySelectorAll('.section');
       sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
@@ -47,9 +47,10 @@ const MainPage = () => {
 
   return (
     <SideLayout>
-      <div className="page-container" ref={containerRef} style={{}}>
+      <div className="page-container" ref={containerRef}>
         <BookList />
-        <SynopsysGenerator />
+        <SynopsysGenerator onComplete={navigateToNext} />
+        <SynopsysResult onComplete={navigateToNext} />
         <SummaryGenerator />
       </div>
     </SideLayout>

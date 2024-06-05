@@ -1,0 +1,132 @@
+.SynopsysResult-letter {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 26px auto 0;
+    min-width: 40vw;
+    width: 50vw;
+    max-width: 70vw;
+    min-height: 65vh;
+    height: auto;
+    max-height: 80vh;
+    padding: 24px;
+    position: relative;
+    width: 80%;
+
+    &::before,
+    &::after {
+        content: "";
+        height: 98%;
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+    }
+
+    &::before {
+        background: #fafafa;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        left: -5px;
+        top: 4px;
+        transform: rotate(-2.5deg);
+    }
+
+    &::after {
+        background: #f6f6f6;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+        right: -3px;
+        top: 1px;
+        transform: rotate(1.4deg);
+    }
+
+    .editable-field {
+        margin-top: 15px;
+        margin-bottom: 30px;
+
+        strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        textarea {
+            width: 95%;
+            padding: 10px;
+            font-size: 1em;
+            font-family: "Arial", sans-serif;
+            border: none;
+            border-radius: 0;
+            resize: none;
+            transition: border-color 0.2s;
+            max-height: 60vh;
+            min-height: 20px;
+            background-color: transparent;
+            overflow: hidden;
+            line-height: 1.5;
+            &:focus {
+                border-color: #495057;
+                outline: none;
+            }
+        }
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        width: 85%;
+        position: absolute;
+        bottom: 18px;
+    }
+
+    .first-page .button-group {
+        justify-content: flex-end;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+        font-weight: bold;
+        color: var(--primary-color);
+
+        cursor: pointer;
+        font-size: 1.7em;
+        margin-top: 5px;
+        transition:
+            background-color 0.3s,
+            color 0.3s;
+    }
+
+    .tooltip {
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px 10px;
+        background-color: white;
+        color: black;
+        border-radius: 3px;
+        font-size: 0.5em;
+        white-space: nowrap;
+        border: 1px solid black;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
