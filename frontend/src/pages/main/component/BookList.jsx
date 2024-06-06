@@ -12,7 +12,9 @@ const BookList = () => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const booksPerPage = 8; // 페이지 당 보여질 책의 개수
+
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
+
 
     useEffect(() => {
         fetchNovels();
@@ -33,11 +35,15 @@ const BookList = () => {
                 console.error('Fetched data is not an array:', response.data);
                 setBooks([]); 
             }
+            setIsLoading(false); // 로딩 완료 후 상태 변경
         } catch (error) {
             console.error('Error fetching novels:', error);
+          
+
             setBooks([]); 
         } finally {
             setIsLoading(false);
+
         }
 
     };
