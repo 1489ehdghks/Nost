@@ -3,31 +3,70 @@
   justify-content: space-between;
   padding: 20px;
   margin-top: 50px;
+  margin: 0 auto;
   height: 100%; // 화면 전체 높이 설정
-  overflow: auto; //스크롤 활성화
+  overflow: auto; // 스크롤 활성화
   scrollbar-width: none; /* 스크롤바 안보임 */
-}
-
-.summary {
-  flex: 1.5;
-  margin-right: 20px;
-  padding: 20px;
-  background-color: inherit;
-  border-radius: 10px;
-  margin-bottom: 100px;
-
-  h1 {
-    margin-bottom: 10px;
-  }
-
-  h3, p {
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: flex-end;
-  }
   
-  p {
-    font-size: 16px;
-    line-height: 1.5;
+  .summary {
+    flex: 2;  // 댓글과의 거리
+    margin-right: 10px; // 댓글과의 거리
+    padding: 20px;
+    background-color: inherit;
+    border-radius: 10px;
+    height: auto;
+  
+    h1 {
+      margin-bottom: 10px;
+    }
+  
+    h3, p {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    
+    button {
+      margin-top: 5px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      
+      &:hover {
+        opacity: 0.5; // 전체 흐릿해지는 효과
+      }
+    }
+    
+    
+  
+    .title-box{
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: inherit;
+      border-radius: 10px;
+    }
+
+    .chapter-box{
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: inherit;
+      border-radius: 10px;
+
+      .chapter-p{
+        margin-bottom: 20px;
+      }
+    }
   }
 }
+
+
+
+
+
+
