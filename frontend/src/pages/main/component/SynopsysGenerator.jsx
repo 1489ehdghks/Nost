@@ -9,22 +9,30 @@ import Select from 'react-select';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 
-
 countries.registerLocale(enLocale);
 
 const customCountryCodeMapping = {
     KR: 'KO',
-    EN: 'EN_US',
+    US: 'EN-US',
     GB: 'EN-GB',
     JP: 'JA',
     CN: 'ZH'
 };
 
-const countryOptions = Object.entries(countries.getNames("en", { select: "official" })).map(([code, name]) => ({
-    label: name,
-    value: customCountryCodeMapping[code] || code
-}));
+const customCountryNames = {
+    KR: 'Korean',
+    US: 'English-US',
+    GB: 'English-UK',
+    JP: 'Japanese',
+    CN: 'Chinese'
+};
 
+const countryOptions = Object.entries(countries.getNames("en", { select: "official" }))
+    .filter(([code]) => customCountryCodeMapping[code])
+    .map(([code, name]) => ({
+        label: customCountryNames[code],
+        value: customCountryCodeMapping[code]
+    }));
 
 const genres = [
     { label: '판타지', prompt: 'Fantasy novels often include various mythical creatures and races, focusing on their interactions and conflicts.' },
@@ -59,7 +67,7 @@ const details = [
 
 const SynopsysGenerator = ({ onComplete }) => {
     const { setSynopsis, setBookId, setTitle, setGenre, setTheme, setTone, setSetting, setCharacters, setLanguage } = useBookStore();
-    const { isLoading, setIsLoading, error, setError } = useGlobalStore();
+    const { setIsLoading, setError } = useGlobalStore();
     const { font, themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
     const [selectedGenres, setSelectedGenres] = useState([]);
@@ -87,60 +95,75 @@ const SynopsysGenerator = ({ onComplete }) => {
         setSelectedCountry(selectedOption);
     };
 
-    const formatCharacters = (characters) => {
-        return characters.split('...').join('\n\n');
-    };
-
     const generateSynopsis = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
+        console.log("generateSynopsis triggered");
 
         if (!selectedCountry) {
             alert('Please select language.');
             setIsLoading(false);
+            console.log("No language selected");
             return;
         }
 
-        const formattedDetails = `Recommend the best Suggested SYNOPSIS for me. The time period setting is ${selectedEra}.the genre is ${selectedGenres.join(', ')} with ${selectedDetails.join(', ')}.${userRequests}`;
-
+        setLanguage(selectedCountry);
+        const formattedDetails = `The time period setting is ${selectedEra}. The genre is ${selectedGenres.join(', ')} with ${selectedDetails.join(', ')}. ${userRequests}`;
         const requestData = {
             prompt: formattedDetails.trim(),
             language: selectedCountry ? selectedCountry.value : null
         };
 
-        if (selectedCountry) {
-            setLanguage(selectedCountry.value);
-        }
+        console.log("requestData created:", requestData);
 
-        try {
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
-            setBookId(response.data.book_id);
-            setSynopsis(response.data.content.synopsis);
-            setTitle(response.data.content.title);
-            setGenre(response.data.content.genre);
-            setTheme(response.data.content.theme);
-            setTone(response.data.content.tone);
-            setSetting(response.data.content.setting);
-            setCharacters(formatCharacters(response.data.content.characters));
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-            onComplete();
-        }
+        const fetchSynopsis = async (retries = 0) => {
+            try {
+                console.log("Attempting fetchSynopsis, retry:", retries);
+                const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
+                const content = response.data.content;
+
+                console.log("response received:", response);
+
+                if (content.characters && !['문자 없음', '', '登場人物なし', '无字符', 'No Characters'].includes(content.characters)) {
+                    setBookId(response.data.book_id);
+                    setSynopsis(content.synopsis);
+                    setTitle(content.title);
+                    setGenre(content.genre);
+                    setTheme(content.theme);
+                    setTone(content.tone);
+                    setSetting(content.setting);
+                    setCharacters(content.characters);
+                    setIsLoading(false);
+                    onComplete();
+                } else {
+                    throw new Error('설정 저장 문제');
+                }
+            } catch (err) {
+                console.error("Error in fetchSynopsis:", err);
+                if (retries < 2) {
+                    alert("캐릭터 설정에 문제가 생겨 다시 시도합니다.");
+                    fetchSynopsis(retries + 1);
+                } else {
+                    alert('다시 시도해주세요');
+                    setIsLoading(false);
+                    setError(err);
+                }
+            }
+        };
+
+        fetchSynopsis();
     };
 
     const buttonClass = (selected, current) => selected.includes(current) ? 'selected' : '';
 
-
     return (
         <div className="novel-generator section" style={{ fontFamily: font.shapeFont, backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
-            <h1>New Novel</h1>
+            <h1 className="synopsis-heading">New Novel</h1>
             <form onSubmit={generateSynopsis}>
                 <div className="user-inputs">
-                    <div className="button-group">
-                        <h2>Language</h2>
+                    <div className="synopsis-button-group">
+                        <h2 className="synopsis-h2">Language</h2>
                         <Select
                             options={countryOptions}
                             value={selectedCountry}
@@ -157,21 +180,23 @@ const SynopsysGenerator = ({ onComplete }) => {
                                 menu: (provided) => ({
                                     ...provided,
                                     fontFamily: font.nomalFont,
+                                    color: currentTheme.textColor,
                                     zIndex: 10,
                                 }),
                                 singleValue: (provided) => ({
                                     ...provided,
                                     color: currentTheme.textColor,
+
                                 }),
                             }}
                         />
                     </div>
                     <div className="category">
 
-                        <div className="button-group">
+                        <div className="synopsis-button-group">
                             <div className="toggle-switch" onClick={() => setShowEras(!showEras)}>
-                                <h2 >Era</h2>
-                                <div>{showEras ? <FaChevronDown /> : <FaChevronRight />}</div>
+                                <h2 className="synopsis-h2">Era</h2>
+                                <div className="toggle-icon">{showEras ? <FaChevronDown /> : <FaChevronRight />}</div>
                             </div>
                             {showEras && (
                                 <div className="buttons">
@@ -179,12 +204,13 @@ const SynopsysGenerator = ({ onComplete }) => {
                                         <button
                                             key={label}
                                             type="button"
-                                            className={selectedEra === prompt ? 'selected' : ''}
+                                            className={`synopsis-button ${selectedEra === prompt ? 'selected' : ''}`}
                                             onClick={() => handleEraChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
-                                                backgroundColor: currentTheme.buttonBackgroundColor,
-                                                color: selectedEra === prompt ? currentTheme.buttonTextColor : currentTheme.buttonTextColor,
+                                                backgroundColor: selectedEra === prompt ? currentTheme.additionalColors[1] : currentTheme.buttonBackgroundColor,
+                                                borderColor: currentTheme.additionalColors[1],
+                                                color: selectedEra === prompt ? 'white' : currentTheme.buttonTextColor,
                                             }}
                                         >
                                             {label}
@@ -194,10 +220,10 @@ const SynopsysGenerator = ({ onComplete }) => {
                             )}
                         </div>
 
-                        <div className="button-group">
+                        <div className="synopsis-button-group">
                             <div className="toggle-switch" onClick={() => setShowGenres(!showGenres)}>
-                                <h2>Genre</h2>
-                                <div>{showGenres ? <FaChevronDown /> : <FaChevronRight />}</div>
+                                <h2 className="synopsis-h2">Genre</h2>
+                                <div className="toggle-icon">{showGenres ? <FaChevronDown /> : <FaChevronRight />}</div>
                             </div>
                             {showGenres && (
                                 <div className="buttons">
@@ -205,12 +231,13 @@ const SynopsysGenerator = ({ onComplete }) => {
                                         <button
                                             key={label}
                                             type="button"
-                                            className={buttonClass(selectedGenres, prompt)}
+                                            className={`synopsis-button ${buttonClass(selectedGenres, prompt)}`}
                                             onClick={() => handleGenreChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
-                                                backgroundColor: currentTheme.buttonBackgroundColor,
-                                                color: selectedEra === prompt ? currentTheme.buttonTextColor : currentTheme.buttonTextColor,
+                                                backgroundColor: selectedGenres.includes(prompt) ? currentTheme.additionalColors[1] : currentTheme.buttonBackgroundColor,
+                                                borderColor: currentTheme.additionalColors[1],
+                                                color: selectedGenres.includes(prompt) ? 'white' : currentTheme.buttonTextColor,
                                             }}
                                         >
                                             {label}
@@ -220,10 +247,10 @@ const SynopsysGenerator = ({ onComplete }) => {
                             )}
                         </div>
 
-                        <div className="button-group details">
+                        <div className="synopsis-button-group details">
                             <div className="toggle-switch" onClick={() => setShowDetails(!showDetails)}>
-                                <h2>Details</h2>
-                                <div>{showDetails ? <FaChevronDown /> : <FaChevronRight />}</div>
+                                <h2 className="synopsis-h2">Details</h2>
+                                <div className="toggle-icon">{showDetails ? <FaChevronDown /> : <FaChevronRight />}</div>
                             </div>
                             {showDetails && (
                                 <div className="buttons">
@@ -231,12 +258,13 @@ const SynopsysGenerator = ({ onComplete }) => {
                                         <button
                                             key={label}
                                             type="button"
-                                            className={buttonClass(selectedDetails, prompt)}
+                                            className={`synopsis-button ${buttonClass(selectedDetails, prompt)}`}
                                             onClick={() => handleDetailChange(prompt)}
                                             data-prompt={prompt}
                                             style={{
-                                                backgroundColor: currentTheme.buttonBackgroundColor,
-                                                color: selectedEra === prompt ? currentTheme.buttonTextColor : currentTheme.buttonTextColor,
+                                                backgroundColor: selectedDetails.includes(prompt) ? currentTheme.additionalColors[1] : currentTheme.buttonBackgroundColor,
+                                                borderColor: currentTheme.additionalColors[1],
+                                                color: selectedDetails.includes(prompt) ? 'white' : currentTheme.buttonTextColor,
                                             }}
                                         >
                                             {label}
@@ -247,8 +275,9 @@ const SynopsysGenerator = ({ onComplete }) => {
                         </div>
                     </div>
                     <div className="user-requests">
-                        <h2>Requests</h2>
+                        <h2 className="synopsis-h2">Requests</h2>
                         <textarea
+                            className="synopsis-textarea"
                             placeholder="User requests here..."
                             rows="4"
                             value={userRequests}
@@ -259,9 +288,9 @@ const SynopsysGenerator = ({ onComplete }) => {
                             }}
                         ></textarea>
                     </div>
-                    <div className="button-row">
+                    <div className="synopsis-button-row">
                         <button
-                            className="generate-button"
+                            className="synopsis-button generate-button"
                             type="submit"
                             style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
                         >

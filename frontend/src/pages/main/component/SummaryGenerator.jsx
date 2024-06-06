@@ -4,83 +4,137 @@ import useThemeStore from '../../../shared/store/Themestore';
 import useBookStore from '../../../shared/store/BookStore';
 import axiosInstance from '../../../features/auth/AuthInstance';
 import useGlobalStore from '../../../shared/store/GlobalStore';
+import Prologue from './summaryGeneratorComponent/Prologue';
+import Summary from './summaryGeneratorComponent/Summary';
 
 const SummaryGenerator = () => {
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
-    const { summary, bookId, recommendations, setSummary } = useBookStore();
+    const { prologue, chapterNum, translatedPrologue, translatedContent, summary, bookId, language, recommendations, setBookId, setChapterNum, setPrologue, setSummary, setTranslatedPrologue, setTranslatedContent, setRecommendations } = useBookStore();
     const [userText, setUserText] = useState('');
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
 
-    const handleRecommendationClick = async (description) => {
+    const handleRetryClick = async () => {
+        triggerAnimation();
         setIsLoading(true);
+        const prompt = `Recommend the best prologue for me.${prologue}`;
+
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: description });
+            await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`);
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            setPrologue(response.data.prologue);
+            setTranslatedPrologue(response.data.translated_content);
+        } catch (error) {
+            setError(error);
+            console.error("Error submitting data:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleNextClick = async () => {
+        triggerAnimation();
+        setIsLoading(true);
+        const prompt = `Recommend the best prologue for me.${prologue}`;
+        try {
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            console.log("NextResponse:", response.data);
+            setPrologue(response.data.prologue)
+            setChapterNum(response.data.chapter_num);
+            setTranslatedContent(response.data.translated_content)
+            setBookId(response.data.book_id)
+            console.log("chapterNum:", chapterNum)
+        } catch (error) {
+            setError(error);
+            console.error("Error submitting data:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleRecommendationClick = async (description) => {
+        triggerAnimation();
+        setIsLoading(true);
+        console.log("description:", description)
+        try {
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: description, language: language.value });
+            console.log("RecommendationResponse:", response.data);
             setSummary(response.data.final_summary);
+            setTranslatedContent(response.data.translated_content)
+            setBookId(response.data.book_id)
+            setChapterNum(response.data.chapter_num);
+            setRecommendations(response.data.recommendations)
+            console.log("recommendations:", recommendations)
         } catch (err) {
             setError(err);
-            alert(error)
+            alert(error);
         } finally {
             setIsLoading(false);
         }
     };
 
     const handleUserTextSubmit = async () => {
+        triggerAnimation();
         setIsLoading(true);
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: userText });
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: userText, language: language.value });
+            console.log("TextSubmitResponse:", response.data);
             setSummary(response.data.final_summary);
+            setTranslatedContent(response.data.translated_content)
+            setBookId(response.data.book_id)
+            setChapterNum(response.data.chapter_num);
+            setRecommendations(response.data.recommendations)
+            console.log("translatedContent", translatedContent)
         } catch (err) {
             setError(err);
-            alert(error)
+            alert(error);
         } finally {
             setIsLoading(false);
         }
     };
 
+    const triggerAnimation = () => {
+        const book = document.querySelector('.SummaryGenerator-book');
+        if (book) {
+            book.classList.add('animate');
+            setTimeout(() => {
+                book.classList.remove('animate');
+            }, 5000);
+        }
+    };
+
     return (
         <div className="novel-continuation section" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
-            <div className="novel-result">
-                <p>{isLoading ? 'Loading...' : (summary || 'Result of Novel')}</p>
-            </div>
-            <div className="content">
-                {recommendations && recommendations.map((rec, index) => (
-                    <button
-                        key={index}
-                        className="recommendation-button"
-                        style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
-                        onClick={() => handleRecommendationClick(rec.Description)}
-                        onMouseEnter={(e) => {
-                            const tooltip = document.createElement('div');
-                            tooltip.className = 'tooltip';
-                            tooltip.innerText = rec.Description;
-                            e.target.appendChild(tooltip);
-                        }}
-                        onMouseLeave={(e) => {
-                            const tooltip = e.target.querySelector('.tooltip');
-                            if (tooltip) {
-                                tooltip.remove();
-                            }
-                        }}
-                    >
-                        {rec.Title}
-                    </button>
-                ))}
-            </div>
-            <div className="user-text-area">
-                <textarea
-                    placeholder="User Text Area"
-                    value={userText}
-                    onChange={(e) => setUserText(e.target.value)}
-                    style={{ backgroundColor: currentTheme.secondary, color: currentTheme.textColor }}
-                ></textarea>
-                <button
-                    onClick={handleUserTextSubmit}
-                    style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
-                >
-                    Submit User Text
-                </button>
-            </div>
+            {chapterNum === 0 ? (
+                <div className="SummaryGenerator-fullpage">
+                    <Prologue
+                        prologue={prologue}
+                        translatedPrologue={translatedPrologue}
+                        setTranslatedPrologue={setTranslatedPrologue}
+                        handleRetryClick={handleRetryClick}
+                        handleNextClick={handleNextClick}
+                    />
+                </div>
+            ) : (
+                <div className="SummaryGenerator-book">
+                    <div className="SummaryGenerator-page left-page">
+                        <textarea
+                            value={translatedContent || ''}
+                            readOnly
+                            className="summary-textarea"
+                        />
+                    </div>
+                    <div className="SummaryGenerator-page right-page">
+                        <Summary
+                            recommendations={recommendations}
+                            handleRecommendationClick={handleRecommendationClick}
+                            userText={userText}
+                            setUserText={setUserText}
+                            handleUserTextSubmit={handleUserTextSubmit}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

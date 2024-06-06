@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import useBookStore from '../../../shared/store/BookStore';
 import useThemeStore from '../../../shared/store/Themestore';
+import useGlobalStore from '../../../shared/store/GlobalStore';
 import './SynopsysResult.scss';
 import axiosInstance from '../../../features/auth/AuthInstance';
 
 const SynopsysResult = ({ onComplete }) => {
-    const { title, genre, theme, tone, setting, characters, bookId, setSummary, setRecommendations } = useBookStore();
+    const { title, genre, theme, tone, setting, characters, bookId, language, setPrologue, setTranslatedPrologue, setChapterNum, setBookId } = useBookStore();
     const { font, themes, currentSeason } = useThemeStore();
+    const { setIsLoading } = useGlobalStore()
     const Seasontheme = themes[currentSeason];
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +19,8 @@ const SynopsysResult = ({ onComplete }) => {
     const [editableSetting, setEditableSetting] = useState(setting);
     const [editableCharacters, setEditableCharacters] = useState(characters);
 
+
+
     useEffect(() => {
         setEditableTitle(title);
         setEditableGenre(genre);
@@ -26,18 +30,32 @@ const SynopsysResult = ({ onComplete }) => {
         setEditableCharacters(characters);
     }, [title, genre, theme, tone, setting, characters]);
 
+
+
+
+
     const handleNextPage = () => setCurrentPage(currentPage + 1);
     const handlePrevPage = () => setCurrentPage(currentPage - 1);
 
     const handleComplete = async () => {
-        const prompt = `Title: ${editableTitle}\nGenre: ${editableGenre}\nTheme: ${editableTheme}\nTone: ${editableTone}\nSetting: ${editableSetting}\nCharacters: ${editableCharacters}`;
+        setIsLoading(true);
+        const prompt = `Recommend the best prologue for me.Title is '${editableTitle}' Genre is '${editableGenre}' Theme is '${editableTheme}' Tone is '${editableTone}' Setting is '${editableSetting}' Characters is '${editableCharacters}'`;
+
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt });
-            setSummary(response.data.final_summary);
-            setRecommendations(response.data.recommendations);
+            console.log("prompt", prompt)
+            console.log("language", language)
+            await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`);
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            console.log("Accept-response:", response)
+            setBookId(response.data.book_id)
+            setChapterNum(response.data.chapter_num)
+            setPrologue(response.data.prologue);
+            setTranslatedPrologue(response.data.translated_content)
             onComplete();
         } catch (error) {
             console.error("Error submitting data:", error);
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -150,7 +168,7 @@ const SynopsysResult = ({ onComplete }) => {
                         <strong style={{ fontFamily: font.shapeFont, color: Seasontheme.textColor }}>Characters:</strong>
                         <textarea
                             style={{ fontFamily: font.nomalFont, height: "80vh" }}
-                            value={editableCharacters || ''}
+                            value={editableCharacters.replace(/\.\.\./g, '\n\n') || ''}
                             onChange={(e) => setEditableCharacters(e.target.value)}
                             rows="10"
                         />
