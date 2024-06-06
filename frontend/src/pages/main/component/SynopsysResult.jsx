@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import useBookStore from '../../../shared/store/BookStore';
 import useThemeStore from '../../../shared/store/Themestore';
+import useGlobalStore from '../../../shared/store/GlobalStore';
 import './SynopsysResult.scss';
 import axiosInstance from '../../../features/auth/AuthInstance';
 
 const SynopsysResult = ({ onComplete }) => {
-    const { title, genre, theme, tone, setting, characters, bookId, language, setPrologue, setTranslatedContent } = useBookStore();
+    const { title, genre, theme, tone, setting, characters, bookId, language, setPrologue, setTranslatedPrologue, setChapterNum, setBookId } = useBookStore();
     const { font, themes, currentSeason } = useThemeStore();
+    const { setIsLoading } = useGlobalStore()
     const Seasontheme = themes[currentSeason];
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -36,17 +38,24 @@ const SynopsysResult = ({ onComplete }) => {
     const handlePrevPage = () => setCurrentPage(currentPage - 1);
 
     const handleComplete = async () => {
-        const prompt = `Title: ${editableTitle}\nGenre: ${editableGenre}\nTheme: ${editableTheme}\nTone: ${editableTone}\nSetting: ${editableSetting}\nCharacters: ${editableCharacters}`;
+        setIsLoading(true);
+        const prompt = `Recommend the best prologue for me.Title is '${editableTitle}' Genre is '${editableGenre}' Theme is '${editableTheme}' Tone is '${editableTone}' Setting is '${editableSetting}' Characters is '${editableCharacters}'`;
+
         try {
             console.log("prompt", prompt)
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language });
+            console.log("language", language)
+            await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`);
+            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
             console.log("Accept-response:", response)
+            setBookId(response.data.book_id)
+            setChapterNum(response.data.chapter_num)
             setPrologue(response.data.prologue);
-            setTranslatedContent(response.data.translated_content)
-            const deleteResponse = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`, { summary: prompt, language: language });
+            setTranslatedPrologue(response.data.translated_content)
             onComplete();
         } catch (error) {
             console.error("Error submitting data:", error);
+        } finally {
+            setIsLoading(false)
         }
     };
 
