@@ -1,45 +1,81 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useThemeStore from '../../../src/shared/store/Themestore';
+import axiosInstance from '../../features/auth/AuthInstance';
 import './LikeBookList.scss';
 
 const LikeBookList = () => {
     const { themes, currentSeason } = useThemeStore(); 
     const currentTheme = themes[currentSeason]; 
     const [sortOption, setSortOption] = useState('newest'); 
-    const [novels, setNovels] = useState([
-        { id: 1, novel: 'The Great Gatsby', author: 'F. Scott Fitzgerald', likes: 1500, rating: 4.5, created_at: '2022-01-01' },
-        { id: 2, novel: 'To Kill a Mockingbird', author: 'Harper Lee', likes: 2000, rating: 4.8, created_at: '2021-05-15' },
-        { id: 3, novel: '1984', author: 'George Orwell', likes: 1800, rating: 4.7, created_at: '2020-11-20' },
-        { id: 4, novel: 'Pride and Prejudice', author: 'Jane Austen', likes: 1700, rating: 4.6, created_at: '2019-07-10' },
-        { id: 5, novel: 'The Catcher in the Rye', author: 'J.D. Salinger', likes: 1600, rating: 4.4, created_at: '2018-03-25' },
-    ]);
+    const [likedBooks, setLikedBooks] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+    const booksPerPage = 8; // 페이지 당 보여질 책의 개수
+
 
     useEffect(() => {
-        sortNovels(sortOption); // 정렬 기준 변경 시 소설 목록 정렬
+        const UserLikedBooks = async () => {
+            try {
+                const response = await axiosInstance.get('http://127.0.0.1:8000/api/books/userlikedbooks/');
+                setLikedBooks(response.data);
+            } catch (error) {
+                console.error('Error fetching liked books:', error);
+            }
+        };
+
+        UserLikedBooks();
+    }, []);
+
+    useEffect(() => {
+        sortBooks(sortOption);
     }, [sortOption]);
 
     const handleSortChange = (e) => {
         const { value } = e.target;
-        setSortOption(value); // 정렬 기준 변경
+        setSortOption(value);
     };
 
-    const sortNovels = (criteria) => {
-        const sortedNovels = [...novels];
+    const sortBooks = (criteria) => {
+        const sortedBooks = [...likedBooks];
         switch (criteria) {
             case 'newest':
-                sortedNovels.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                sortedBooks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 break;
             case 'popular':
-                sortedNovels.sort((a, b) => b.likes - a.likes);
+                sortedBooks.sort((a, b) => b.is_liked.length - a.is_liked.length);
                 break;
             case 'rating':
-                sortedNovels.sort((a, b) => b.rating - a.rating);
+                sortedBooks.sort((a, b) =>b.average_rating - a.average_rating);
                 break;
             default:
                 break;
         }
-        setNovels(sortedNovels); // 정렬된 목록 설정
+        setLikedBooks(sortedBooks);
     };
+    
+
+    const indexOfLastBook = currentPage * booksPerPage;
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+    const currentlikedBooks = likedBooks.slice(indexOfFirstBook, indexOfLastBook);
+    const totalPages = Math.ceil(likedBooks.length / booksPerPage);
+
+    const handleClick = (page) => {
+        setCurrentPage(page);
+    };
+
+    const generatePagination = () => {
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
+
+    const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 함수
+    const handleBookClick = (id) => {
+        navigate(`/book/${id}`);
+    };
+
 
     return (
         <div className="book-list" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
@@ -49,30 +85,41 @@ const LikeBookList = () => {
                     <option value="popular">Most Popular</option>
                     <option value="rating">Highest Rated</option>
                 </select>
-
             </div>
             <table>
                 <thead>
                     <tr>
                         <th>Novel</th>
-                        <th>Author</th>
                         <th>Likes</th>
                         <th>Rating</th>
                         <th>Created At</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {novels.map((novel) => (
-                        <tr key={novel.id}>
-                            <td>{novel.novel}</td>
-                            <td>{novel.author}</td>
-                            <td>{novel.likes}</td>
-                            <td>{novel.rating}</td>
-                            <td>{novel.created_at}</td>
+                    {currentlikedBooks.map((book) => (
+                        <tr key={book.id} onClick={() => handleBookClick(book.id)}>
+                            <td>{book.title}</td>
+                            <td>{book.is_liked.length}</td>
+                            <td>{book.average_rating}</td>
+                            <td>{new Date(book.created_at).toLocaleDateString()}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div className="pagination">
+                <button onClick={() => handleClick(1)} disabled={currentPage === 1}> &laquo; </button>
+                <button onClick={() => handleClick(currentPage - 1)} disabled={currentPage === 1}> &lt; </button>
+                {generatePagination().map((page) => (
+                    <button
+                        key={page}
+                        onClick={() => handleClick(page)}
+                        className={currentPage === page ? 'active' : ''}>
+                        {page}
+                    </button>
+                ))}
+                <button onClick={() => handleClick(currentPage + 1)} disabled={currentPage === totalPages}> &gt; </button>
+                <button onClick={() => handleClick(totalPages)} disabled={currentPage === totalPages}> &raquo; </button>
+            </div>
         </div>
     );
 };
