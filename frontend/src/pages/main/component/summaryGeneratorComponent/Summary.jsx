@@ -5,7 +5,6 @@ const Summary = ({ recommendations, handleRecommendationClick, userText, setUser
     const { themes, currentSeason } = useThemeStore();
     const currentTheme = themes[currentSeason];
 
-
     return (
         <div className="summary-container">
             <div className="summary-content" style={{ backgroundColor: currentTheme.secondary }}>
@@ -21,6 +20,7 @@ const Summary = ({ recommendations, handleRecommendationClick, userText, setUser
                         color: currentTheme.buttonTextColor,
                         border: '5px',
                     }}
+                    data-description={rec.Description}
                     onMouseOver={(e) => {
                         e.target.style.backgroundColor = currentTheme.buttonBackgroundColor;
                     }}
@@ -31,7 +31,6 @@ const Summary = ({ recommendations, handleRecommendationClick, userText, setUser
                     {rec.Title}
                 </button>
             ))}
-
 
             <div className="user-text-area">
                 <textarea
