@@ -23,8 +23,8 @@ const BookDetail = () => {
     axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
-   
-      
+
+
         console.log('data : ', response.data);
       })
       .catch(error => {
@@ -39,7 +39,7 @@ const BookDetail = () => {
         console.error('Error fetching comments:', error);
       });
   }, [id]);
-  
+
   const handleDeleteBook = async () => {
     try {
 
@@ -73,7 +73,7 @@ const BookDetail = () => {
       user_rating: newRating
     }));
   };
-  
+
   const buttonStyle = {
     backgroundColor: 'transparent',
     border: `1.5px solid ${currentTheme.secondary}`,
@@ -101,8 +101,11 @@ const BookDetail = () => {
                 initialRating={bookData.user_rating}
                 onRatingChange={handleRatingChange}
               />
-              <button 
-                style={buttonStyle}>
+              <button
+                style={buttonStyle}
+                onClick={handleDeleteBook}
+              >
+
                 Delete Book
               </button>
             </div>
@@ -114,10 +117,10 @@ const BookDetail = () => {
             </div>
           ))}
 
-       
+
         </div>
       )}
-      
+
       <BookComment
         bookId={id}
         comments={comments}

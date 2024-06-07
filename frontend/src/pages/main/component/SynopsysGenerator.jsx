@@ -12,7 +12,7 @@ import enLocale from 'i18n-iso-countries/langs/en.json';
 countries.registerLocale(enLocale);
 
 const customCountryCodeMapping = {
-    KR: 'KO',
+    KO: 'KO',
     US: 'EN-US',
     GB: 'EN-GB',
     JP: 'JA',
@@ -20,7 +20,7 @@ const customCountryCodeMapping = {
 };
 
 const customCountryNames = {
-    KR: 'Korean',
+    KO: 'Korean',
     US: 'English-US',
     GB: 'English-UK',
     JP: 'Japanese',
