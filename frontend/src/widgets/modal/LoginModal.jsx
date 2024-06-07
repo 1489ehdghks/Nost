@@ -6,7 +6,7 @@ import useGlobalStore from '../../shared/store/GlobalStore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './LoginModal.scss';
-
+import axios from 'axios';
 
 
 const LoginModal = ({ onClose }) => {
@@ -18,7 +18,7 @@ const LoginModal = ({ onClose }) => {
     const isLoading = useGlobalStore(state => state.isLoading);
     const globalError = useGlobalStore(state => state.error);
     const [signupSuccess, setSignupSuccess] = useState(false);
-    // const [emailSent, setEmailSent] = useState(false); // 이메일 확인
+    const [emailSent, setEmailSent] = useState(false); // 이메일 확인
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,11 +41,11 @@ const LoginModal = ({ onClose }) => {
         }
     }, [signupSuccess]);
 
-    // useEffect(() => {
-    //     if (emailSent) {
-    //         toast.info(`${signupInputs.email}로 보내드린 인증 메일을 확인해 주세요.`);
-    //     }
-    // }, [emailSent, signupInputs.email]);
+    useEffect(() => {
+        if (emailSent) {
+            toast.info(`${signupInputs.email}로 보내드린 인증 메일을 확인해 주세요.`);
+        }
+    }, [emailSent, signupInputs.email]);
 
 
     const handleLoginInputChange = (event) => {
@@ -77,18 +77,6 @@ const LoginModal = ({ onClose }) => {
         }
     };
 
-    const handleSignupSubmit = async (event) => {
-        event.preventDefault();
-        setSignupErrors({});
-        if (signupInputs.password1 !== signupInputs.password2) {
-            setSignupErrors({ password2: ['Passwords do not match'] });
-            return;
-        }
-        const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-        setSignupSuccess(true);
-        setLoginFormActive(true);
-    };
-
     // const handleSignupSubmit = async (event) => {
     //     event.preventDefault();
     //     setSignupErrors({});
@@ -97,32 +85,60 @@ const LoginModal = ({ onClose }) => {
     //         return;
     //     }
     //     const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-    //     if (response && response.success) {
-    //         setEmailSent(true);
-    //     } else {
-    //         // Handle signup error
-    //         setSignupErrors(response.errors);
-    //     }
+    //     setSignupSuccess(true);
+    //     setLoginFormActive(true);
     // };
 
-    // const handleEmailVerification = async () => {
-    //     const response = await verifyEmail(signupInputs.email);
-    //     if (response && response.success) {
-    //         toast.success("이메일 인증이 완료되었습니다. 로그인해주세요.");
-    //         setEmailSent(false);
-    //         setLoginFormActive(true);
-    //     } else {
-    //         // Handle verification error
-    //         toast.error("이메일 인증에 실패했습니다. 다시 시도해주세요.");
-    //     }
-    // };
+    const handleSignupSubmit = async (event) => {
+        event.preventDefault();
+        setSignupErrors({});
+        if (signupInputs.password1 !== signupInputs.password2) {
+            setSignupErrors({ password2: ['Passwords do not match'] });
+            return;
+        }
+        const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
+        if (response && response.success) {
+            setSignupSuccess(true); // 회원가입 성공 메시지 표시
+            setEmailSent(true);
+        } else {
+            setSignupErrors(response.errors);
+        }
+    };
+    
+
+    const handleEmailVerification = async () => {
+        const response = await verifyEmail(signupInputs.email);
+        if (response && response.success) {
+            toast.success("이메일 인증이 완료되었습니다. 로그인해주세요.");
+            setEmailSent(false);
+            setLoginFormActive(true);
+        } else {
+            // Handle verification error
+            toast.error("이메일 인증에 실패했습니다. 다시 시도해주세요.");
+        }
+    };
+
+    const verifyEmail = async (email) => {
+        try {
+            const response = await axios.get(`/api/accounts/confirm-email/${email}`);
+            return { success: true, data: response.data };
+        } catch (error) {
+            return { success: false, error: error.response ? error.response.data : 'Unknown error' };
+        }
+    };
+
+    useEffect(() => {
+        if (emailSent) {
+            handleEmailVerification();
+        }
+    }, [emailSent]);
 
     return (
         <div className="modalOverlay">
             <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
             {/* 이메일 인증을 받고 나서 */}
-            {/* {!emailSent ? ( */}
+
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
                         {/* 로그인 왼쪽 */}
@@ -141,7 +157,6 @@ const LoginModal = ({ onClose }) => {
                     </div>
                 </div>
 
-                {/* 폼 */}
                 <div className={`forms-container ${isLoginFormActive ? 'show-login' : 'show-signup'}`}>
                     {/* 로그인폼 */}
                     <div className={`user_forms-login ${isLoginFormActive ? 'active' : 'inactive'}`}>
@@ -262,13 +277,6 @@ const LoginModal = ({ onClose }) => {
                         </form>
                     </div>
                 </div>
-                {/* ) : (
-                    <div className="email-verification-modal">
-                        <h2>이메일 인증</h2>
-                        <p>{signupInputs.email}로 보내드린 인증 메일을 확인해 주세요.</p>
-                        <button onClick={handleEmailVerification} disabled={isLoading}>인증 확인</button>
-                    </div>
-                )} */}
             </div>
         </div>
     );
