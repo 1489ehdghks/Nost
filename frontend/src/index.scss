@@ -1,0 +1,63 @@
+:root {
+    // Font variables
+    --font-shape: "'Nanum Myeongjo', serif";
+    --font-normal: "Averia Gruesa Libre, system-ui";
+    --font-normal2: "'Indie Flower', cursive";
+    --font-pop: "'Permanent Marker', cursive";
+    --font-rock: "'Rock Salt', cursive";
+    --font-rock2: "'Zeyada', cursive";
+    --font-scary: "'Creepster', system-ui";
+    --font-thick: "'Poetsen One', sans-serif";
+    --font-titan: "'Titan One', sans-serif";
+
+    //korean font
+    --font-summary-korean: "'Hi Melody', sans-serif";
+
+    // Spring theme colors
+    --spring-default: #fffaf0;
+    --spring-secondary: #ffffff;
+    --spring-text-color: #db7093;
+    --spring-title-color: #ff69b4;
+    --spring-sidebar-bg: #ffd1dc;
+    --spring-mainpage-background-color: rgba(255, 255, 255, 1);
+    --spring-button-background-color: #ffebee;
+    --spring-button-text-color: #db7093;
+    --spring-team-color: #000;
+    --spring-drink-color: #ff69b4;
+
+    // Summer theme colors
+    --summer-default: #001f3f;
+    --summer-secondary: #ffffff;
+    --summer-text-color: #002d70;
+    --summer-title-color: #00ffff;
+    --summer-sidebar-bg: #b0c4de;
+    --summer-mainpage-background-color: #001f3f;
+    --summer-button-background-color: #b7e1ff;
+    --summer-button-text-color: #002d70;
+    --summer-team-color: #fff;
+    --summer-drink-color: #001f3f;
+
+    // Autumn theme colors
+    --autumn-default: #f5f5dc;
+    --autumn-secondary: #ffffff;
+    --autumn-text-color: #8b4513;
+    --autumn-title-color: #ff4500;
+    --autumn-sidebar-bg: #f4c169f1;
+    --autumn-mainpage-background-color: #ffe4b5;
+    --autumn-button-background-color: #fdbe80;
+    --autumn-button-text-color: #d2691e;
+    --autumn-team-color: #8b4513;
+    --autumn-drink-color: #ff4500;
+
+    // Winter theme colors
+    --winter-default: #1c1c1c;
+    --winter-secondary: #ffffff;
+    --winter-text-color: #000000;
+    --winter-title-color: #87ceeb;
+    --winter-sidebar-bg: #a9a9a9;
+    --winter-mainpage-background-color: #000000;
+    --winter-button-background-color: #696969;
+    --winter-button-text-color: #dcdcdc;
+    --winter-team-color: #ffffff;
+    --winter-drink-color: #87ceeb;
+}

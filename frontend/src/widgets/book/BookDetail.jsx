@@ -8,6 +8,7 @@ import BookRating from './BookRating';
 import axiosInstance from '../../features/auth/AuthInstance';
 import './BookDetail.scss';
 
+
 const BookDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -17,10 +18,13 @@ const BookDetail = () => {
   const [comments, setComments] = useState([]);
   const [books, setBooks] = useState([]);
 
+
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
+
+
         console.log('data : ', response.data);
       })
       .catch(error => {
@@ -35,16 +39,19 @@ const BookDetail = () => {
         console.error('Error fetching comments:', error);
       });
   }, [id]);
-  
+
   const handleDeleteBook = async () => {
     try {
+
       await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${id}/`);
       // 삭제 성공 시, 메인 페이지로 이동
       navigate('/main');
+
     } catch (error) {
       console.error('Error deleting book:', error);
     }
   };
+
 
   const handleLikeStatusChange = (newLikeStatus) => {
     setBookData(prevBookData => ({
@@ -66,7 +73,7 @@ const BookDetail = () => {
       user_rating: newRating
     }));
   };
-  
+
   const buttonStyle = {
     backgroundColor: 'transparent',
     border: `1.5px solid ${currentTheme.secondary}`,
@@ -74,9 +81,11 @@ const BookDetail = () => {
     marginLeft: '5px'
   };
 
+
   return (
     <div className="bookdetail" style={{ color: currentTheme.buttonTextColor }}>
       {bookData && (
+
         <div className="summary" >
           <div className="title-box" style={{ backgroundColor: currentTheme.buttonBackgroundColor }}>
             <h1>{bookData.title}</h1>
@@ -92,8 +101,11 @@ const BookDetail = () => {
                 initialRating={bookData.user_rating}
                 onRatingChange={handleRatingChange}
               />
-              <button 
-                style={buttonStyle}>
+              <button
+                style={buttonStyle}
+                onClick={handleDeleteBook}
+              >
+
                 Delete Book
               </button>
             </div>
@@ -104,9 +116,11 @@ const BookDetail = () => {
               <p className="chapter-p">{chapter.content}</p>
             </div>
           ))}
+
+
         </div>
       )}
-      
+
       <BookComment
         bookId={id}
         comments={comments}

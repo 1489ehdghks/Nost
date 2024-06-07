@@ -1,28 +1,87 @@
-@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
-
 .novel-continuation {
-    font-family: "Indie Flower", cursive;
-    text-align: center;
-    padding: 4em 0;
+    .SummaryGenerator-fullpage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+
+        .prologue-container {
+            width: 65%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            // border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 2em;
+            font-size: 1.2em;
+
+            .prologue-content {
+                width: 100%;
+                height: 90%;
+                border: none;
+                overflow-y: auto;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                .prologue-textarea {
+                    width: 100%;
+                    height: 100%;
+                    font-family: var(--font-normal);
+                    border: none;
+                    background-color: transparent;
+                    overflow: hidden;
+                    line-height: 1.7;
+                    scrollbar-width: none;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    &:focus {
+                        border-color: none;
+                        outline: none;
+                    }
+                }
+            }
+
+            .prologue-action-buttons {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                gap: 20px;
+
+                .prologue-button {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                    &:hover {
+                        transform: scale(1.1);
+                        background-color: var(--spring-button-background-hover-color);
+                    }
+                }
+            }
+        }
+    }
 
     .SummaryGenerator-book {
-        position: relative;
-        width: 80vw;
-        height: 80vh;
+        width: 90%;
+        height: 85%;
         margin: 0 auto;
         perspective: 1000px;
         transform-style: preserve-3d;
         animation: none;
         display: flex;
+        flex-wrap: wrap;
+        border: 1px solid #aaa;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 
         &.animate {
             animation: flipBook 5s ease-in-out;
         }
 
         .SummaryGenerator-page {
-            width: 50%;
+            width: 46%;
             height: 100%;
-            background-color: #fff;
             border: 1px solid #ddd;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             backface-visibility: hidden;
@@ -31,95 +90,235 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            font-size: 1.2em;
 
             &.left-page {
-                left: 0;
                 transform: rotateY(0deg);
                 z-index: 1;
+
+                .summary-textarea {
+                    width: 100%;
+                    height: 100%;
+                    padding: 10px;
+                    font-size: 1em;
+                    font-family: "'Hi Melody', sans-serif";
+                    border-radius: 0;
+                    border: none;
+                    transition: border-color 0.2s;
+                    background-color: transparent;
+
+                    line-height: 1.5;
+
+                    &:focus {
+                        border-color: #495057;
+                        outline: none;
+                    }
+                }
+
+                p {
+                    margin: 0;
+                }
             }
 
             &.right-page {
-                right: 0;
-                transform: none;
-                z-index: 0;
-
-                .content {
-                    padding: 20px;
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-
-                    .recommendation-button {
-                        padding: 10px 20px;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        transition: transform 0.2s;
-
-                        &:hover {
-                            transform: scale(1.2);
-                        }
-                    }
-                }
-
-                .prologue-area {
-                    padding: 20px;
-                }
-
-                .user-text-area {
+                .summary-container {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                    width: 100%;
+                    height: 100%;
                     padding: 20px;
-                    position: absolute;
-                    bottom: 20px;
-                    width: 30vw;
-                    height: 30vh;
-
-                    textarea {
-                        width: 100%;
-                        height: 60%;
-                        margin-bottom: 10px;
+                    gap: 20px;
+                    padding-top: 10%;
+                    .summary-content {
+                        border: 1px solid #ccc;
+                        width: 60%;
+                        height: 40%;
                     }
 
-                    button {
-                        margin: 5px;
-                        padding: 10px 20px;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                    }
-                }
-
-                .action-buttons {
-                    display: flex;
-                    gap: 10px;
-                    margin-top: 20px;
-
-                    button {
-                        padding: 10px 20px;
+                    .recommendation-button {
+                        position: relative;
+                        padding: 5px 10px;
                         border: none;
                         border-radius: 5px;
                         cursor: pointer;
                         transition: transform 0.2s;
+                        background-color: var(--spring-button-background-color);
+                        color: var(--spring-button-text-color);
+                        font-weight: bold;
+                        font-size: 1em;
+                        margin-top: 5px;
 
                         &:hover {
                             transform: scale(1.2);
+                            background-color: #ddd;
+                        }
+
+                        &:hover::after {
+                            content: attr(data-description);
+                            position: absolute;
+                            bottom: 100%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 200px; /* 너비 지정 */
+                            max-height: 150px;
+                            padding: 10px;
+                            background-color: white;
+                            color: black;
+                            border-radius: 5px;
+                            font-size: 0.5em;
+                            white-space: normal;
+                            border: 1px solid black;
+                            overflow-y: auto;
+                            z-index: 1;
+                            word-wrap: break-word;
+                        }
+                    }
+
+                    .user-text-area {
+                        display: flex;
+                        padding: 20px;
+
+                        bottom: 20px;
+                        width: 90%;
+                        height: 10%;
+
+                        .summary-textarea {
+                            width: 80%;
+                            height: 100%;
+                            padding: 15px;
+                            border-radius: 5px;
+                            font-size: 1em;
+                        }
+
+                        .summary-button {
+                            margin: 5px;
+                            margin-top: 30px;
+                            padding: 5px 10px;
+
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            background-color: transparent;
+                            font-weight: bold;
+                            font-size: 1em;
+                            transition:
+                                background-color 0.3s,
+                                color 0.3s;
+
+                            &:hover {
+                                transform: scale(1.1);
+                                background-color: #ddd;
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+    @keyframes flipBook {
+        0%,
+        20%,
+        100% {
+            transform: rotateY(0deg);
+        }
+        50% {
+            transform: rotateY(180deg);
+        }
+    }
+}
+@media (max-width: 3200px) {
+    .SummaryGenerator-fullpage .prologue-container {
+        width: 60%;
+        height: 70%;
+    }
+
+    .SummaryGenerator-book {
+        width: 85%;
+        height: 80%;
+        .SummaryGenerator-page {
+            padding: 25px;
+            font-size: 1.3em;
+            .summary-textarea {
+                font-size: 1.1em;
+            }
+        }
+    }
 }
 
-@keyframes flipBook {
-    0%,
-    20%,
-    100% {
-        transform: rotateY(0deg);
+@media (max-width: 1920px) {
+    .SummaryGenerator-fullpage .prologue-container {
+        flex-direction: column;
+        height: 70%;
     }
-    50% {
-        transform: rotateY(180deg);
+
+    .SummaryGenerator-book {
+        flex-direction: column;
+        height: 70%;
+        .SummaryGenerator-page {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    .SummaryGenerator-book {
+        flex-direction: column;
+        height: 70%;
+        .SummaryGenerator-page {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .SummaryGenerator-fullpage .prologue-container {
+        width: 90%;
+        height: 70%;
+    }
+
+    .SummaryGenerator-book {
+        width: 100%;
+        .SummaryGenerator-page {
+            padding: 10px;
+            font-size: 1em;
+            .summary-textarea {
+                font-size: 0.9em;
+            }
+        }
+    }
+
+    .SummaryGenerator-book .right-page .user-text-area {
+        bottom: 10px;
+        .summary-textarea {
+            width: 70%;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .SummaryGenerator-fullpage .prologue-container {
+        width: 100%;
+        height: 60%;
+    }
+
+    .SummaryGenerator-book {
+        .SummaryGenerator-page {
+            padding: 5px;
+            font-size: 0.9em;
+            .summary-textarea {
+                font-size: 0.8em;
+            }
+        }
+    }
+
+    .SummaryGenerator-book .right-page .user-text-area {
+        .summary-textarea {
+            width: 60%;
+        }
     }
 }

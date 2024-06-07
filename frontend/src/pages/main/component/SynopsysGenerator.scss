@@ -1,7 +1,8 @@
 .novel-generator {
-    .button-group {
+    .synopsis-button-group {
         margin-bottom: 10px;
-        h2 {
+
+        .synopsis-h2 {
             margin-bottom: 5px;
         }
 
@@ -11,6 +12,10 @@
             align-items: center;
             cursor: pointer;
             margin-bottom: 10px;
+
+            .toggle-icon {
+                margin-left: auto;
+            }
         }
 
         .buttons {
@@ -18,10 +23,10 @@
             flex-wrap: wrap;
             gap: 5px;
 
-            button {
+            .synopsis-button {
                 position: relative;
-                padding: 8px 16px; // 버튼 크기 조정
-                border: none;
+                padding: 12px 20px;
+                border: transparent;
                 border-radius: 5px;
                 cursor: pointer;
                 transition:
@@ -33,16 +38,7 @@
                 }
 
                 &.selected {
-                    &::after {
-                        content: "✔";
-                        position: absolute;
-                        top: 5%;
-                        left: 50%;
-                        transform: translate(-50%, -50%) scale(0);
-                        font-size: 16px;
-                        color: red;
-                        animation: checkmark 0.3s forwards;
-                    }
+                    background-color: darken(#cccccc, 10%);
                 }
             }
         }
@@ -51,21 +47,23 @@
     .user-requests {
         margin-top: 10px;
 
-        h2 {
-            margin-bottom: 5px;
+        .synopsis-h2 {
             margin-bottom: 10px;
         }
 
-        textarea {
+        .synopsis-textarea {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            height: 100%;
+            padding: 10px;
+            font-family: var(--font-normal);
+            border: 1px solid black;
             resize: none;
+
+            border-color: #575757;
         }
     }
 
-    .button-row {
+    .synopsis-button-row {
         margin-top: 10px;
         text-align: right;
         position: relative;
@@ -118,6 +116,7 @@
         }
     }
 }
+
 @keyframes checkmark {
     to {
         transform: translate(-50%, -50%) scale(1);

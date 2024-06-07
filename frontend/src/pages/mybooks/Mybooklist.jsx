@@ -6,7 +6,10 @@ import './Mybooklist.scss';
 
 const Card = ({ id, image, header, likes, rating, onClick }) => {
   const defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s'; // 기본 이미지 URL을 설정합니다.
+  
+
   const backgroundImage = image ? `http://127.0.0.1:8000${image}` : defaultImage; // Update this line to use the full URL
+
 
   return (
     <div className="card" style={{ backgroundImage: `url(${backgroundImage})` }} onClick={() => onClick(id)}>
