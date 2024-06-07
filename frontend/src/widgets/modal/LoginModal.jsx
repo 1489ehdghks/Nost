@@ -149,7 +149,7 @@ const LoginModal = ({ onClose }) => {
                             </div>
                             {loginErrors.non_field_errors && <div className="error-message">{loginErrors.non_field_errors}</div>}
                         </form>
-                        <div className="social-login-buttons">
+                        {/* <div className="social-login-buttons">
                             <button className="social-button google-login">
                                 <img src="/path/to/google-icon.png" alt="Google Icon" />
                                 Login with Google
@@ -158,7 +158,7 @@ const LoginModal = ({ onClose }) => {
                                 <img src="/path/to/naver-icon.png" alt="Naver Icon" />
                                 Login with Naver
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
 
