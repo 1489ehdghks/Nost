@@ -31,17 +31,24 @@ export const login = async (email, password) => {
 
         console.log("11111로그인 성공:")
     } catch (err) {
+        
         if (err.response && err.response.data) {
             const errorData = err.response.data;
+            console.log("로그인 에러:",err.response.data);
             let errorMessage = 'Login failed';
             if (errorData.detail === 'No active account found with the given credentials') {
                 errorMessage = 'Invalid email or password';
             } else if (errorData.email) {
                 errorMessage = 'The email address is not registered';
+                alert('이메일 주소가 맞지 않습니다.');
             } else if (errorData.password) {
                 errorMessage = 'Incorrect password';
+                alert('패스워드가 틀렸습니다.');
             } else if (errorData.detail) {
                 errorMessage = errorData.detail;
+            } else if (errorData.non_field_errors) {
+                errorMessage = 'Email is not verified.';
+                alert('이메일 확인이 되지 않았습니다. 인증메일을 확인한 후 로그인 해 주세요.');
             }
             useGlobalStore.getState().setError(errorMessage);
         } else {
