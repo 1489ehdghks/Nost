@@ -9,28 +9,32 @@ const Summary = ({ recommendations, handleRecommendationClick, userText, setUser
         <div className="summary-container">
             <div className="summary-content" style={{ backgroundColor: currentTheme.secondary }}>
             </div>
+            {(!recommendations || recommendations.length === 0) ? (
+                <div>No recommendations available</div>
+            ) : (
+                recommendations.map((rec, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handleRecommendationClick(rec.Description)}
+                        className="recommendation-button"
+                        style={{
+                            backgroundColor: 'transparent',
+                            color: currentTheme.buttonTextColor,
+                            border: '5px',
+                        }}
+                        data-description={rec.Description}
+                        onMouseOver={(e) => {
+                            e.target.style.backgroundColor = currentTheme.buttonBackgroundColor;
+                        }}
+                        onMouseOut={(e) => {
+                            e.target.style.backgroundColor = 'transparent';
+                        }}
+                    >
+                        {rec.Title}
+                    </button>
+                ))
+            )}
 
-            {recommendations.map((rec, index) => (
-                <button
-                    key={index}
-                    onClick={() => handleRecommendationClick(rec.Description)}
-                    className="recommendation-button"
-                    style={{
-                        backgroundColor: 'transparent',
-                        color: currentTheme.buttonTextColor,
-                        border: '5px',
-                    }}
-                    data-description={rec.Description}
-                    onMouseOver={(e) => {
-                        e.target.style.backgroundColor = currentTheme.buttonBackgroundColor;
-                    }}
-                    onMouseOut={(e) => {
-                        e.target.style.backgroundColor = 'transparent';
-                    }}
-                >
-                    {rec.Title}
-                </button>
-            ))}
 
             <div className="user-text-area">
                 <textarea

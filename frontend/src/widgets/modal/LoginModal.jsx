@@ -69,7 +69,7 @@ const LoginModal = ({ onClose }) => {
             } else if (globalError.includes('password')) {
                 errors.password = globalError;
             } else {
-                errors.non_field_errors = globalError;
+                errors.non_field_errors = 'ERROR';
             }
             setLoginErrors(errors);
         } else {
@@ -121,8 +121,8 @@ const LoginModal = ({ onClose }) => {
         <div className="modalOverlay">
             <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-            {/* 이메일 인증을 받고 나서 */}
-            {/* {!emailSent ? ( */}
+                {/* 이메일 인증을 받고 나서 */}
+                {/* {!emailSent ? ( */}
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
                         {/* 로그인 왼쪽 */}
