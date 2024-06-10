@@ -4,6 +4,7 @@ import { login } from '../../features/auth/LoginInstance';
 import { signup } from '../../features/auth/SignupInstance';
 import useGlobalStore from '../../shared/store/GlobalStore';
 import { ToastContainer, toast } from 'react-toastify';
+import ResendEmailModal from './ResendEmailModal';
 import 'react-toastify/dist/ReactToastify.css';
 import './LoginModal.scss';
 
@@ -18,6 +19,7 @@ const LoginModal = ({ onClose }) => {
     const globalError = useGlobalStore(state => state.error);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const navigate = useNavigate();
+    const [showResendEmailModal, setShowResendEmailModal] = useState(false);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -38,6 +40,13 @@ const LoginModal = ({ onClose }) => {
             toast.success("이메일 인증메일이 발송되었습니다. 확인해주세요.");
         }
     }, [signupSuccess]);
+
+    useEffect(() => {
+        if (globalError && globalError.includes('Email is not verified.')) {
+            setShowResendEmailModal(true);
+        }
+    }, [globalError]);
+
 
     const handleLoginInputChange = (event) => {
         const { name, value } = event.target;
@@ -85,6 +94,8 @@ const LoginModal = ({ onClose }) => {
         <div className="modalOverlay">
             <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+                
+
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
                         {/* 로그인 왼쪽 */}
@@ -141,11 +152,13 @@ const LoginModal = ({ onClose }) => {
                                     {loginErrors.password && <div className="error-message">{loginErrors.password}</div>}
                                 </div>
                             </fieldset>
+                            <div>{showResendEmailModal && <ResendEmailModal onClose={() => setShowResendEmailModal(false)} />}</div>
                             <div className="forms_buttons">
                                 <button type="button" className="forms_buttons-forgot" disabled={isLoading}>Forgot password?</button>
                                 <input type="submit" value="Log In" className="forms_buttons-action" disabled={isLoading} />
                             </div>
                             {loginErrors.non_field_errors && <div className="error-message">{loginErrors.non_field_errors}</div>}
+                            
                         </form>
                         <div className="social-login-buttons">
                             <button className="social-button google-login">

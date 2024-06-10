@@ -2,7 +2,6 @@ import useAuthStore from '../../shared/store/AuthStore';
 import useGlobalStore from '../../shared/store/GlobalStore';
 import axiosInstance from './AuthInstance';
 
-
 export const login = async (email, password) => {
     useGlobalStore.getState().setIsLoading(true);
     useGlobalStore.getState().setError(null);
@@ -46,10 +45,11 @@ export const login = async (email, password) => {
                 alert('패스워드가 틀렸습니다.');
             } else if (errorData.detail) {
                 errorMessage = errorData.detail;
-            } else if (errorData.non_field_errors) {
+            } else if (errorData.non_field_errors && errorData.non_field_errors.includes('Email is not verified.')) {
                 errorMessage = 'Email is not verified.';
                 alert('이메일 확인이 되지 않았습니다. 인증메일을 확인한 후 로그인 해 주세요.');
             }
+            
             useGlobalStore.getState().setError(errorMessage);
         } else {
             useGlobalStore.getState().setError('Login failed');
