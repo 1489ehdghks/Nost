@@ -21,7 +21,6 @@ const GenerateStory = () => {
                 body: JSON.stringify({ prompt }),
             });
             const data = await response.json();
-            console.log("Server response:", data);
             if (response.ok) {
                 const newStory = {
                     id: Math.floor(Math.random() * 10000),
@@ -38,7 +37,6 @@ const GenerateStory = () => {
                 };
                 addStory(newStory);
                 setCurrentStory(newStory);
-                console.log(newStory);
             } else {
                 setError(data.error || 'Failed to generate story.');
             }

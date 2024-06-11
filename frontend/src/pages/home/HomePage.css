@@ -1,0 +1,55 @@
+.homePage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.homePage .content {
+  position: absolute;
+  bottom: 0%;
+  z-index: 10;
+  text-align: center;
+  max-width: 24%;
+  min-height: 40%;
+}
+.homePage .content h1 {
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+}
+.homePage .subtitle {
+  font-size: 1.2rem;
+  margin-top: 20%;
+  white-space: pre-wrap;
+}
+.homePage .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.homePage .background .image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: opacity 1s ease-in-out;
+}
+.homePage .background .image.low-quality {
+  opacity: 1;
+}
+.homePage .background .image.high-quality {
+  opacity: 0;
+}
+.homePage .background .image.high-quality.loaded {
+  opacity: 1;
+}/*# sourceMappingURL=HomePage.css.map */

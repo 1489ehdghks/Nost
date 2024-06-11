@@ -16,7 +16,6 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
       setComments([...comments, response.data]);
       setNewComment('');
     } catch (error) {
-      console.error('Error adding comment:', error);
       alert('댓글을 추가하는 중에 오류가 발생했습니다.');
     }
   };
@@ -31,7 +30,6 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
       setEditingCommentId(null);
       setUpdatedContent('');
     } catch (error) {
-      console.error('Error editing comment:', error);
       alert('댓글을 수정하는 중에 오류가 발생했습니다.');
     }
   };
@@ -41,7 +39,6 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
       await axiosInstance.delete(`http://15.165.15.170/api/books/${bookId}/comments/${commentId}/`);
       setComments(comments.filter(comment => comment.id !== commentId));
     } catch (error) {
-      console.error('Error deleting comment:', error);
       alert('댓글을 삭제하는 중에 오류가 발생했습니다.');
     }
   };

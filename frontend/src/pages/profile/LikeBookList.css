@@ -1,0 +1,56 @@
+.book-list {
+  width: 100%;
+  margin-bottom: 50px;
+  background-color: transparent !important;
+}
+.book-list .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+.book-list .header h1 {
+  font-size: 1.5rem;
+  color: inherit;
+}
+.book-list .header select {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.book-list .header select:focus {
+  outline: none;
+  border-color: #ffffff;
+}
+.book-list table {
+  width: 100%;
+  color: inherit;
+  border-collapse: collapse;
+}
+.book-list table thead {
+  background-color: #f1f1f1;
+}
+.book-list table thead th {
+  padding: 10px;
+  font-size: 1rem;
+  color: inherit;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+.book-list table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.book-list table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+.book-list table tbody tr td {
+  padding: 10px;
+  font-size: 1rem;
+  color: inherit;
+  border-bottom: 1px solid #ddd;
+}/*# sourceMappingURL=LikeBookList.css.map */

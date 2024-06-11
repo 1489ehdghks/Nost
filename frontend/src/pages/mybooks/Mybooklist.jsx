@@ -5,7 +5,7 @@ import axiosInstance from '../../features/auth/AuthInstance';
 import './Mybooklist.scss';
 
 const Card = ({ id, image, header, likes, rating, onClick }) => {
-  const defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s'; // 기본 이미지 URL을 설정합니다.
+  const defaultImage = 'http://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s'; // 기본 이미지 URL을 설정합니다.
 
 
   const backgroundImage = image ? `http://15.165.15.170${image}` : defaultImage; // Update this line to use the full URL
@@ -39,9 +39,7 @@ const Mybooklist = () => {
       try {
         const response = await axiosInstance.get('http://15.165.15.170/api/books/userbooks/');
         setMyBooks(response.data);
-        console.log('data:', response.data);
       } catch (error) {
-        console.error('There was an error fetching the books!', error);
       }
     };
 

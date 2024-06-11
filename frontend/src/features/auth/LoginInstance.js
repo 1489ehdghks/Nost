@@ -13,8 +13,6 @@ export const login = async (email, password) => {
         });
 
         const data = response.data;
-        console.log("data:", data)
-
         useAuthStore.getState().setToken(data.access);
         useAuthStore.getState().setRefreshToken(data.refresh);
         useAuthStore.getState().setIsLoggedIn(true);
@@ -28,20 +26,22 @@ export const login = async (email, password) => {
             email: data.user.email,
             profilePicture: data.user.profile_picture,
         });
-
-        console.log("11111로그인 성공:")
     } catch (err) {
         if (err.response && err.response.data) {
             const errorData = err.response.data;
             let errorMessage = 'Login failed';
             if (errorData.detail === 'No active account found with the given credentials') {
                 errorMessage = 'Invalid email or password';
+                alert(errorMessage);
             } else if (errorData.email) {
                 errorMessage = 'The email address is not registered';
+                alert(errorMessage);
             } else if (errorData.password) {
                 errorMessage = 'Incorrect password';
+                alert(errorMessage);
             } else if (errorData.detail) {
                 errorMessage = errorData.detail;
+                alert(errorMessage);
             }
             useGlobalStore.getState().setError(errorMessage);
         } else {

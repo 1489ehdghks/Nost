@@ -1,0 +1,103 @@
+.novel-generator .synopsis-button-group {
+  margin-bottom: 10px;
+}
+.novel-generator .synopsis-button-group .synopsis-h2 {
+  margin-bottom: 5px;
+}
+.novel-generator .synopsis-button-group .toggle-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.novel-generator .synopsis-button-group .toggle-switch .toggle-icon {
+  margin-left: auto;
+}
+.novel-generator .synopsis-button-group .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.novel-generator .synopsis-button-group .buttons .synopsis-button {
+  position: relative;
+  padding: 12px 20px;
+  border: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.novel-generator .synopsis-button-group .buttons .synopsis-button:hover {
+  background-color: #e6e6e6;
+}
+.novel-generator .synopsis-button-group .buttons .synopsis-button.selected {
+  background-color: #b3b3b3;
+}
+.novel-generator .user-requests {
+  margin-top: 10px;
+}
+.novel-generator .user-requests .synopsis-h2 {
+  margin-bottom: 10px;
+}
+.novel-generator .user-requests .synopsis-textarea {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-family: var(--font-normal);
+  border: 1px solid black;
+  resize: none;
+  border-color: #575757;
+}
+.novel-generator .synopsis-button-row {
+  margin-top: 10px;
+  text-align: right;
+  position: relative;
+}
+.novel-generator .synopsis-button-row .generate-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+.novel-generator .synopsis-button-row .generate-button:hover {
+  background-color: #b3b3b3;
+}
+.novel-generator .synopsis-button-row .generate-button:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+.novel-generator .synopsis-button-row .tooltip {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #fff;
+  color: black;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  transition: opacity 0.3s;
+}
+.novel-generator .synopsis-button-row .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+@keyframes checkmark {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}/*# sourceMappingURL=SynopsysGenerator.css.map */

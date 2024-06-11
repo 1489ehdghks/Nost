@@ -1,0 +1,166 @@
+@charset "UTF-8";
+.profile {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 100vh; /* 높이를 뷰포트 높이에 맞추어 설정 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  scrollbar-width: none; /* 스크롤바 숨김 */
+}
+.profile .header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.profile .header h1 {
+  font-size: 2rem;
+  color: inherit;
+}
+.profile .content {
+  display: flex;
+  max-width: 800px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.profile .content .picture-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  margin-left: 130px;
+}
+.profile .content .picture-section .profile-picture-box {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.profile .content .picture-section .profile-picture-box .picture {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.profile .content .picture-section .profile-picture-box input[type=file] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.profile .content .picture-section button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  color: inherit;
+  background-color: white;
+  border: 1px solid;
+  border-color: inherit;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.profile .content .picture-section button:hover {
+  background-color: #f9f9f9;
+}
+.profile .content .info {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+.profile .content .info .info-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.profile .content .info label {
+  font-weight: bold;
+  margin-right: 10px;
+  padding: 10px;
+}
+.profile .content .info span {
+  color: #555;
+}
+.profile .content .info .edit-account {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  margin-right: 10px;
+  padding: 5px 10px;
+  color: inherit;
+  background-color: white;
+  border: 1px solid;
+  border-color: inherit;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.profile .content .info .edit-account:hover {
+  background-color: #f9f9f9;
+}
+.profile .content .info .change-password {
+  position: absolute;
+  bottom: 10px;
+  left: 130px;
+  margin-right: 10px;
+  padding: 5px 10px;
+  color: inherit;
+  background-color: white;
+  border: 1px solid;
+  border-color: inherit;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.profile .content .info .change-password:hover {
+  background-color: #f9f9f9;
+}
+.profile .content .info .delete-account {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  margin-right: 10px;
+  padding: 5px 10px;
+  color: inherit;
+  background-color: white;
+  border: 1px solid;
+  border-color: inherit;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.profile .content .info .delete-account:hover {
+  background-color: #f9f9f9;
+}
+.profile .list {
+  display: flex;
+  flex-direction: column; /* 수직으로 요소를 배치합니다. */
+  justify-content: space-between;
+  flex: 1;
+  margin-bottom: 20px;
+  margin-right: 20px; /* 요소 사이의 간격을 조절합니다. */
+}
+.profile .list h2 {
+  font-size: 1.5rem;
+  color: inherit;
+  margin-bottom: 10px;
+}
+.profile .list ul {
+  list-style-type: none;
+  margin-bottom: 50px;
+  padding: 0;
+}
+.profile .list ul li {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+.profile .list ul li:hover {
+  background-color: #f0f0f0;
+}/*# sourceMappingURL=Profile.css.map */

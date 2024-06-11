@@ -1,0 +1,19 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 400vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.section {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  background-color: transparent !important;
+}/*# sourceMappingURL=MainPage.css.map */

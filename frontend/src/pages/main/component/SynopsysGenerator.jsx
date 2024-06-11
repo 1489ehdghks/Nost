@@ -99,12 +99,9 @@ const SynopsysGenerator = ({ onComplete }) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
-        console.log("generateSynopsis triggered");
-
         if (!selectedCountry) {
             alert('Please select language.');
             setIsLoading(false);
-            console.log("No language selected");
             return;
         }
 
@@ -115,16 +112,11 @@ const SynopsysGenerator = ({ onComplete }) => {
             language: selectedCountry ? selectedCountry.value : null
         };
 
-        console.log("requestData created:", requestData);
 
         const fetchSynopsis = async (retries = 0) => {
             try {
-                console.log("Attempting fetchSynopsis, retry:", retries);
                 const response = await axiosInstance.post('http://15.165.15.170/api/books/', requestData);
                 const content = response.data.content;
-
-                console.log("response received:", response);
-
                 if (content.characters && !['문자 없음', '', '登場人物なし', '无字符', 'No Characters'].includes(content.characters)) {
                     setBookId(response.data.book_id);
                     setSynopsis(content.synopsis);
@@ -140,7 +132,6 @@ const SynopsysGenerator = ({ onComplete }) => {
                     throw new Error('설정 저장 문제');
                 }
             } catch (err) {
-                console.error("Error in fetchSynopsis:", err);
                 if (retries < 2) {
                     alert("캐릭터 설정에 문제가 생겨 다시 시도합니다.");
                     fetchSynopsis(retries + 1);

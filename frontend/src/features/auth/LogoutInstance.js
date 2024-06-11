@@ -20,5 +20,4 @@ export const logout = () => {
 
 
     useAuthStore.getState().logout();
-    console.log("로그아웃 성공:")
 };

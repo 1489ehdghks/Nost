@@ -1,0 +1,303 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.modalOverlay:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+.modalOverlay .modalContent {
+  background-color: rgba(43, 68, 60, 0.85);
+  border-radius: 3px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 11;
+  transition: all 0.3s ease-in-out;
+  width: 75vw;
+  height: 18vw;
+}
+@media (min-width: 3200px) {
+  .modalOverlay .modalContent {
+    width: 50vw;
+    height: 20vh;
+  }
+}
+@media (min-width: 1920px) {
+  .modalOverlay .modalContent {
+    width: 60vw;
+    height: 12vw;
+  }
+}
+@media (min-width: 1200px) {
+  .modalOverlay .modalContent {
+    width: 70vw;
+    height: 13vw;
+  }
+}
+@media (min-width: 769px) {
+  .modalOverlay .modalContent {
+    width: 75vw;
+    height: 30vh;
+  }
+}
+@media (min-width: 480px) {
+  .modalOverlay .modalContent {
+    width: 80vw;
+    height: 37vh;
+  }
+}
+@media (max-width: 479px) {
+  .modalOverlay .modalContent {
+    width: 90vw;
+    height: auto;
+    padding: 1rem;
+  }
+}
+.modalOverlay .modalContent .user_options-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 55%;
+  transform: translateX(-50%);
+  width: calc(100% - 4rem);
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.modalOverlay .modalContent .user_options-container .user_options-text {
+  color: azure;
+  display: flex;
+  justify-content: space-between;
+}
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-unregistered,
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-registered {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  justify-content: left;
+}
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-unregistered button,
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-registered button {
+  margin-top: 5%;
+  background-color: transparent;
+  padding: 10px 40px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  border-color: white;
+  border-width: 1px;
+}
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-unregistered button:hover,
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-registered button:hover {
+  background-color: rgba(34, 34, 34, 0.85);
+}
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-unregistered,
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-registered {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  position: absolute;
+  width: 40%;
+  transition: transform 0.5s ease-in-out;
+}
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-unregistered {
+  left: 0;
+  transform: translateY(30%);
+}
+.modalOverlay .modalContent .user_options-container .user_options-text .user_options-registered {
+  right: 5%;
+  transform: translateY(30%);
+}
+.modalOverlay .modalContent .forms-container {
+  position: absolute;
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.modalOverlay .modalContent .forms-container .user_forms-login,
+.modalOverlay .modalContent .forms-container .user_forms-signup {
+  width: 100%;
+  padding: 2.3rem;
+  box-sizing: border-box;
+  transition: opacity 0.5s ease-in-out;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .closeButton,
+.modalOverlay .modalContent .forms-container .user_forms-signup .closeButton {
+  position: absolute;
+  color: black;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .closeButton:hover,
+.modalOverlay .modalContent .forms-container .user_forms-signup .closeButton:hover {
+  color: #e6e6e6;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login.active,
+.modalOverlay .modalContent .forms-container .user_forms-signup.active {
+  opacity: 1;
+  visibility: visible;
+  background-color: transparent;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login.inactive,
+.modalOverlay .modalContent .forms-container .user_forms-signup.inactive {
+  opacity: 0;
+  visibility: hidden;
+  background-color: transparent;
+  position: absolute;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_title,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  color: #ff8177;
+  text-align: center;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form {
+  width: 100%;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_fieldset,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_fieldset .forms_field,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_fieldset .forms_field {
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_fieldset .forms_field .forms_field-input,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_fieldset .forms_field .forms_field-input {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1rem;
+  color: #000;
+  transition: border-color 0.3s ease;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_fieldset .forms_field .forms_field-input:focus,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_fieldset .forms_field .forms_field-input:focus {
+  border-color: #ffb0aa;
+  outline: none;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_buttons,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_buttons .forms_buttons-forgot,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_buttons .forms_buttons-forgot {
+  background: none;
+  border: none;
+  color: #ff8177;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_buttons .forms_buttons-action,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_buttons .forms_buttons-action {
+  padding: 10px 20px;
+  border-radius: 3px;
+  background-color: #ff8177;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.modalOverlay .modalContent .forms-container .user_forms-login .forms_form .forms_buttons .forms_buttons-action:hover,
+.modalOverlay .modalContent .forms-container .user_forms-signup .forms_form .forms_buttons .forms_buttons-action:hover {
+  background-color: #ff5244;
+}
+.modalOverlay .modalContent .forms-container.show-login {
+  background-color: white;
+  z-index: 20;
+  transform: translateX(130%);
+}
+.modalOverlay .modalContent .forms-container.show-signup {
+  background-color: white;
+  z-index: 20;
+  transform: translateX(5%);
+}
+.modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+  width: 40%;
+  height: 40vw;
+}
+@media (min-width: 3200px) {
+  .modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+    width: 30%;
+    height: 10vw;
+  }
+}
+@media (max-width: 3199px) and (min-width: 1920px) {
+  .modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+    width: 32%;
+    height: 20vw;
+  }
+}
+@media (max-width: 1919px) and (min-width: 1200px) {
+  .modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+    width: 35%;
+    height: 30vw;
+  }
+}
+@media (max-width: 1100px) and (min-width: 769px) {
+  .modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+    width: 41%;
+    height: 50vw;
+  }
+}
+@media (max-width: 768px) and (min-width: 480px) {
+  .modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+    width: 41%;
+    height: 70vw;
+  }
+}
+@media (max-width: 479px) {
+  .modalOverlay .modalContent .forms-container.show-login, .modalOverlay .modalContent .forms-container.show-signup {
+    width: 90%;
+    height: 50vw;
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.Toastify__toast-container {
+  z-index: 999;
+}
+
+@media (max-width: 900px) {
+  .modalContent {
+    width: 80%;
+  }
+  .forms-container.show-login,
+  .forms-container.show-signup {
+    transform: none;
+    flex-direction: column;
+  }
+}/*# sourceMappingURL=LoginModal.css.map */

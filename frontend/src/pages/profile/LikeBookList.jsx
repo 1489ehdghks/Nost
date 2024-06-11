@@ -19,7 +19,6 @@ const LikeBookList = () => {
                 const response = await axiosInstance.get('http://15.165.15.170/api/books/userlikedbooks/');
                 setLikedBooks(response.data);
             } catch (error) {
-                console.error('Error fetching liked books:', error);
             }
         };
 

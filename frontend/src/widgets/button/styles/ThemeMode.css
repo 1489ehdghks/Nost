@@ -1,0 +1,27 @@
+.theme-mode-toggle {
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+  padding: 0.7em;
+  background: transparent;
+  border-radius: 1em;
+}
+.theme-mode-toggle .season-icon {
+  background: transparent;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: transform 250ms, color 250ms;
+  color: #ccc;
+}
+.theme-mode-toggle .season-icon.active {
+  color: #ffbb52;
+  transform: scale(1.2);
+}
+.theme-mode-toggle .season-icon:hover {
+  transform: scale(1.4);
+  color: #ffbb52;
+}
+.theme-mode-toggle .season-icon:focus {
+  outline: none;
+}/*# sourceMappingURL=ThemeMode.css.map */

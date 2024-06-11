@@ -33,7 +33,7 @@ const Profile = () => {
   const [user, setUser] = useState({
     nickname: nickname || "네임",
     email: email || "메일",
-    profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s',
+    profilePicture: 'http://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s',
     likedPosts: [],
   });
 
@@ -52,7 +52,6 @@ const Profile = () => {
         navigate('/');
         // 탈퇴 후 추가적인 로직을 여기에 추가할 수 있습니다.
       } catch (error) {
-        console.error('회원 탈퇴 실패:', error);
         alert('비밀번호가 일치하지 않습니다.');
       }
     }
@@ -76,7 +75,7 @@ const Profile = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const openModal = () => { setModalOpen(true); };
   const closeModal = () => { setModalOpen(false); };
-  
+
   // 비밀번호 수정모달
   const [PasswordModalOpen, setPasswordModalOpen] = useState(false);
   const openPasswordModal = () => { setPasswordModalOpen(true); };
@@ -94,10 +93,7 @@ const Profile = () => {
       }));
 
       setNickname(editUser.nickname);
-
-      console.log("회원정보가 성공적으로 업데이트되었습니다.");
     } catch (error) {
-      console.error('회원정보 업데이트 실패:', error);
       alert('회원정보 업데이트에 실패했습니다.');
     }
   };
@@ -140,10 +136,10 @@ const Profile = () => {
             회원 정보 수정 </button>
           <EditProfileModal user={user} isOpen={ModalOpen} onClose={closeModal} onSave={handleSaveUserInfo} />
 
-          <button className="change-password" onClick={openPasswordModal}>  
+          <button className="change-password" onClick={openPasswordModal}>
             비밀번호 변경
           </button>
-          <EditPasswordModal isOpen={PasswordModalOpen} onClose={closePasswordModal} /> 
+          <EditPasswordModal isOpen={PasswordModalOpen} onClose={closePasswordModal} />
 
           <button className="delete-account" onClick={handleDeleteAccount}>
             회원 탈퇴 </button>

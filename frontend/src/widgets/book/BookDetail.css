@@ -1,0 +1,56 @@
+@charset "UTF-8";
+.bookdetail {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  margin-top: 50px;
+  margin: 0 auto;
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: none; /* 스크롤바 안보임 */
+}
+.bookdetail .summary {
+  flex: 2;
+  margin-right: 10px;
+  padding: 20px;
+  background-color: inherit;
+  border-radius: 10px;
+  height: auto;
+}
+.bookdetail .summary h1 {
+  margin-bottom: 10px;
+}
+.bookdetail .summary h3, .bookdetail .summary p {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.bookdetail .summary p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.bookdetail .summary button {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.bookdetail .summary button:hover {
+  opacity: 0.5;
+}
+.bookdetail .summary .title-box {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: inherit;
+  border-radius: 10px;
+}
+.bookdetail .summary .chapter-box {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: inherit;
+  border-radius: 10px;
+}
+.bookdetail .summary .chapter-box .chapter-p {
+  margin-bottom: 20px;
+}/*# sourceMappingURL=BookDetail.css.map */

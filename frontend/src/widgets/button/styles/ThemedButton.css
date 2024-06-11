@@ -1,0 +1,19 @@
+.themed-button {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 4rem;
+  border-radius: 5px;
+  background: transparent;
+  border: none;
+  font-family: "Poetsen One", sans-serif;
+  margin-top: -5%;
+}
+.themed-button:hover {
+  transform: scale(1.3);
+}
+.themed-button:focus {
+  outline: none;
+}
+.themed-button:active {
+  transform: scale(0.95);
+}/*# sourceMappingURL=ThemedButton.css.map */

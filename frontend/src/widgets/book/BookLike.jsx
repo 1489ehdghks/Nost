@@ -13,7 +13,6 @@ const BookLike = ({ bookId, initialLikeStatus, onLikeStatusChange }) => {
         setIsLiked(like_bool);
         onLikeStatusChange(like_bool);
       } catch (error) {
-        console.error('Error fetching like status:', error);
       }
     };
 
@@ -27,7 +26,6 @@ const BookLike = ({ bookId, initialLikeStatus, onLikeStatusChange }) => {
       setIsLiked(like_bool);
       onLikeStatusChange(like_bool);
     } catch (error) {
-      console.error('Error toggling like:', error);
     }
   };
 

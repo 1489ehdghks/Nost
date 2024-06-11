@@ -16,7 +16,6 @@ const BookRating = ({ bookId, initialRating, onRatingChange }) => {
         if (error.response && error.response.status === 404) {
           setRating(0);
         } else {
-          console.error('Error fetching user rating:', error);
         }
       }
     };
@@ -31,7 +30,6 @@ const BookRating = ({ bookId, initialRating, onRatingChange }) => {
       setRating(rating);
       onRatingChange(rating);
     } catch (error) {
-      console.error('Error rating book:', error);
       if (error.response && error.response.data === 'You have already rated this book.') {
         alert('이미 처리되었습니다');
       }

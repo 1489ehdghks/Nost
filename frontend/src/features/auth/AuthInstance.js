@@ -1,9 +1,13 @@
 import axios from 'axios';
 import useAuthStore from '../../shared/store/AuthStore';
 
+axios.defaults.baseURL = 'http://15.165.15.170:80';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
+
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-    baseURL: 'http://15.165.15.170',
+    baseURL: 'http://15.165.15.170:80',
     headers: {
         'Content-Type': 'application/json',
     },

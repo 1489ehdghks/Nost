@@ -1,0 +1,116 @@
+@charset "UTF-8";
+.container {
+  text-align: center;
+  padding: 2rem;
+  padding-bottom: 10vh;
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: none; /* 스크롤바 안보임 */
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.cardlist {
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 12.5rem);
+}
+
+.card {
+  width: 200px;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  border-color: #fff;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+.card:hover::before {
+  background: rgba(0, 0, 0, 0.4);
+}
+.card .card-header {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  background: transparent;
+  color: #fff;
+  padding: 1rem;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+.card .card-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+.card .card-content {
+  display: none;
+  color: #fff;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  max-height: 6rem;
+  overflow: hidden;
+}
+.card .card-content p {
+  margin: 0;
+}
+.card:hover .card-header {
+  transform: translateY(-50%);
+}
+.card:hover .card-content {
+  display: block;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.pagination button {
+  border: none;
+  background: none;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  color: inherit;
+}
+.pagination button:hover:not(.active) {
+  background-color: transparent;
+}
+.pagination .active {
+  background-color: #d4d4d4;
+  color: white;
+  border-radius: 5px;
+}/*# sourceMappingURL=Mybooklist.css.map */

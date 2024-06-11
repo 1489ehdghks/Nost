@@ -23,12 +23,8 @@ const BookDetail = () => {
     axios.get(`http://15.165.15.170/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
-
-
-        console.log('data : ', response.data);
       })
       .catch(error => {
-        console.error('Error fetching book data:', error);
       });
 
     axios.get(`http://15.165.15.170/api/books/${id}/comments/`)
@@ -36,7 +32,6 @@ const BookDetail = () => {
         setComments(response.data || []);
       })
       .catch(error => {
-        console.error('Error fetching comments:', error);
       });
   }, [id]);
 
@@ -48,7 +43,6 @@ const BookDetail = () => {
       navigate('/main');
 
     } catch (error) {
-      console.error('Error deleting book:', error);
     }
   };
 

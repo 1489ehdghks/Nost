@@ -26,7 +26,6 @@ const EditPasswordModal = ({ isOpen, onClose }) => {
       alert('비밀번호가 성공적으로 변경되었습니다.');
       onClose();
     } catch (error) {
-      console.error('비밀번호 변경 실패:', error);
       alert('비밀번호 변경에 실패했습니다.');
     }
   };

@@ -11,3 +11,4 @@ module.exports = override(
         }, ['excluded_bundle_name.js'])
     )
 );
+// "build": "react-app-rewired build",

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import useThemeStore from '../../shared/store/Themestore';
 import LoginModal from '../../widgets/modal/LoginModal';
 import ThemedButton from '../../widgets/button/ThemedButton';
+import axios from 'axios';
+
 import './HomePage.scss';
 
 const HomePage = () => {
@@ -11,6 +13,7 @@ const HomePage = () => {
 
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
+
 
   useEffect(() => {
     const lowResImage = themes[currentSeason].lowRes;
