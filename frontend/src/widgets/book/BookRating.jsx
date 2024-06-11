@@ -8,7 +8,7 @@ const BookRating = ({ bookId, initialRating, onRatingChange }) => {
   useEffect(() => {
     const fetchUserRating = async () => {
       try {
-        const response = await axiosInstance.get(`http://127.0.0.1:8000/api/books/${bookId}/rating/`);
+        const response = await axiosInstance.get(`http://15.165.15.170/api/books/${bookId}/rating/`);
         const { rating } = response.data;
         setRating(rating);
         onRatingChange(rating);
@@ -26,7 +26,7 @@ const BookRating = ({ bookId, initialRating, onRatingChange }) => {
 
   const rateBook = async (newRating) => {
     try {
-      const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/rating/`, { rating: newRating });
+      const response = await axiosInstance.post(`http://15.165.15.170/api/books/${bookId}/rating/`, { rating: newRating });
       const { rating } = response.data;
       setRating(rating);
       onRatingChange(rating);

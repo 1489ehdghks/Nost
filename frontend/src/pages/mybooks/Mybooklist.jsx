@@ -6,9 +6,9 @@ import './Mybooklist.scss';
 
 const Card = ({ id, image, header, likes, rating, onClick }) => {
   const defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s'; // 기본 이미지 URL을 설정합니다.
-  
 
-  const backgroundImage = image ? `http://127.0.0.1:8000${image}` : defaultImage; // Update this line to use the full URL
+
+  const backgroundImage = image ? `http://15.165.15.170${image}` : defaultImage; // Update this line to use the full URL
 
 
   return (
@@ -29,7 +29,7 @@ const Card = ({ id, image, header, likes, rating, onClick }) => {
 const Mybooklist = () => {
   const { themes, currentSeason } = useThemeStore();
   const currentTheme = themes[currentSeason];
-  
+
   const [mybooks, setMyBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 8;
@@ -37,7 +37,7 @@ const Mybooklist = () => {
   useEffect(() => {
     const fetchUserBooks = async () => {
       try {
-        const response = await axiosInstance.get('http://127.0.0.1:8000/api/books/userbooks/');
+        const response = await axiosInstance.get('http://15.165.15.170/api/books/userbooks/');
         setMyBooks(response.data);
         console.log('data:', response.data);
       } catch (error) {
@@ -53,7 +53,7 @@ const Mybooklist = () => {
   const currentCards = mybooks.slice(indexOfFirstCard, indexOfLastCard);
 
   const totalPages = Math.ceil(mybooks.length / cardsPerPage);
-  
+
   const handleClick = (number) => {
     setCurrentPage(number);
   };
@@ -87,7 +87,7 @@ const Mybooklist = () => {
       <h1 className="title">My Book List</h1>
       <div className="cardlist">
         {currentCards.map((card) => (
-          <Card 
+          <Card
             key={card.id}
             id={card.id}
             image={card.image} // Assuming image is a URL
@@ -102,8 +102,8 @@ const Mybooklist = () => {
         <button onClick={() => handleClick(1)} disabled={currentPage === 1}> &laquo; </button>
         <button onClick={() => handleClick(currentPage - 1)} disabled={currentPage === 1}> &lt; </button>
         {generatePagination().map((page, index) => (
-          <button 
-            key={index} 
+          <button
+            key={index}
             onClick={() => handleClick(page)}
             className={currentPage === page ? 'active' : ''}>
             {page}

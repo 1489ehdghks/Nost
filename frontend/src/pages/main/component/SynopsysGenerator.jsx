@@ -120,7 +120,7 @@ const SynopsysGenerator = ({ onComplete }) => {
         const fetchSynopsis = async (retries = 0) => {
             try {
                 console.log("Attempting fetchSynopsis, retry:", retries);
-                const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
+                const response = await axiosInstance.post('http://15.165.15.170/api/books/', requestData);
                 const content = response.data.content;
 
                 console.log("response received:", response);

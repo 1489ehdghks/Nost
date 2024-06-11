@@ -10,7 +10,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleAddComment = async () => {
     try {
-      const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/comments/`, {
+      const response = await axiosInstance.post(`http://15.165.15.170/api/books/${bookId}/comments/`, {
         content: newComment,
       });
       setComments([...comments, response.data]);
@@ -23,7 +23,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleEditComment = async (commentId, updatedContent) => {
     try {
-      const response = await axiosInstance.put(`http://127.0.0.1:8000/api/books/${bookId}/comments/${commentId}/`, {
+      const response = await axiosInstance.put(`http://15.165.15.170/api/books/${bookId}/comments/${commentId}/`, {
         content: updatedContent,
       });
 
@@ -38,7 +38,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/comments/${commentId}/`);
+      await axiosInstance.delete(`http://15.165.15.170/api/books/${bookId}/comments/${commentId}/`);
       setComments(comments.filter(comment => comment.id !== commentId));
     } catch (error) {
       console.error('Error deleting comment:', error);
@@ -66,7 +66,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
               <p>{comment.content} </p>
               <p style={{ color: currentTheme.sidebarBg }}>{comment.user_nickname}
                 <small> | {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</small>
-                </p>
+              </p>
               <div>
                 <button style={buttonStyle} onClick={() => { setEditingCommentId(comment.id); setUpdatedContent(comment.content); }}>Edit</button>
                 <button style={buttonStyle} onClick={() => handleDeleteComment(comment.id)}>Delete</button>
@@ -87,12 +87,12 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
         )}
       </div>
       <textarea
-          placeholder="Your comments"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}>
-        </textarea>
-        <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor, marginBottom: '150px' }}
-          onClick={handleAddComment}> Add </button>
+        placeholder="Your comments"
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}>
+      </textarea>
+      <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor, marginBottom: '150px' }}
+        onClick={handleAddComment}> Add </button>
     </div>
   );
 };

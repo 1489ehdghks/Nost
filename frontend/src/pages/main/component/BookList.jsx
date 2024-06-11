@@ -27,20 +27,20 @@ const BookList = () => {
     const fetchNovels = async () => {
         try {
             setIsLoading(true); // 로딩 상태 설정
-            const response = await axios.get('http://127.0.0.1:8000/api/books/'); // 백엔드 API 호출
+            const response = await axios.get('http://15.165.15.170/api/books/'); // 백엔드 API 호출
             console.log('Fetched novels:', response.data); // 응답 데이터 콘솔에 출력
             if (Array.isArray(response.data)) {
                 setBooks(response.data);
             } else {
                 console.error('Fetched data is not an array:', response.data);
-                setBooks([]); 
+                setBooks([]);
             }
             setIsLoading(false); // 로딩 완료 후 상태 변경
         } catch (error) {
             console.error('Error fetching novels:', error);
-          
 
-            setBooks([]); 
+
+            setBooks([]);
         } finally {
             setIsLoading(false);
 

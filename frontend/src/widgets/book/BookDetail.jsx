@@ -20,7 +20,7 @@ const BookDetail = () => {
 
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
+    axios.get(`http://15.165.15.170/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
 
@@ -31,7 +31,7 @@ const BookDetail = () => {
         console.error('Error fetching book data:', error);
       });
 
-    axios.get(`http://127.0.0.1:8000/api/books/${id}/comments/`)
+    axios.get(`http://15.165.15.170/api/books/${id}/comments/`)
       .then(response => {
         setComments(response.data || []);
       })
@@ -43,7 +43,7 @@ const BookDetail = () => {
   const handleDeleteBook = async () => {
     try {
 
-      await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${id}/`);
+      await axiosInstance.delete(`http://15.165.15.170/api/books/${id}/`);
       // 삭제 성공 시, 메인 페이지로 이동
       navigate('/main');
 

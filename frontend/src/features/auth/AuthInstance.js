@@ -3,7 +3,7 @@ import useAuthStore from '../../shared/store/AuthStore';
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://15.165.15.170',
     headers: {
         'Content-Type': 'application/json',
     },
