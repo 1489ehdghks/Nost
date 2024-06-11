@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { login } from '../../features/auth/LoginInstance';
 import { signup } from '../../features/auth/SignupInstance';
 import useGlobalStore from '../../shared/store/GlobalStore';
 import { ToastContainer, toast } from 'react-toastify';
+import ResendEmailModal from './ResendEmailModal';
 import 'react-toastify/dist/ReactToastify.css';
 import './LoginModal.scss';
-
 
 
 const LoginModal = ({ onClose }) => {
@@ -15,11 +15,11 @@ const LoginModal = ({ onClose }) => {
     const [loginErrors, setLoginErrors] = useState({});
     const [signupInputs, setSignupInputs] = useState({ nickname: '', email: '', password1: '', password2: '' });
     const [signupErrors, setSignupErrors] = useState({});
-    const isLoading = useGlobalStore(state => state.isLoading);
+    const {isLoading, error, setError } = useGlobalStore(state => state.isLoading);
     const globalError = useGlobalStore(state => state.error);
     const [signupSuccess, setSignupSuccess] = useState(false);
-    // const [emailSent, setEmailSent] = useState(false); // 이메일 확인
     const navigate = useNavigate();
+    const [showResendEmailModal, setShowResendEmailModal] = useState(false);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -37,15 +37,15 @@ const LoginModal = ({ onClose }) => {
 
     useEffect(() => {
         if (signupSuccess) {
-            toast.success("회원가입 성공! 로그인해주세요.");
+            toast.success("이메일 인증메일이 발송되었습니다. 확인해주세요.");
         }
     }, [signupSuccess]);
 
-    // useEffect(() => {
-    //     if (emailSent) {
-    //         toast.info(`${signupInputs.email}로 보내드린 인증 메일을 확인해 주세요.`);
-    //     }
-    // }, [emailSent, signupInputs.email]);
+    useEffect(() => {
+        if (globalError && globalError.includes('Email is not verified.')) {
+            setShowResendEmailModal(true);
+        }
+    }, [globalError]);
 
 
     const handleLoginInputChange = (event) => {
@@ -77,6 +77,7 @@ const LoginModal = ({ onClose }) => {
         }
     };
 
+
     const handleSignupSubmit = async (event) => {
         event.preventDefault();
         setSignupErrors({});
@@ -89,40 +90,10 @@ const LoginModal = ({ onClose }) => {
         setLoginFormActive(true);
     };
 
-    // const handleSignupSubmit = async (event) => {
-    //     event.preventDefault();
-    //     setSignupErrors({});
-    //     if (signupInputs.password1 !== signupInputs.password2) {
-    //         setSignupErrors({ password2: ['Passwords do not match'] });
-    //         return;
-    //     }
-    //     const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-    //     if (response && response.success) {
-    //         setEmailSent(true);
-    //     } else {
-    //         // Handle signup error
-    //         setSignupErrors(response.errors);
-    //     }
-    // };
-
-    // const handleEmailVerification = async () => {
-    //     const response = await verifyEmail(signupInputs.email);
-    //     if (response && response.success) {
-    //         toast.success("이메일 인증이 완료되었습니다. 로그인해주세요.");
-    //         setEmailSent(false);
-    //         setLoginFormActive(true);
-    //     } else {
-    //         // Handle verification error
-    //         toast.error("이메일 인증에 실패했습니다. 다시 시도해주세요.");
-    //     }
-    // };
-
     return (
         <div className="modalOverlay">
             <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-                {/* 이메일 인증을 받고 나서 */}
-                {/* {!emailSent ? ( */}
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
                         {/* 로그인 왼쪽 */}
@@ -141,7 +112,9 @@ const LoginModal = ({ onClose }) => {
                     </div>
                 </div>
 
-                {/* 폼 */}
+
+
+                {/* Forms */}
                 <div className={`forms-container ${isLoginFormActive ? 'show-login' : 'show-signup'}`}>
                     {/* 로그인폼 */}
                     <div className={`user_forms-login ${isLoginFormActive ? 'active' : 'inactive'}`}>
@@ -177,11 +150,13 @@ const LoginModal = ({ onClose }) => {
                                     {loginErrors.password && <div className="error-message">{loginErrors.password}</div>}
                                 </div>
                             </fieldset>
+                            <div>{showResendEmailModal && <ResendEmailModal onClose={() => setShowResendEmailModal(false)} />}</div>
                             <div className="forms_buttons">
                                 <button type="button" className="forms_buttons-forgot" disabled={isLoading}>Forgot password?</button>
                                 <input type="submit" value="Log In" className="forms_buttons-action" disabled={isLoading} />
                             </div>
                             {loginErrors.non_field_errors && <div className="error-message">{loginErrors.non_field_errors}</div>}
+                            
                         </form>
                         {/* <div className="social-login-buttons">
                             <button className="social-button google-login">
@@ -262,13 +237,6 @@ const LoginModal = ({ onClose }) => {
                         </form>
                     </div>
                 </div>
-                {/* ) : (
-                    <div className="email-verification-modal">
-                        <h2>이메일 인증</h2>
-                        <p>{signupInputs.email}로 보내드린 인증 메일을 확인해 주세요.</p>
-                        <button onClick={handleEmailVerification} disabled={isLoading}>인증 확인</button>
-                    </div>
-                )} */}
             </div>
         </div>
     );

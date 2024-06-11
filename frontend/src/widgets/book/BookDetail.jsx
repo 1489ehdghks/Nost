@@ -6,8 +6,8 @@ import BookComment from './BookComment';
 import BookLike from './BookLike';
 import BookRating from './BookRating';
 import axiosInstance from '../../features/auth/AuthInstance';
+import useAuthStore from '../../shared/store/AuthStore'; // useAuthStore 불러오기
 import './BookDetail.scss';
-
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -18,13 +18,12 @@ const BookDetail = () => {
   const [comments, setComments] = useState([]);
   const [books, setBooks] = useState([]);
 
+  const { userId: currentUserId } = useAuthStore(); // 현재 사용자 ID 가져오기
 
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
-
-
         console.log('data : ', response.data);
       })
       .catch(error => {
@@ -42,16 +41,13 @@ const BookDetail = () => {
 
   const handleDeleteBook = async () => {
     try {
-
       await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${id}/`);
       // 삭제 성공 시, 메인 페이지로 이동
       navigate('/main');
-
     } catch (error) {
       console.error('Error deleting book:', error);
     }
   };
-
 
   const handleLikeStatusChange = (newLikeStatus) => {
     setBookData(prevBookData => ({
@@ -81,12 +77,10 @@ const BookDetail = () => {
     marginLeft: '5px'
   };
 
-
   return (
     <div className="bookdetail" style={{ color: currentTheme.buttonTextColor }}>
       {bookData && (
-
-        <div className="summary" >
+        <div className="summary">
           <div className="title-box" style={{ backgroundColor: currentTheme.buttonBackgroundColor }}>
             <h1>{bookData.title}</h1>
             <h3>Author : {bookData.user_nickname}</h3>
@@ -101,13 +95,14 @@ const BookDetail = () => {
                 initialRating={bookData.user_rating}
                 onRatingChange={handleRatingChange}
               />
-              <button
-                style={buttonStyle}
-                onClick={handleDeleteBook}
-              >
-
-                Delete Book
-              </button>
+              {bookData.user_id === currentUserId && ( // 현재 사용자와 책 작성자 비교
+                <button
+                  style={buttonStyle}
+                  onClick={handleDeleteBook}
+                >
+                  Delete Book
+                </button>
+              )}
             </div>
           </div>
           {bookData.chapters.map((chapter) => (
@@ -116,11 +111,8 @@ const BookDetail = () => {
               <p className="chapter-p">{chapter.content}</p>
             </div>
           ))}
-
-
         </div>
       )}
-
       <BookComment
         bookId={id}
         comments={comments}

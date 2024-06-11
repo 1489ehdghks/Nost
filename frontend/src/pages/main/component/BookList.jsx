@@ -38,7 +38,6 @@ const BookList = () => {
             setIsLoading(false); // 로딩 완료 후 상태 변경
         } catch (error) {
             console.error('Error fetching novels:', error);
-          
 
             setBooks([]); 
         } finally {

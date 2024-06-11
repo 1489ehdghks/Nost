@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../features/auth/AuthInstance';
+import useAuthStore from '../../shared/store/AuthStore'; // useAuthStore 불러오기
 import './BookComment.scss';
 
 const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
@@ -7,6 +8,8 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [updatedContent, setUpdatedContent] = useState('');
   const [visibleComments, setVisibleComments] = useState(5); // 현재 보이는 댓글 수를 관리하는 상태
+
+  const { userId: currentUserId } = useAuthStore(); // 현재 사용자 ID 가져오기
 
   const handleAddComment = async () => {
     try {
@@ -63,20 +66,24 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
               {comment.user_nickname.charAt(0).toUpperCase()}
             </div>
             <div className="comment-content">
-              <p>{comment.content} </p>
+              <p>{comment.content}</p>
               <p style={{ color: currentTheme.sidebarBg }}>{comment.user_nickname}
                 <small> | {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</small>
-                </p>
+              </p>
               <div>
-                <button style={buttonStyle} onClick={() => { setEditingCommentId(comment.id); setUpdatedContent(comment.content); }}>Edit</button>
-                <button style={buttonStyle} onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                {editingCommentId === comment.id && (
-                  <div>
-                    <textarea value={updatedContent}
-                      onChange={(e) => setUpdatedContent(e.target.value)}></textarea>
-                    <button style={buttonStyle} onClick={() => handleEditComment(comment.id, updatedContent)}>Save</button>
-                    <button style={buttonStyle} onClick={() => setEditingCommentId(null)}>Cancel</button>
-                  </div>
+                {comment.user_id === currentUserId && ( // 현재 사용자와 댓글 작성자 비교
+                  <>
+                    <button style={buttonStyle} onClick={() => { setEditingCommentId(comment.id); setUpdatedContent(comment.content); }}>Edit</button>
+                    <button style={buttonStyle} onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                    {editingCommentId === comment.id && (
+                      <div>
+                        <textarea value={updatedContent}
+                          onChange={(e) => setUpdatedContent(e.target.value)}></textarea>
+                        <button style={buttonStyle} onClick={() => handleEditComment(comment.id, updatedContent)}>Save</button>
+                        <button style={buttonStyle} onClick={() => setEditingCommentId(null)}>Cancel</button>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -87,12 +94,12 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
         )}
       </div>
       <textarea
-          placeholder="Your comments"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}>
-        </textarea>
-        <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor, marginBottom: '150px' }}
-          onClick={handleAddComment}> Add </button>
+        placeholder="Your comments"
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}>
+      </textarea>
+      <button style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor, marginBottom: '150px' }}
+        onClick={handleAddComment}>Add</button>
     </div>
   );
 };

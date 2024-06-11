@@ -26,20 +26,3 @@ export const signup = async (email, password1, password2, nickname) => {
         useGlobalStore.getState().setIsLoading(false);
     }
 };
-
-// // 이메일 인증 해서 성공하면 successful 로 넘김
-// export const verifyEmail = async (email) => {
-//     useGlobalStore.getState().setIsLoading(true);
-//     useGlobalStore.getState().setError(null);
-//     try {
-//         const response = await axiosInstance.post('/api/verify-email/', { email });
-//         const data = response.data;
-//         console.log('Email verification successful:', data);
-//         return { success: true };
-//     } catch (error) {
-//         useGlobalStore.getState().setError(error.response?.data || 'Email verification failed');
-//         return { success: false };
-//     } finally {
-//         useGlobalStore.getState().setIsLoading(false);
-//     }
-// };
