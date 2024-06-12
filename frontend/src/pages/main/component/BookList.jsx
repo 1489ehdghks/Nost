@@ -123,7 +123,7 @@ const BookList = () => {
                     ))}
                 </tbody>
             </table>
-            <div className="pagination">
+            <div className="bookpagination">
                 <button onClick={() => handleClick(1)} disabled={currentPage === 1}> &laquo; </button>
                 <button onClick={() => handleClick(currentPage - 1)} disabled={currentPage === 1}> &lt; </button>
                 {generatePagination().map((page) => (
@@ -136,6 +136,14 @@ const BookList = () => {
                 ))}
                 <button onClick={() => handleClick(currentPage + 1)} disabled={currentPage === totalPages}> &gt; </button>
                 <button onClick={() => handleClick(totalPages)} disabled={currentPage === totalPages}> &raquo; </button>
+            </div>
+            <div className="scroll-down-indicator">
+                <p style={{ color: currentTheme.sidebarBg }}>Please scroll down to create a novel</p>
+                <a href="#top">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
             </div>
         </div>
     );

@@ -78,7 +78,7 @@ const LikeBookList = () => {
 
 
     return (
-        <div className="book-list" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
+        <div className="likebook-list" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
             <div className="header">
                 <select value={sortOption} onChange={handleSortChange} style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
                     <option value="newest">Newest</option>
