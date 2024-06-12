@@ -8,11 +8,9 @@ import './Mybooklist.scss';
 const Card = ({ id, image, header, likes, rating, onClick }) => {
   const title = useBookStore((state) => state.title);
   const formatTitle = (title) => title.split(' ').join('_');
-  const defaultImage = 'https://cdn.discordapp.com/attachments/1235780830534570089/1249913786119229450/-_-001_2.png?ex=666a59ec&is=6669086c&hm=0e21c67e1f0c7d4d91bf4cb24a8b3eccf842b8063a4be83f45df6f3c8aefc10e&';
-  const imageUrl = title ? `https://mynostbucket.s3.ap-northeast-2.amazonaws.com/books/${formatTitle(title)}.png` : defaultImage;
 
   return (
-    <div className="card" style={{ backgroundImage: `url(${imageUrl})` }} onClick={() => onClick(id)}>
+    <div className="card" style={{ backgroundImage: `url(${image})` }} onClick={() => onClick(id)}>
       <div className="card-header"><h1>{header}</h1></div>
       <div className="card-content">
         <p> ❤️ {likes}</p>
@@ -39,6 +37,7 @@ const Mybooklist = () => {
       try {
         const response = await axiosInstance.get('https://nost-stella.com/api/books/userbooks/');
         setMyBooks(response.data);
+        console.log("mybooks:", mybooks)
       } catch (error) {
         console.error('There was an error fetching the books!', error);
       }
@@ -90,6 +89,7 @@ const Mybooklist = () => {
             key={card.id}
             id={card.id}
             image={card.image}
+            title={card.title}
             header={card.title}
             likes={card.is_liked.length || 0}
             rating={card.average_rating || 0}
