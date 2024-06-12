@@ -94,7 +94,6 @@ const Profile = () => {
 
       setNickname(editUser.nickname);
 
-      console.log("회원정보가 성공적으로 업데이트되었습니다.");
     } catch (error) {
       console.error('회원정보 업데이트 실패:', error);
       alert('회원정보 업데이트에 실패했습니다.');

@@ -8,7 +8,7 @@ import './Mybooklist.scss';
 const Card = ({ id, image, header, likes, rating, onClick }) => {
   const title = useBookStore((state) => state.title);
   const formatTitle = (title) => title.split(' ').join('_');
-  const defaultImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6uhVlGoDqJhKLfS9W_HQOoWJCf-_lsBZzw&s'; // 기본 이미지 URL을 설정합니다.
+  const defaultImage = 'https://cdn.discordapp.com/attachments/1235780830534570089/1249913786119229450/-_-001_2.png?ex=666a59ec&is=6669086c&hm=0e21c67e1f0c7d4d91bf4cb24a8b3eccf842b8063a4be83f45df6f3c8aefc10e&';
   const imageUrl = title ? `https://mynostbucket.s3.ap-northeast-2.amazonaws.com/books/${formatTitle(title)}.png` : defaultImage;
 
   return (
@@ -39,7 +39,6 @@ const Mybooklist = () => {
       try {
         const response = await axiosInstance.get('https://nost-stella.com/api/books/userbooks/');
         setMyBooks(response.data);
-        console.log('data:', response.data);
       } catch (error) {
         console.error('There was an error fetching the books!', error);
       }

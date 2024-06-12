@@ -37,7 +37,7 @@ const useThemeStore = create(set => ({
             secondary: '#ffffff', // main 에 글자기입박스칼라
             textColor: '#DB7093',
             titleColor: '#FF69B4',
-            subtitle: 'Experience the rebirth of nature with Novel Stella.Experience the rebirth of nature.',
+            subtitle: "choose Theme on the right end. press 'Enter' or click 'Join' to enjoy.",
             subtitle2: "Novel Stella",
             sidebarBg: '#FFD1DC',
             mainpageBackgroundColor: 'rgba(255, 255, 255)',

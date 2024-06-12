@@ -28,7 +28,6 @@ const BookList = () => {
         try {
             setIsLoading(true); // 로딩 상태 설정
             const response = await axios.get('https://nost-stella.com/api/books/'); // 백엔드 API 호출
-            console.log('Fetched novels:', response.data); // 응답 데이터 콘솔에 출력
             if (Array.isArray(response.data)) {
                 setBooks(response.data);
             } else {

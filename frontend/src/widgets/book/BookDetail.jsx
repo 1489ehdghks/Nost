@@ -24,7 +24,6 @@ const BookDetail = () => {
     axios.get(`https://nost-stella.com/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
-        console.log('data : ', response.data);
       })
       .catch(error => {
         console.error('Error fetching book data:', error);

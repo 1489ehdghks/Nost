@@ -9,8 +9,6 @@ const SettingsPage = () => {
     const navigate = useNavigate();
 
     const handleSave = () => {
-        console.log('API Key:', apiKey);
-        console.log('Language:', language);
         // 추가 로직 필요 (예: 로컬 스토리지 저장, 백엔드 호출 등)
         navigate('/');
     };

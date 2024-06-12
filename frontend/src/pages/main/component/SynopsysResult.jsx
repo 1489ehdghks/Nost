@@ -42,11 +42,8 @@ const SynopsysResult = ({ onComplete }) => {
         const prompt = `Recommend the best prologue for me.Title is '${editableTitle}' Genre is '${editableGenre}' Theme is '${editableTheme}' Tone is '${editableTone}' Setting is '${editableSetting}' Characters is '${editableCharacters}'`;
 
         try {
-            console.log("prompt", prompt)
-            console.log("language", language)
             await axiosInstance.delete(`https://nost-stella.com/api/books/${bookId}/del_prol/`);
             const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/`, { summary: prompt, language: language.value });
-            console.log("Accept-response:", response)
             setBookId(response.data.book_id)
             setChapterNum(response.data.chapter_num)
             setPrologue(response.data.prologue);

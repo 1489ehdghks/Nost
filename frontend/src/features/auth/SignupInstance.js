@@ -13,11 +13,7 @@ export const signup = async (email, password1, password2, nickname) => {
             nickname,
         });
         const data = response.data;
-        console.log('Sign Up successful:', data);
-        console.log('Sign Up User Data:', data);
-
     } catch (error) {
-        console.log("error:", error)
         useGlobalStore.getState().setError(error.response?.data || 'Sign Up failed');
         if (error.response && error.response.data) {
             return { success: false, errors: error.response.data };

@@ -99,12 +99,10 @@ const SynopsysGenerator = ({ onComplete }) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
-        console.log("generateSynopsis triggered");
 
         if (!selectedCountry) {
             alert('Please select language.');
             setIsLoading(false);
-            console.log("No language selected");
             return;
         }
 
@@ -114,17 +112,10 @@ const SynopsysGenerator = ({ onComplete }) => {
             prompt: formattedDetails.trim(),
             language: selectedCountry ? selectedCountry.value : null
         };
-
-        console.log("requestData created:", requestData);
-
         const fetchSynopsis = async (retries = 0) => {
             try {
-                console.log("Attempting fetchSynopsis, retry:", retries);
                 const response = await axiosInstance.post('https://nost-stella.com/api/books/', requestData);
                 const content = response.data.content;
-
-                console.log("response received:", response);
-
                 if (content.characters && !['문자 없음', '', '登場人物なし', '无字符', 'No Characters'].includes(content.characters)) {
                     setBookId(response.data.book_id);
                     setSynopsis(content.synopsis);

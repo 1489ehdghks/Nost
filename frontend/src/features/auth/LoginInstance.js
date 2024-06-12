@@ -12,8 +12,6 @@ export const login = async (email, password) => {
         });
 
         const data = response.data;
-        console.log("data:", data)
-
         useAuthStore.getState().setToken(data.access);
         useAuthStore.getState().setRefreshToken(data.refresh);
         useAuthStore.getState().setIsLoggedIn(true);
@@ -30,7 +28,6 @@ export const login = async (email, password) => {
     } catch (err) {
         if (err.response && err.response.data) {
             const errorData = err.response.data;
-            console.log("로그인 에러:", errorData);
             let errorMessage = 'Login failed';
 
             if (errorData.non_field_errors) {
