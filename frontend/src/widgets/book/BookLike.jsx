@@ -3,7 +3,7 @@ import { FaHeart } from 'react-icons/fa';
 import axiosInstance from '../../features/auth/AuthInstance';
 
 const BookLike = ({ bookId, initialLikeStatus, onLikeStatusChange }) => {
-  const [isLiked, setIsLiked] = useState(initialLikeStatus);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
