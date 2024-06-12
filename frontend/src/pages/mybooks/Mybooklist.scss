@@ -17,13 +17,13 @@
   gap: 2rem;
   flex-wrap: wrap;
   display: grid; // 카드 열 4개로 고정
-    grid-template-columns: repeat(4, 12.5rem);
-
+  grid-template-columns: repeat(4, 12.5rem);
 }
 
 .card {
   width: 200px;
   height: 300px;
+  gap: 2rem;
   background-size: cover;
   background-position: center;
   border-radius: 10px;
@@ -41,7 +41,7 @@
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;

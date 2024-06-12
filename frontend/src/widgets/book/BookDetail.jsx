@@ -21,7 +21,7 @@ const BookDetail = () => {
   const { userId: currentUserId } = useAuthStore(); // 현재 사용자 ID 가져오기
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/books/${id}/`)
+    axios.get(`https://nost-stella.com/api/books/${id}/`)
       .then(response => {
         setBookData(response.data);
         console.log('data : ', response.data);
@@ -30,7 +30,7 @@ const BookDetail = () => {
         console.error('Error fetching book data:', error);
       });
 
-    axios.get(`http://127.0.0.1:8000/api/books/${id}/comments/`)
+    axios.get(`https://nost-stella.com/api/books/${id}/comments/`)
       .then(response => {
         setComments(response.data || []);
       })
@@ -41,7 +41,7 @@ const BookDetail = () => {
 
   const handleDeleteBook = async () => {
     try {
-      await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${id}/`);
+      await axiosInstance.delete(`https://nost-stella.com/api/books/${id}/`);
       // 삭제 성공 시, 메인 페이지로 이동
       navigate('/main');
     } catch (error) {
@@ -107,7 +107,7 @@ const BookDetail = () => {
           </div>
           {bookData.chapters.map((chapter) => (
             <div key={chapter.id} className="chapter-box" style={{ backgroundColor: currentTheme.buttonBackgroundColor }}>
-              <h2>Chapter {chapter.chapter_num}</h2>
+              <h2>{chapter.chapter_num === 0 ? 'Prologue' : `Chapter ${chapter.chapter_num}`}</h2>
               <p className="chapter-p">{chapter.content}</p>
             </div>
           ))}

@@ -20,8 +20,8 @@ const SummaryGenerator = () => {
         const prompt = `Please write a prologue that matches the content..${prologue}`;
 
         try {
-            await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`);
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            await axiosInstance.delete(`https://nost-stella.com/api/books/${bookId}/del_prol/`);
+            const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/`, { summary: prompt, language: language.value });
             console.log("response:", response);
             setPrologue(response.data.prologue);
             setTranslatedPrologue(response.data.translated_content);
@@ -38,7 +38,7 @@ const SummaryGenerator = () => {
         setIsLoading(true);
         const prompt = `Please write a scean that matches the content.${prologue}`;
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/`, { summary: prompt, language: language.value });
             console.log("NextResponse:", response.data);
             setPrologue(response.data.prologue)
             setChapterNum(response.data.chapter_num);
@@ -60,7 +60,7 @@ const SummaryGenerator = () => {
         console.log("description:", description)
         const prompt = `Please write a scean that matches the content.${description}`
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/`, { summary: prompt, language: language.value });
             console.log("RecommendationResponse:", response.data);
             setSummary(response.data.final_summary);
             setTranslatedContent(response.data.translated_content)
@@ -70,7 +70,7 @@ const SummaryGenerator = () => {
             console.log("recommendations:", recommendations)
         } catch (err) {
             setError(err);
-            alert(error);
+            alert(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -80,7 +80,7 @@ const SummaryGenerator = () => {
         triggerAnimation();
         setIsLoading(true);
         try {
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: userText, language: language.value });
+            const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/`, { summary: userText, language: language.value });
             console.log("TextSubmitResponse:", response.data);
             setSummary(response.data.final_summary);
             setTranslatedContent(response.data.translated_content)
@@ -90,7 +90,7 @@ const SummaryGenerator = () => {
             console.log("translatedContent", translatedContent)
         } catch (err) {
             setError(err);
-            alert(error);
+            alert(error.message);
         } finally {
             setIsLoading(false);
         }

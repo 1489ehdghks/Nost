@@ -27,42 +27,34 @@
     align-items: center;
     z-index: 11;
     transition: all 0.3s ease-in-out;
-    width: 75vw;
-    height: 18vw;
-    // 3200px 이상
-    @media (min-width: 3200px) {
-      width: 50vw;
-      height: 20vh;
-    }
 
-    // 1920px 이상
-    @media (min-width: 1920px) {
-      width: 60vw;
-      height: 12vw;
+    // 3200px 이상
+    @media (max-width: 3200px) {
+      width: 680px;
+      height: 200px;
     }
 
     // 1200px 이상
-    @media (min-width: 1200px) {
-      width: 70vw;
-      height: 13vw;
+    @media (max-width: 1920px) {
+      width: 640px;
+      height: 200px;
     }
 
     // 769px 이상
-    @media (min-width: 769px) {
-      width: 75vw;
-      height: 30vh;
+    @media (max-width: 1200px) {
+      width: 600px;
+      height: 200px;
     }
     // 480px 이상
-    @media (min-width: 480px) {
-      width: 80vw;
-      height: 37vh;
+    @media (max-width: 768px) {
+      width: 515px;
+      height: 200px;
     }
 
     // 480px 이하
     @media (max-width: 479px) {
-      width: 90vw;
-      height: auto;
-      padding: 1rem;
+      width: 400px;
+      height: 200px;
     }
 
     .user_options-container {
@@ -70,8 +62,8 @@
       justify-content: center;
       position: absolute;
       top: 0;
-      left: 55%;
-      transform: translateX(-50%);
+      left: 60%;
+      transform: translateX(-60%);
       width: calc(100% - 4rem);
       transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
@@ -87,7 +79,6 @@
           justify-content: left;
 
           button {
-            margin-top: 5%;
             background-color: transparent;
             padding: 10px 40px;
             border-radius: 3px;
@@ -117,7 +108,7 @@
         }
         .user_options-registered {
           right: 5%;
-          transform: translateY(30%);
+          transform: translateY(42%);
         }
       }
     }
@@ -225,54 +216,57 @@
       &.show-login {
         background-color: white;
         z-index: 20;
-        transform: translateX(130%);
+        transform: translateX(120%);
+        @media (max-width: 768px) {
+          transform: translateX(110%);
+        }
+        @media (max-width: 468px) {
+          transform: translateX(70%);
+        }
       }
 
       &.show-signup {
         background-color: white;
         z-index: 20;
-        transform: translateX(5%);
+        transform: translateX(0%);
       }
 
       // 기본 크기
       &.show-login,
       &.show-signup {
-        width: 40%;
-        height: 40vw;
-
         // 3200px 이상
         @media (min-width: 3200px) {
-          width: 30%;
-          height: 10vw;
+          width: 330px;
+          height: 480px;
         }
 
         // 1920px 이상
         @media (max-width: 3199px) and (min-width: 1920px) {
-          width: 32%;
-          height: 20vw;
+          width: 310px;
+          height: 460px;
         }
 
         // 1200px 이상
         @media (max-width: 1919px) and (min-width: 1200px) {
-          width: 35%;
-          height: 30vw;
+          width: 290px;
+          height: 460px;
         }
         // 769px 이상
-        @media (max-width: 1100px) and (min-width: 769px) {
-          width: 41%;
-          height: 50vw;
+        @media (max-width: 1199px) and (min-width: 769px) {
+          width: 280px;
+          height: 420px;
         }
 
         // 480px 이상
         @media (max-width: 768px) and (min-width: 480px) {
-          width: 41%;
-          height: 70vw;
+          width: 240px;
+          height: 400px;
         }
 
         // 480px 이하
         @media (max-width: 479px) {
-          width: 90%;
-          height: 50vw;
+          width: 200px;
+          height: 400px;
         }
       }
     }

@@ -48,9 +48,8 @@ const Profile = () => {
           }
         });
         alert('회원 탈퇴가 완료되었습니다.');
-        reset(); // 상태 초기화 호출
+        reset();
         navigate('/');
-        // 탈퇴 후 추가적인 로직을 여기에 추가할 수 있습니다.
       } catch (error) {
         console.error('회원 탈퇴 실패:', error);
         alert('비밀번호가 일치하지 않습니다.');
@@ -76,7 +75,7 @@ const Profile = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const openModal = () => { setModalOpen(true); };
   const closeModal = () => { setModalOpen(false); };
-  
+
   // 비밀번호 수정모달
   const [PasswordModalOpen, setPasswordModalOpen] = useState(false);
   const openPasswordModal = () => { setPasswordModalOpen(true); };
@@ -140,10 +139,10 @@ const Profile = () => {
             회원 정보 수정 </button>
           <EditProfileModal user={user} isOpen={ModalOpen} onClose={closeModal} onSave={handleSaveUserInfo} />
 
-          <button className="change-password" onClick={openPasswordModal}>  
+          <button className="change-password" onClick={openPasswordModal}>
             비밀번호 변경
           </button>
-          <EditPasswordModal isOpen={PasswordModalOpen} onClose={closePasswordModal} /> 
+          <EditPasswordModal isOpen={PasswordModalOpen} onClose={closePasswordModal} />
 
           <button className="delete-account" onClick={handleDeleteAccount}>
             회원 탈퇴 </button>

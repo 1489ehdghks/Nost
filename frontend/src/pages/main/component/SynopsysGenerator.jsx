@@ -12,7 +12,7 @@ import enLocale from 'i18n-iso-countries/langs/en.json';
 countries.registerLocale(enLocale);
 
 const customCountryCodeMapping = {
-    KR: 'KO',
+    KO: 'KO',
     US: 'EN-US',
     GB: 'EN-GB',
     JP: 'JA',
@@ -20,7 +20,7 @@ const customCountryCodeMapping = {
 };
 
 const customCountryNames = {
-    KR: 'Korean',
+    KO: 'Korean',
     US: 'English-US',
     GB: 'English-UK',
     JP: 'Japanese',
@@ -120,7 +120,7 @@ const SynopsysGenerator = ({ onComplete }) => {
         const fetchSynopsis = async (retries = 0) => {
             try {
                 console.log("Attempting fetchSynopsis, retry:", retries);
-                const response = await axiosInstance.post('http://127.0.0.1:8000/api/books/', requestData);
+                const response = await axiosInstance.post('https://nost-stella.com/api/books/', requestData);
                 const content = response.data.content;
 
                 console.log("response received:", response);
@@ -295,7 +295,7 @@ const SynopsysGenerator = ({ onComplete }) => {
                             style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}
                         >
                             <span className="tooltip">Generate a synopsis to base your novel on with the selected values and requests</span>
-                            Create Synopsys
+                            Create
                         </button>
                     </div>
                 </div>

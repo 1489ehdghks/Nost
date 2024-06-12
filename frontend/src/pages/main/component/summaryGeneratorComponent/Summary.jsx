@@ -1,8 +1,10 @@
 import React from 'react';
 import useThemeStore from '../../../../shared/store/Themestore';
+import useBookStore from '../../../../shared/store/BookStore';
 
 const Summary = ({ recommendations, handleRecommendationClick, userText, setUserText, handleUserTextSubmit }) => {
     const { themes, currentSeason } = useThemeStore();
+    const { chapterNum } = useBookStore();
     const currentTheme = themes[currentSeason];
 
     return (
@@ -35,36 +37,36 @@ const Summary = ({ recommendations, handleRecommendationClick, userText, setUser
                 ))
             )}
 
-
-            <div className="user-text-area">
-                <textarea
-                    value={userText}
-                    onChange={(e) => setUserText(e.target.value)}
-                    placeholder="Your Text"
-                    className="summary-textarea"
-                    style={{ borderColor: currentTheme.textColor }}
-                />
-                <button
-                    className="summary-button"
-                    onClick={handleUserTextSubmit}
-                    style={{
-                        backgroundColor: 'transparent',
-                        color: currentTheme.buttonTextColor,
-                        border: 'none',
-                        borderRadius: '5px',
-                    }}
-                    onMouseOver={(e) => {
-                        e.target.style.backgroundColor = currentTheme.buttonBackgroundColor;
-                    }}
-                    onMouseOut={(e) => {
-                        e.target.style.backgroundColor = 'transparent';
-                    }}
-                >
-                    Send
-                </button>
-            </div>
+            {chapterNum < 30 && (
+                <div className="user-text-area">
+                    <textarea
+                        value={userText}
+                        onChange={(e) => setUserText(e.target.value)}
+                        placeholder="Your Text"
+                        className="summary-textarea"
+                        style={{ borderColor: currentTheme.textColor }}
+                    />
+                    <button
+                        className="summary-button"
+                        onClick={handleUserTextSubmit}
+                        style={{
+                            backgroundColor: 'transparent',
+                            color: currentTheme.buttonTextColor,
+                            border: 'none',
+                            borderRadius: '5px',
+                        }}
+                        onMouseOver={(e) => {
+                            e.target.style.backgroundColor = currentTheme.buttonBackgroundColor;
+                        }}
+                        onMouseOut={(e) => {
+                            e.target.style.backgroundColor = 'transparent';
+                        }}
+                    >
+                        Send
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
-
 export default Summary;
