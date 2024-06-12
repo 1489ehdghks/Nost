@@ -12,12 +12,18 @@ const BookList = () => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const booksPerPage = 8; // 페이지 당 보여질 책의 개수
+    const [showToast, setShowToast] = useState(false); // 토스트 표시 상태 추가
 
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
 
-
     useEffect(() => {
         fetchNovels();
+        setShowToast(true); // 컴포넌트가 마운트될 때 토스트 표시
+        const timer = setTimeout(() => {
+            setShowToast(false); // 2초 후에 토스트 숨기기
+        }, 2000);
+
+        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
     }, []);
 
     useEffect(() => {
@@ -38,13 +44,10 @@ const BookList = () => {
             setIsLoading(false); // 로딩 완료 후 상태 변경
         } catch (error) {
             console.error('Error fetching novels:', error);
-
             setBooks([]);
         } finally {
             setIsLoading(false);
-
         }
-
     };
 
     const handleSortChange = (e) => {
@@ -137,8 +140,12 @@ const BookList = () => {
                 <button onClick={() => handleClick(currentPage + 1)} disabled={currentPage === totalPages}> &gt; </button>
                 <button onClick={() => handleClick(totalPages)} disabled={currentPage === totalPages}> &raquo; </button>
             </div>
+            {showToast && (
+                <div className="scrolldown_toast" style={{ backgroundColor: currentTheme.sidebarBg, color: currentTheme.textColor }}>
+                    <p>Please scroll down to create a novel</p>
+                </div>
+            )}
             <div className="scroll-down-indicator">
-                <p style={{ color: currentTheme.sidebarBg }}>Please scroll down to create a novel</p>
                 <a href="#top">
                     <span></span>
                     <span></span>
