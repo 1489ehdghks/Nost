@@ -42,10 +42,11 @@ const LoginModal = ({ onClose }) => {
     }, [signupSuccess]);
 
     useEffect(() => {
-        if (globalError && globalError.includes('Email is not verified.')) {
+        if (typeof globalError === 'string' && globalError.includes('Email is not verified.')) {
             setShowResendEmailModal(true);
         }
     }, [globalError]);
+    
 
 
     const handleLoginInputChange = (event) => {
@@ -77,18 +78,55 @@ const LoginModal = ({ onClose }) => {
         }
     };
 
+const handleSignupSubmit = async (event) => {
+    event.preventDefault();
+    setSignupErrors({});
 
-    const handleSignupSubmit = async (event) => {
-        event.preventDefault();
-        setSignupErrors({});
-        if (signupInputs.password1 !== signupInputs.password2) {
-            setSignupErrors({ password2: ['Passwords do not match'] });
-            return;
-        }
+    console.log('Signup Inputs:', signupInputs);
+
+    if (signupInputs.password1 !== signupInputs.password2) {
+        setSignupErrors({ password2: ['Passwords do not match'] });
+        toast.error('Passwords do not match');
+        return;
+    }
+
+    try {
         const response = await signup(signupInputs.email, signupInputs.password1, signupInputs.password2, signupInputs.nickname);
-        setSignupSuccess(true);
-        setLoginFormActive(true);
-    };
+
+        console.log('Signup Response:', response);
+
+        if (response.errors) {
+            const errors = {};
+            // 각 에러 메시지를 toast로 표시
+            if (response.errors.email) {
+                errors.email = response.errors.email;
+                response.errors.email.forEach((msg) => toast.error(msg));
+            }
+            if (response.errors.password1) {
+                errors.password1 = response.errors.password1;
+                response.errors.password1.forEach((msg) => toast.error(msg));
+            }
+            if (response.errors.password2) {
+                errors.password2 = response.errors.password2;
+                response.errors.password2.forEach((msg) => toast.error(msg));
+            }
+            setSignupErrors(errors);
+        }
+        else {
+            setSignupSuccess(true);
+            setLoginFormActive(true);
+        }
+    } catch (error) {
+        console.error('Signup API error:', error);
+        toast.error('An unexpected error occurred. Please try again.');
+    }
+
+    console.log('Global Error:', globalError);
+    if (globalError === null) {
+        toast.error('This is a duplicate nickname. Please fix.');
+    }
+};
+
 
     return (
         <div className="modalOverlay">
