@@ -5,9 +5,9 @@ import axiosInstance from '../../features/auth/AuthInstance';
 import './LikeBookList.scss';
 
 const LikeBookList = () => {
-    const { themes, currentSeason } = useThemeStore(); 
-    const currentTheme = themes[currentSeason]; 
-    const [sortOption, setSortOption] = useState('newest'); 
+    const { themes, currentSeason } = useThemeStore();
+    const currentTheme = themes[currentSeason];
+    const [sortOption, setSortOption] = useState('newest');
     const [likedBooks, setLikedBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const booksPerPage = 8; // 페이지 당 보여질 책의 개수
@@ -16,7 +16,7 @@ const LikeBookList = () => {
     useEffect(() => {
         const UserLikedBooks = async () => {
             try {
-                const response = await axiosInstance.get('http://127.0.0.1:8000/api/books/userlikedbooks/');
+                const response = await axiosInstance.get('https://nost-stella.com/api/books/userlikedbooks/');
                 setLikedBooks(response.data);
             } catch (error) {
                 console.error('Error fetching liked books:', error);
@@ -45,14 +45,14 @@ const LikeBookList = () => {
                 sortedBooks.sort((a, b) => b.is_liked.length - a.is_liked.length);
                 break;
             case 'rating':
-                sortedBooks.sort((a, b) =>b.average_rating - a.average_rating);
+                sortedBooks.sort((a, b) => b.average_rating - a.average_rating);
                 break;
             default:
                 break;
         }
         setLikedBooks(sortedBooks);
     };
-    
+
 
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;

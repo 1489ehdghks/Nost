@@ -46,7 +46,7 @@ const SideLayout = ({ children }) => {
                 <button onClick={handleProfile}>Profile</button>
                 <button onClick={handleMybooklist}>My Book</button>
                 <button onClick={handleSettings}>Settings</button>
-                <button onClick={handleLogout}>logout</button>
+                <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="content">
                 {children}

@@ -15,7 +15,7 @@ const LoginModal = ({ onClose }) => {
     const [loginErrors, setLoginErrors] = useState({});
     const [signupInputs, setSignupInputs] = useState({ nickname: '', email: '', password1: '', password2: '' });
     const [signupErrors, setSignupErrors] = useState({});
-    const isLoading = useGlobalStore(state => state.isLoading);
+    const { isLoading, error, setError } = useGlobalStore(state => state.isLoading);
     const globalError = useGlobalStore(state => state.error);
     const [signupSuccess, setSignupSuccess] = useState(false);
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ const LoginModal = ({ onClose }) => {
 
     useEffect(() => {
         if (signupSuccess) {
-            toast.success("이메일 인증메일이 발송되었습니다. 확인해주세요.");
+            toast.success("An email verification has been sent to you, please check it.");
         }
     }, [signupSuccess]);
 
@@ -70,7 +70,7 @@ const LoginModal = ({ onClose }) => {
             } else if (globalError.includes('password')) {
                 errors.password = globalError;
             } else {
-                errors.non_field_errors = globalError;
+                errors.non_field_errors = 'ERROR';
             }
             setLoginErrors(errors);
         } else {
@@ -132,8 +132,6 @@ const handleSignupSubmit = async (event) => {
         <div className="modalOverlay">
             <ToastContainer />
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-                
-
                 <div className="user_options-container">
                     <div className={`user_options-text ${isLoginFormActive ? '' : 'slide-out'}`}>
                         {/* 로그인 왼쪽 */}
@@ -174,7 +172,7 @@ const handleSignupSubmit = async (event) => {
                                         onChange={handleLoginInputChange}
                                         disabled={isLoading}
                                     />
-                                    {loginErrors.email && <div className="error-message">{loginErrors.email}</div>}
+
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -187,7 +185,7 @@ const handleSignupSubmit = async (event) => {
                                         onChange={handleLoginInputChange}
                                         disabled={isLoading}
                                     />
-                                    {loginErrors.password && <div className="error-message">{loginErrors.password}</div>}
+
                                 </div>
                             </fieldset>
                             <div>{showResendEmailModal && <ResendEmailModal onClose={() => setShowResendEmailModal(false)} />}</div>
@@ -195,10 +193,10 @@ const handleSignupSubmit = async (event) => {
                                 <button type="button" className="forms_buttons-forgot" disabled={isLoading}>Forgot password?</button>
                                 <input type="submit" value="Log In" className="forms_buttons-action" disabled={isLoading} />
                             </div>
-                            {loginErrors.non_field_errors && <div className="error-message">{loginErrors.non_field_errors}</div>}
-                            
+
+
                         </form>
-                        <div className="social-login-buttons">
+                        {/* <div className="social-login-buttons">
                             <button className="social-button google-login">
                                 <img src="/path/to/google-icon.png" alt="Google Icon" />
                                 Login with Google
@@ -207,7 +205,7 @@ const handleSignupSubmit = async (event) => {
                                 <img src="/path/to/naver-icon.png" alt="Naver Icon" />
                                 Login with Naver
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
 
@@ -228,7 +226,7 @@ const handleSignupSubmit = async (event) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
-                                    {signupErrors.nickname && <div className="error-message">{signupErrors.nickname}</div>}
+
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -241,7 +239,7 @@ const handleSignupSubmit = async (event) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
-                                    {signupErrors.email && <div className="error-message">{signupErrors.email}</div>}
+
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -254,7 +252,7 @@ const handleSignupSubmit = async (event) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
-                                    {signupErrors.password1 && <div className="error-message">{signupErrors.password1}</div>}
+
                                 </div>
                                 <div className="forms_field">
                                     <input
@@ -267,13 +265,12 @@ const handleSignupSubmit = async (event) => {
                                         onChange={handleSignupInputChange}
                                         disabled={isLoading}
                                     />
-                                    {signupErrors.password2 && <div className="error-message">{signupErrors.password2}</div>}
+
                                 </div>
                             </fieldset>
                             <div className="forms_buttons">
                                 <input type="submit" value="Sign Up" className="forms_buttons-action" disabled={isLoading} />
                             </div>
-                            {signupErrors.non_field_errors && <div className="error-message">{signupErrors.non_field_errors}</div>}
                         </form>
                     </div>
                 </div>

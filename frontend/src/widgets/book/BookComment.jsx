@@ -13,7 +13,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleAddComment = async () => {
     try {
-      const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/comments/`, {
+      const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/comments/`, {
         content: newComment,
       });
       setComments([...comments, response.data]);
@@ -26,7 +26,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleEditComment = async (commentId, updatedContent) => {
     try {
-      const response = await axiosInstance.put(`http://127.0.0.1:8000/api/books/${bookId}/comments/${commentId}/`, {
+      const response = await axiosInstance.put(`https://nost-stella.com/api/books/${bookId}/comments/${commentId}/`, {
         content: updatedContent,
       });
 
@@ -41,7 +41,7 @@ const BookComment = ({ bookId, comments, setComments, currentTheme }) => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/comments/${commentId}/`);
+      await axiosInstance.delete(`https://nost-stella.com/api/books/${bookId}/comments/${commentId}/`);
       setComments(comments.filter(comment => comment.id !== commentId));
     } catch (error) {
       console.error('Error deleting comment:', error);

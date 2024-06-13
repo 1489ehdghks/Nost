@@ -44,8 +44,8 @@ const SynopsysResult = ({ onComplete }) => {
         try {
             console.log("prompt", prompt)
             console.log("language", language)
-            await axiosInstance.delete(`http://127.0.0.1:8000/api/books/${bookId}/del_prol/`);
-            const response = await axiosInstance.post(`http://127.0.0.1:8000/api/books/${bookId}/`, { summary: prompt, language: language.value });
+            await axiosInstance.delete(`https://nost-stella.com/api/books/${bookId}/del_prol/`);
+            const response = await axiosInstance.post(`https://nost-stella.com/api/books/${bookId}/`, { summary: prompt, language: language.value });
             console.log("Accept-response:", response)
             setBookId(response.data.book_id)
             setChapterNum(response.data.chapter_num)
