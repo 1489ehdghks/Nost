@@ -12,38 +12,39 @@ const BookList = () => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const booksPerPage = 8; // 페이지 당 보여질 책의 개수
+    const [showToast, setShowToast] = useState(false); // 토스트 표시 상태 추가
 
     const { isLoading, setIsLoading, error, setError } = useGlobalStore();
 
-
     useEffect(() => {
         fetchNovels();
+        setShowToast(true);
+        const timer = setTimeout(() => {
+            setShowToast(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
-        sortNovels(sortOption); // 정렬 기준 변경 시 소설 목록 정렬
+        sortNovels(sortOption);
     }, [sortOption]);
 
     const fetchNovels = async () => {
         try {
-            setIsLoading(true); // 로딩 상태 설정
-            const response = await axios.get('https://nost-stella.com/api/books/'); // 백엔드 API 호출
+            setIsLoading(true);
+            const response = await axios.get('https://nost-stella.com/api/books/');
             if (Array.isArray(response.data)) {
                 setBooks(response.data);
             } else {
-                console.error('Fetched data is not an array:', response.data);
                 setBooks([]);
             }
-            setIsLoading(false); // 로딩 완료 후 상태 변경
+            setIsLoading(false);
         } catch (error) {
-            console.error('Error fetching novels:', error);
-
             setBooks([]);
         } finally {
             setIsLoading(false);
-
         }
-
     };
 
     const handleSortChange = (e) => {
@@ -93,7 +94,7 @@ const BookList = () => {
 
     return (
         <div className="book-list section" style={{ backgroundColor: currentTheme.mainpageBackgroundColor, color: currentTheme.textColor }}>
-            <div className="header">
+            <div className="book-list-header">
                 <select value={sortOption} onChange={handleSortChange} style={{ backgroundColor: currentTheme.buttonBackgroundColor, color: currentTheme.buttonTextColor }}>
                     <option value="newest">Newest</option>
                     <option value="popular">Most Popular</option>
@@ -136,8 +137,12 @@ const BookList = () => {
                 <button onClick={() => handleClick(currentPage + 1)} disabled={currentPage === totalPages}> &gt; </button>
                 <button onClick={() => handleClick(totalPages)} disabled={currentPage === totalPages}> &raquo; </button>
             </div>
+            {showToast && (
+                <div className="scrolldown_toast" style={{ backgroundColor: currentTheme.sidebarBg, color: currentTheme.textColor }}>
+                    <p>Please scroll down to create a novel</p>
+                </div>
+            )}
             <div className="scroll-down-indicator">
-                <p style={{ color: currentTheme.sidebarBg }}>Please scroll down to create a novel</p>
                 <a href="#top">
                     <span></span>
                     <span></span>

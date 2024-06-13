@@ -50,7 +50,7 @@ const SynopsysResult = ({ onComplete }) => {
             setTranslatedPrologue(response.data.translated_content)
             onComplete();
         } catch (error) {
-            console.error("Error submitting data:", error);
+
         } finally {
             setIsLoading(false)
         }

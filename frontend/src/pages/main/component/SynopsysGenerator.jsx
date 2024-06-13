@@ -131,7 +131,6 @@ const SynopsysGenerator = ({ onComplete }) => {
                     throw new Error('설정 저장 문제');
                 }
             } catch (err) {
-                console.error("Error in fetchSynopsis:", err);
                 if (retries < 2) {
                     alert("캐릭터 설정에 문제가 생겨 다시 시도합니다.");
                     fetchSynopsis(retries + 1);

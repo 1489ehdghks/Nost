@@ -26,7 +26,6 @@ const SummaryGenerator = () => {
             setTranslatedPrologue(response.data.translated_content);
         } catch (error) {
             setError(error);
-            console.error("Error submitting data:", error);
         } finally {
             setIsLoading(false);
         }
@@ -45,7 +44,6 @@ const SummaryGenerator = () => {
             setRecommendations(response.data.recommendations)
         } catch (error) {
             setError(error);
-            console.error("Error submitting data:", error);
         } finally {
             setIsLoading(false);
         }

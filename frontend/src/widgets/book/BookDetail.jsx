@@ -26,7 +26,6 @@ const BookDetail = () => {
         setBookData(response.data);
       })
       .catch(error => {
-        console.error('Error fetching book data:', error);
       });
 
     axios.get(`https://nost-stella.com/api/books/${id}/comments/`)
@@ -34,7 +33,6 @@ const BookDetail = () => {
         setComments(response.data || []);
       })
       .catch(error => {
-        console.error('Error fetching comments:', error);
       });
   }, [id]);
 
@@ -44,7 +42,6 @@ const BookDetail = () => {
       // 삭제 성공 시, 메인 페이지로 이동
       navigate('/main');
     } catch (error) {
-      console.error('Error deleting book:', error);
     }
   };
 

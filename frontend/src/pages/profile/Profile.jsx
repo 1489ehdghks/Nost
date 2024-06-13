@@ -51,7 +51,6 @@ const Profile = () => {
         reset();
         navigate('/');
       } catch (error) {
-        console.error('회원 탈퇴 실패:', error);
         alert('비밀번호가 일치하지 않습니다.');
       }
     }
@@ -95,7 +94,6 @@ const Profile = () => {
       setNickname(editUser.nickname);
 
     } catch (error) {
-      console.error('회원정보 업데이트 실패:', error);
       alert('회원정보 업데이트에 실패했습니다.');
     }
   };

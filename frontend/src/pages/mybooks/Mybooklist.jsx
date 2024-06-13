@@ -37,9 +37,8 @@ const Mybooklist = () => {
       try {
         const response = await axiosInstance.get('https://nost-stella.com/api/books/userbooks/');
         setMyBooks(response.data);
-        console.log("mybooks:", mybooks)
       } catch (error) {
-        console.error('There was an error fetching the books!', error);
+
       }
     };
 

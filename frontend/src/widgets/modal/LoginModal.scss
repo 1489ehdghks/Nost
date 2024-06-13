@@ -28,13 +28,13 @@
     z-index: 11;
     transition: all 0.3s ease-in-out;
 
-    // 3200px 이상
+    // 3200px 이하
     @media (max-width: 3200px) {
       width: 680px;
       height: 200px;
     }
 
-    // 1200px 이상
+    // 1200px 이하
     @media (max-width: 1920px) {
       width: 640px;
       height: 200px;

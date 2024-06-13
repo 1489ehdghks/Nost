@@ -19,7 +19,6 @@ const LikeBookList = () => {
                 const response = await axiosInstance.get('https://nost-stella.com/api/books/userlikedbooks/');
                 setLikedBooks(response.data);
             } catch (error) {
-                console.error('Error fetching liked books:', error);
             }
         };
 

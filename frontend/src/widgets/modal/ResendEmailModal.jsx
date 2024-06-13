@@ -18,7 +18,6 @@ const ResendEmailModal = () => {
             const response = await axiosInstance.post('/api/accounts/resend-email/', { email });
             // 이메일 재전송 성공 시 필요한 로직 추가
         } catch (error) {
-            console.error("이메일 재전송 에러:", error);
             // 이메일 재전송 실패 시 필요한 로직 추가
         }
     };
