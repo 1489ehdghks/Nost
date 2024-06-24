@@ -28,30 +28,30 @@
     z-index: 11;
     transition: all 0.3s ease-in-out;
 
-    // 3200px 이상
+    // 3200px 이하
     @media (max-width: 3200px) {
       width: 680px;
       height: 200px;
     }
 
-    // 1200px 이상
+    // 1920px 이하
     @media (max-width: 1920px) {
       width: 640px;
       height: 200px;
     }
 
-    // 769px 이상
+    // 1200px 이하
     @media (max-width: 1200px) {
       width: 600px;
       height: 200px;
     }
-    // 480px 이상
+    // 768px 이하
     @media (max-width: 768px) {
       width: 515px;
       height: 200px;
     }
 
-    // 480px 이하
+    // 479px 이하
     @media (max-width: 479px) {
       width: 400px;
       height: 200px;
